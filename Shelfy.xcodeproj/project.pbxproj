@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568D36552A2E73E20028C51C /* MyBooksCell.swift */; };
+		568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 568D36562A2E73E20028C51C /* MyBooksCell.xib */; };
 		56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */; };
 		56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */; };
 		56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711A12A2CA41C0030DC6E /* HomeController.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		568D36552A2E73E20028C51C /* MyBooksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCell.swift; sourceTree = "<group>"; };
+		568D36562A2E73E20028C51C /* MyBooksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyBooksCell.xib; sourceTree = "<group>"; };
 		56B7119A2A2CA41C0030DC6E /* Shelfy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelfy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +53,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		568D36542A2E703B0028C51C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				56B711BB2A2D53D70030DC6E /* SearchCell.xib */,
+				56B711BA2A2D53D70030DC6E /* SBCell.swift */,
+				568D36552A2E73E20028C51C /* MyBooksCell.swift */,
+				568D36562A2E73E20028C51C /* MyBooksCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		56B711912A2CA41C0030DC6E = {
 			isa = PBXGroup;
 			children = (
@@ -73,8 +88,7 @@
 				56B711B82A2D538A0030DC6E /* Constants.swift */,
 				56B711B72A2D512E0030DC6E /* Controllers */,
 				56B711A32A2CA41C0030DC6E /* Main.storyboard */,
-				56B711BA2A2D53D70030DC6E /* SBCell.swift */,
-				56B711BB2A2D53D70030DC6E /* SearchCell.xib */,
+				568D36542A2E703B0028C51C /* Cells */,
 				56B711A62A2CA41D0030DC6E /* Assets.xcassets */,
 				56B711A82A2CA41D0030DC6E /* LaunchScreen.storyboard */,
 				56B711AB2A2CA41D0030DC6E /* Info.plist */,
@@ -155,6 +169,7 @@
 				56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */,
 				56B711A72A2CA41D0030DC6E /* Assets.xcassets in Resources */,
 				56B711A52A2CA41C0030DC6E /* Main.storyboard in Resources */,
+				568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +185,7 @@
 				56B711B42A2D50FA0030DC6E /* SearchController.swift in Sources */,
 				56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */,
 				56B711B22A2D50EB0030DC6E /* MyBooksController.swift in Sources */,
+				568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */,
 				56B711B92A2D538A0030DC6E /* Constants.swift in Sources */,
 				56B711B62A2D51010030DC6E /* MoreController.swift in Sources */,
 				56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */,

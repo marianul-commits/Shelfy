@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Vision
 
 class SearchController: UIViewController, UITableViewDelegate {
 
@@ -28,10 +29,46 @@ class SearchController: UIViewController, UITableViewDelegate {
         
     }
 
+    //MARK: - Scan Button
+    
+    @IBAction func scanButton(_ sender: Any) {
+        
+        let request = VNRecognizeTextRequest { request, error in
+            guard let observations = request.results as? [VNRecognizedTextObservation] else {
+                fatalError("Received invalid observations")
+            }
 
+            for observation in observations {
+                guard let bestCandidate = observation.topCandidates(1).first else {
+                    print("No candidate")
+                    continue
+                }
+
+                print("Found this candidate: \(bestCandidate.string)")
+            }
+        }
+        
+        let requests = [request]
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let img = UIImage(named: "testImage")?.cgImage else {
+                fatalError("Missing image to scan")
+            }
+
+            let handler = VNImageRequestHandler(cgImage: img, options: [:])
+            try? handler.perform(requests)
+        }
+        
+        request.recognitionLevel = .fast
+        
+    }
+    
+    
+    
 }
 
 
+//MARK: - SearchBar Extension
 extension SearchController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -51,7 +88,7 @@ extension SearchController: UISearchBarDelegate {
 
 }
 
-
+//MARK: - TableView Extension
 extension SearchController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
