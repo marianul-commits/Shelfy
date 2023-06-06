@@ -21,7 +21,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qke-uH-lKM">
                         <rect key="frame" x="0.0" y="0.0" width="350" height="160"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img" translatesAutoresizingMaskIntoConstraints="NO" id="WOe-qf-X6p">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pexels-eberhard-grossgasteiger-2098404" translatesAutoresizingMaskIntoConstraints="NO" id="WOe-qf-X6p">
                                 <rect key="frame" x="10" y="5" width="91" height="150"/>
                                 <color key="tintColor" name="Accent"/>
                                 <constraints>
@@ -86,7 +86,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="img" width="591" height="1280"/>
+        <image name="pexels-eberhard-grossgasteiger-2098404" width="3648" height="5472"/>
         <namedColor name="Accent">
             <color red="0.63529411764705879" green="0.81568627450980391" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
