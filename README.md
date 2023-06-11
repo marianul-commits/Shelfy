@@ -1,6 +1,6 @@
 # Shelfy
 
-Shelfy is a book app made in Swift using [GoodReads](https://www.goodreads.com/api/index)
+Shelfy is a book app made in Swift using [Google Books API](https://developers.google.com/books)
 
 ## License
 
