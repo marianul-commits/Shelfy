@@ -16,22 +16,28 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var btnOnMyShelf: UIButton!
     @IBOutlet weak var btnReading: UIButton!
     
-    // Persist the top view height constraint
-    var topViewHeightConstraint: NSLayoutConstraint?
-    
-    // Original height of the top view
-    var viewHeight: CGFloat = 400
-    
     // Keep track of the
     private var isAnimationInProgress = false
     
-    var previousOffset: CGPoint?
-    
     
     let testData = ["test1", "test2", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
+    let authData = ["Ion Creanga", "Mihai Eminesc", "C. Brancoveanu", "Mircea Eliade", "JJ Abrahms", "Naruto", "Jiraya", "Sasuke", "Kakashi", "Madara"]
+    let descData = ["lorem ipsum dolores", "test2", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
     let testData2 = ["banana", "potato", "tomato", "apple", "pear", "berry", "ice", "mango", "coconut", "nutnut"]
+    let authData2 = ["Marvel", "DC", "SpooderMan", "Blalde", "JJ McDonalds", "Boruto", "Hinata", "Tom Ford", "YSL", "Autor"]
+    let descData2 = ["lorem ipsum doloret", "cum te jucai prin cotet", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
     var filter: [String]!
     var isThisOn = true
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +47,6 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         myBooksTable.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
         myBooksTable.backgroundColor = UIColor.clear
         myBooksTable.layer.backgroundColor = UIColor.clear.cgColor
-        myBooksTable.layer.cornerRadius = myBooksTable.frame.size.height / 25
-//        btnView.layer.backgroundColor = CGColor(red: 0.74, green: 0.87, blue: 0.8, alpha: 1.0)
         btnView.layer.cornerRadius = btnView.frame.size.height / 2
         btnReading.layer.cornerRadius = btnReading.layer.frame.size.height / 2
         btnOnMyShelf.layer.cornerRadius = btnOnMyShelf.layer.frame.size.height / 2
@@ -52,29 +56,18 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     
     @IBAction func readingBtn(_ sender: Any) {
         isThisOn = true
-//        UIView.animate(withDuration: 1, delay: 0, options: .curveEaseIn) {
-//            self.btnReading.backgroundColor = UIColor(named: "Accent5")
-//        }
-        
-        UIView.transition(with: btnReading, duration: 0.33,
-                          options: .curveEaseInOut,
-          animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.btnReading.backgroundColor = UIColor(named: "Accent5")
-          },
-          completion: { _ in
-            self.btnReading.backgroundColor = UIColor(named: "Accent5")
-          }
-        )
         
+    }
         btnOnMyShelf.backgroundColor = UIColor(named: "Accent7")
         btnReading.backgroundColor = UIColor(named: "Accent5")
-        print("\(isThisOn)")
         myBooksTable.reloadData()
     }
     
     @IBAction func shelfyBtn(_ sender: Any) {
         isThisOn = false
-        UIView.animate(withDuration: 1, delay: 0, options: .curveEaseIn) {
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.btnOnMyShelf.backgroundColor = UIColor(named: "Accent5")
         }
         btnReading.backgroundColor = UIColor(named: "Accent7")
@@ -87,62 +80,6 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     
 }
 
-
-
-//MARK: - ScrollView Extension
-
-extension MyBooksController: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        guard let topViewHeightConstraint = topViewHeightConstraint
-        else { return }
-        
-        let currentOffset = scrollView.contentOffset
-        
-        if let startOffset = previousOffset {
-            
-            // Get the distance scrolled
-            let delta = abs((startOffset.y - currentOffset.y))
-            
-            if currentOffset.y > startOffset.y,
-               currentOffset.y > .zero {
-                // Scrolling down
-                
-                // Set the new height based on the amount scrolled
-                var newHeight = topViewHeightConstraint.constant - delta
-                
-                // Make sure we do not go below 0
-                if newHeight < .zero {
-                    newHeight = .zero
-                }
-                
-                topViewHeightConstraint.constant
-                = newHeight
-                
-            }
-            else if currentOffset.y < startOffset.y,
-                    currentOffset.y <= viewHeight {
-                // Scrolling up
-                
-                var newHeight = topViewHeightConstraint.constant + delta
-                
-                // Make sure we do not go above the max height
-                if newHeight > viewHeight {
-                    newHeight = viewHeight
-                }
-                
-                topViewHeightConstraint.constant
-                = newHeight
-            }
-            
-            // Update the previous offset
-            previousOffset = scrollView.contentOffset
-            
-            self.view.layoutIfNeeded()
-        }
-    }
-}
 
 
 
@@ -168,15 +105,43 @@ extension MyBooksController: UISearchBarDelegate {
 }
 
 
-
 //MARK: - TableView Extension
 
 extension MyBooksController: UITableViewDataSource {
     
     func tableView(_ myBooksTable: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return testData.count
     }
     
+    func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
+        myBooksTable.deselectRow(at: indexPath, animated: true)
+        let cell = myBooksTable.cellForRow(at: indexPath as IndexPath)
+                
+        if isThisOn == true {
+            let selectedBook = testData[indexPath.row]
+            let bookAuth = authData[indexPath.row]
+            let bookDesc = descData[indexPath.row]
+            let destination = BookView()
+            destination.bookAuth = bookAuth
+            destination.bookTitle = selectedBook
+            destination.bookDesc = bookDesc
+            performSegue(withIdentifier: K.cellSegue, sender: cell)
+            
+            print("hewwo")
+        } else {
+            
+            let selectedBook2 = testData2[indexPath.row]
+            let bookAuth2 = authData2[indexPath.row]
+            let bookDesc2 = descData2[indexPath.row]
+            let destination2 = BookView()
+            destination2.bookAuth = bookAuth2
+            destination2.bookTitle = selectedBook2
+            destination2.bookDesc = bookDesc2
+            performSegue(withIdentifier: K.cellSegue, sender: cell)
+            
+            print("hewwo data 2")
+        }
+    }
     
     func tableView(_ myBooksTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -184,10 +149,15 @@ extension MyBooksController: UITableViewDataSource {
         
             cell.clipsToBounds = true
             cell.backgroundColor = .clear
+        cell.isUserInteractionEnabled = true
             if isThisOn == true {
                 cell.MBTitle?.text = testData[indexPath.row]
+                cell.MBAuthor?.text = authData[indexPath.row]
+                cell.MBDescr?.text = descData[indexPath.row]
             } else {
                 cell.MBTitle?.text = testData2[indexPath.row]
+                cell.MBAuthor?.text = authData2[indexPath.row]
+                cell.MBDescr?.text = descData2[indexPath.row]
             }
             return cell
             

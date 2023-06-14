@@ -21,6 +21,8 @@
 		56B711B92A2D538A0030DC6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711B82A2D538A0030DC6E /* Constants.swift */; };
 		56B711BC2A2D53D70030DC6E /* SBCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711BA2A2D53D70030DC6E /* SBCell.swift */; };
 		56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56B711BB2A2D53D70030DC6E /* SearchCell.xib */; };
+		56BBA5912A360D78001C2779 /* BookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBA5902A360D78001C2779 /* BookView.swift */; };
+		56BBA5942A3613BD001C2779 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 56BBA5932A3613BD001C2779 /* Cosmos */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,7 @@
 		56B711B82A2D538A0030DC6E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		56B711BA2A2D53D70030DC6E /* SBCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBCell.swift; sourceTree = "<group>"; };
 		56B711BB2A2D53D70030DC6E /* SearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
+		56BBA5902A360D78001C2779 /* BookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56BBA5942A3613BD001C2779 /* Cosmos in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +105,7 @@
 			children = (
 				56B711A12A2CA41C0030DC6E /* HomeController.swift */,
 				56B711B12A2D50EA0030DC6E /* MyBooksController.swift */,
+				56BBA5902A360D78001C2779 /* BookView.swift */,
 				56B711B32A2D50FA0030DC6E /* SearchController.swift */,
 				56B711B52A2D51010030DC6E /* MoreController.swift */,
 			);
@@ -123,6 +128,9 @@
 			dependencies = (
 			);
 			name = Shelfy;
+			packageProductDependencies = (
+				56BBA5932A3613BD001C2779 /* Cosmos */,
+			);
 			productName = Shelfy;
 			productReference = 56B7119A2A2CA41C0030DC6E /* Shelfy.app */;
 			productType = "com.apple.product-type.application";
@@ -151,6 +159,9 @@
 				Base,
 			);
 			mainGroup = 56B711912A2CA41C0030DC6E;
+			packageReferences = (
+				56BBA5922A3613BD001C2779 /* XCRemoteSwiftPackageReference "Cosmos" */,
+			);
 			productRefGroup = 56B7119B2A2CA41C0030DC6E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -189,6 +200,7 @@
 				56B711B92A2D538A0030DC6E /* Constants.swift in Sources */,
 				56B711B62A2D51010030DC6E /* MoreController.swift in Sources */,
 				56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */,
+				56BBA5912A360D78001C2779 /* BookView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,6 +432,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		56BBA5922A3613BD001C2779 /* XCRemoteSwiftPackageReference "Cosmos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/Cosmos.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		56BBA5932A3613BD001C2779 /* Cosmos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 56BBA5922A3613BD001C2779 /* XCRemoteSwiftPackageReference "Cosmos" */;
+			productName = Cosmos;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 56B711922A2CA41C0030DC6E /* Project object */;
 }
