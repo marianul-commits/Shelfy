@@ -9,6 +9,9 @@ import UIKit
 
 class HomeController: UIViewController {
 
+    @IBOutlet weak var inmyShelfyCV: UICollectionView!
+    @IBOutlet weak var recommendationCV: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
