@@ -115,8 +115,9 @@ extension MyBooksController: UITableViewDataSource {
     
     func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
         myBooksTable.deselectRow(at: indexPath, animated: true)
+
         let cell = myBooksTable.cellForRow(at: indexPath as IndexPath)
-                
+        
         if isThisOn == true {
             let selectedBook = testData[indexPath.row]
             let bookAuth = authData[indexPath.row]
