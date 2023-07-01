@@ -1,0 +1,30 @@
+PODS:
+  - Kingfisher (7.8.1)
+  - SwiftMessages (9.0.6):
+    - SwiftMessages/App (= 9.0.6)
+  - SwiftMessages/App (9.0.6)
+  - SwipeCellKit (2.7.1)
+  - TableViewReloadAnimation (0.0.5)
+
+DEPENDENCIES:
+  - Kingfisher
+  - SwiftMessages
+  - SwipeCellKit
+  - TableViewReloadAnimation (~> 0.0.5)
+
+SPEC REPOS:
+  trunk:
+    - Kingfisher
+    - SwiftMessages
+    - SwipeCellKit
+    - TableViewReloadAnimation
+
+SPEC CHECKSUMS:
+  Kingfisher: 63f677311d36a3473f6b978584f8a3845d023dc5
+  SwiftMessages: f0c7ef4705a570ad6c5e208b611f4333e660ed92
+  SwipeCellKit: 3972254a826da74609926daf59b08d6c72e619ea
+  TableViewReloadAnimation: f3a4c4048efbc56331be98075f26a2e533a14c16
+
+PODFILE CHECKSUM: 79a085239de7ca066dbec3d24a5583211fa95882
+
+COCOAPODS: 1.12.0

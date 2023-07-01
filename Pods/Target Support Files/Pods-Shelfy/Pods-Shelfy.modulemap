@@ -1,0 +1,6 @@
+framework module Pods_Shelfy {
+  umbrella header "Pods-Shelfy-umbrella.h"
+
+  export *
+  module * { export * }
+}
