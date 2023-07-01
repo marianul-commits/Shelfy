@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		56097D752A3CB2DB0053E1C2 /* BookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56097D742A3CB2DB0053E1C2 /* BookModel.swift */; };
+		565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */; };
+		56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDE2A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift */; };
+		56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */; };
+		56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */; };
+		56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */; };
 		56783DE22A3C49AB0001A14B /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */; };
 		56783DE32A3C49AB0001A14B /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */; };
 		568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568D36552A2E73E20028C51C /* MyBooksCell.swift */; };
@@ -26,10 +31,17 @@
 		56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56B711BB2A2D53D70030DC6E /* SearchCell.xib */; };
 		56BBA5912A360D78001C2779 /* BookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBA5902A360D78001C2779 /* BookView.swift */; };
 		56BBA5942A3613BD001C2779 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 56BBA5932A3613BD001C2779 /* Cosmos */; };
+		8329D128F2E97F4648A824AB /* Pods_Shelfy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1635F92D7B1D0B09C0393B0E /* Pods-Shelfy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.debug.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.debug.xcconfig"; sourceTree = "<group>"; };
 		56097D742A3CB2DB0053E1C2 /* BookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookModel.swift; sourceTree = "<group>"; };
+		565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCentralView.swift; sourceTree = "<group>"; };
+		56613CDE2A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenuTableViewCell.swift; sourceTree = "<group>"; };
+		56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriPresentationController.swift; sourceTree = "<group>"; };
+		56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriAnimationController.swift; sourceTree = "<group>"; };
+		56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenu.swift; sourceTree = "<group>"; };
 		56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 		568D36552A2E73E20028C51C /* MyBooksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCell.swift; sourceTree = "<group>"; };
@@ -49,6 +61,8 @@
 		56B711BA2A2D53D70030DC6E /* SBCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBCell.swift; sourceTree = "<group>"; };
 		56B711BB2A2D53D70030DC6E /* SearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
 		56BBA5902A360D78001C2779 /* BookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookView.swift; sourceTree = "<group>"; };
+		8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shelfy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7C5D5348FDA29D8FF298F12 /* Pods-Shelfy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.release.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,12 +71,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				56BBA5942A3613BD001C2779 /* Cosmos in Frameworks */,
+				8329D128F2E97F4648A824AB /* Pods_Shelfy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4CEE54AA49B24BCA2EB39B6F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1635F92D7B1D0B09C0393B0E /* Pods-Shelfy.debug.xcconfig */,
+				D7C5D5348FDA29D8FF298F12 /* Pods-Shelfy.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		56097D722A3CB25A0053E1C2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -79,15 +103,23 @@
 			path = Various;
 			sourceTree = "<group>";
 		};
+		56613CDD2A50E4E20063C141 /* ChidoriIntegration */ = {
+			isa = PBXGroup;
+			children = (
+				56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */,
+				56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */,
+				56613CDE2A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift */,
+				56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */,
+			);
+			path = ChidoriIntegration;
+			sourceTree = "<group>";
+		};
 		568D36542A2E703B0028C51C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */,
-				56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */,
 				56B711BA2A2D53D70030DC6E /* SBCell.swift */,
-				56B711BB2A2D53D70030DC6E /* SearchCell.xib */,
 				568D36552A2E73E20028C51C /* MyBooksCell.swift */,
-				568D36562A2E73E20028C51C /* MyBooksCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -97,6 +129,8 @@
 			children = (
 				56B7119C2A2CA41C0030DC6E /* Shelfy */,
 				56B7119B2A2CA41C0030DC6E /* Products */,
+				4CEE54AA49B24BCA2EB39B6F /* Pods */,
+				6152A6BFE94949EA39DE8F2A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -111,16 +145,15 @@
 		56B7119C2A2CA41C0030DC6E /* Shelfy */ = {
 			isa = PBXGroup;
 			children = (
-				56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */,
-				56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */,
+				56613CDD2A50E4E20063C141 /* ChidoriIntegration */,
+				56F0BF8E2A4F8BA4003B89E3 /* Supporting Files */,
+				56F0BF8D2A4F8B86003B89E3 /* Views */,
 				56097D722A3CB25A0053E1C2 /* Models */,
 				56097D732A3CB2670053E1C2 /* Various */,
 				56B711B72A2D512E0030DC6E /* Controllers */,
-				56B711A32A2CA41C0030DC6E /* Main.storyboard */,
 				568D36542A2E703B0028C51C /* Cells */,
-				56B711A62A2CA41D0030DC6E /* Assets.xcassets */,
-				56B711A82A2CA41D0030DC6E /* LaunchScreen.storyboard */,
 				56B711AB2A2CA41D0030DC6E /* Info.plist */,
+				56B711A62A2CA41D0030DC6E /* Assets.xcassets */,
 			);
 			path = Shelfy;
 			sourceTree = "<group>";
@@ -129,12 +162,42 @@
 			isa = PBXGroup;
 			children = (
 				56B711A12A2CA41C0030DC6E /* HomeController.swift */,
+				565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */,
 				56B711B12A2D50EA0030DC6E /* MyBooksController.swift */,
 				56BBA5902A360D78001C2779 /* BookView.swift */,
 				56B711B32A2D50FA0030DC6E /* SearchController.swift */,
 				56B711B52A2D51010030DC6E /* MoreController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		56F0BF8D2A4F8B86003B89E3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				56B711A32A2CA41C0030DC6E /* Main.storyboard */,
+				56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */,
+				56B711BB2A2D53D70030DC6E /* SearchCell.xib */,
+				568D36562A2E73E20028C51C /* MyBooksCell.xib */,
+				56B711A82A2CA41D0030DC6E /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		56F0BF8E2A4F8BA4003B89E3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */,
+				56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6152A6BFE94949EA39DE8F2A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,9 +207,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 56B711AE2A2CA41D0030DC6E /* Build configuration list for PBXNativeTarget "Shelfy" */;
 			buildPhases = (
+				FBD0A8C48B66247D07284A3B /* [CP] Check Pods Manifest.lock */,
 				56B711962A2CA41C0030DC6E /* Sources */,
 				56B711972A2CA41C0030DC6E /* Frameworks */,
 				56B711982A2CA41C0030DC6E /* Resources */,
+				66C104B1AEC7569DA33DE4B8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -212,6 +277,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		66C104B1AEC7569DA33DE4B8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shelfy/Pods-Shelfy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Shelfy/Pods-Shelfy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Shelfy/Pods-Shelfy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FBD0A8C48B66247D07284A3B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Shelfy-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		56B711962A2CA41C0030DC6E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -219,7 +326,12 @@
 			files = (
 				56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */,
 				56B711BC2A2D53D70030DC6E /* SBCell.swift in Sources */,
+				56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */,
+				56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */,
+				565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */,
+				56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */,
 				56B711B42A2D50FA0030DC6E /* SearchController.swift in Sources */,
+				56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */,
 				56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */,
 				56B711B22A2D50EB0030DC6E /* MyBooksController.swift in Sources */,
 				568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */,
@@ -372,6 +484,7 @@
 		};
 		56B711AF2A2CA41D0030DC6E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1635F92D7B1D0B09C0393B0E /* Pods-Shelfy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -406,6 +519,7 @@
 		};
 		56B711B02A2CA41D0030DC6E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D7C5D5348FDA29D8FF298F12 /* Pods-Shelfy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

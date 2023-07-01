@@ -122,9 +122,9 @@ extension MyBooksController: UITableViewDataSource {
             let bookAuth = authData[indexPath.row]
             let bookDesc = descData[indexPath.row]
             let destination = BookView()
-            destination.bookAuth = bookAuth
-            destination.bookTitle = selectedBook
-            destination.bookDesc = bookDesc
+//            destination.bookAuth = bookAuth
+//            destination.bookTitle = selectedBook
+//            destination.bookDesc = bookDesc
             performSegue(withIdentifier: K.cellSegue, sender: cell)
             
             print("hewwo")
@@ -134,9 +134,9 @@ extension MyBooksController: UITableViewDataSource {
             let bookAuth2 = authData2[indexPath.row]
             let bookDesc2 = descData2[indexPath.row]
             let destination2 = BookView()
-            destination2.bookAuth = bookAuth2
-            destination2.bookTitle = selectedBook2
-            destination2.bookDesc = bookDesc2
+//            destination2.bookAuth = bookAuth2
+//            destination2.bookTitle = selectedBook2
+//            destination2.bookDesc = bookDesc2
             performSegue(withIdentifier: K.cellSegue, sender: cell)
             
             print("hewwo data 2")
