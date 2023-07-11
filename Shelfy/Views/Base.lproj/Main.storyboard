@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1iJ-RP-xyr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jvG-MN-jTW">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -27,7 +27,7 @@
         <!--Login View-->
         <scene sceneID="5I4-dU-PNk">
             <objects>
-                <viewController id="aS1-Tz-96L" customClass="LoginView" sceneMemberID="viewController">
+                <viewController id="aS1-Tz-96L" customClass="LoginView" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="v7d-mN-FK8">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -143,15 +143,18 @@
                         <color key="backgroundColor" name="Background"/>
                     </view>
                     <navigationItem key="navigationItem" id="eTf-kU-ibX"/>
+                    <connections>
+                        <outlet property="loginBtn" destination="p8M-hJ-QDD" id="jck-mC-fZA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4fF-PU-n3J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2605" y="-542"/>
+            <point key="canvasLocation" x="-2201" y="-683"/>
         </scene>
         <!--Register View-->
         <scene sceneID="oEJ-5Z-Sam">
             <objects>
-                <viewController id="Cx2-F4-Mmd" customClass="RegisterView" sceneMemberID="viewController">
+                <viewController id="Cx2-F4-Mmd" customClass="RegisterView" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Hd-7b-eF5">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -199,10 +202,15 @@
                         <color key="backgroundColor" name="Background"/>
                     </view>
                     <navigationItem key="navigationItem" id="i7m-tc-xQv"/>
+                    <connections>
+                        <outlet property="createAccBtn" destination="N0q-e9-j6p" id="sQy-ej-0K2"/>
+                        <outlet property="passField" destination="6Rj-3k-KBO" id="1PS-EF-J4X"/>
+                        <outlet property="passField2" destination="9cY-2G-IHd" id="Bng-bi-auD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7f-0K-vUC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1181" y="-976"/>
+            <point key="canvasLocation" x="-1187.0229007633586" y="-976.05633802816908"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="bsy-HZ-EaT">
@@ -915,7 +923,7 @@
                                 <state key="normal" title="Button"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6bs-xe-Hae">
-                                <rect key="frame" x="277" y="332" width="41" height="30"/>
+                                <rect key="frame" x="160" y="332" width="206" height="129"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <menu key="menu" id="Sn0-sh-gvR">
                                     <children>
@@ -925,32 +933,15 @@
                                 </menu>
                                 <state key="normal" title="Button"/>
                             </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="txm-ju-fGm">
-                                <rect key="frame" x="23" y="438" width="347" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" name="Accent6"/>
-                                <segments>
-                                    <segment title="Reading Now"/>
-                                    <segment title="On My Shelfy"/>
-                                    <segment title="Want To Read"/>
-                                </segments>
-                                <color key="tintColor" name="Accent5"/>
-                                <color key="selectedSegmentTintColor" name="Accent5"/>
-                                <connections>
-                                    <action selector="segContrl:" destination="Qws-iV-Nuo" eventType="valueChanged" id="iME-qE-qTM"/>
-                                </connections>
-                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y6b-3e-tJn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="segmentControlOutlet" destination="txm-ju-fGm" id="A47-Fm-wa3"/>
-                        <outlet property="uiViewOutlet" destination="NdS-K8-pSq" id="CyZ-ou-P2R"/>
+                        <outlet property="menuBtn" destination="6bs-xe-Hae" id="PwU-h0-LUD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ubx-YU-iRP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="Qws-iV-Nuo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-3912.2137404580153" y="-96.478873239436624"/>
         </scene>
@@ -959,6 +950,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="1iJ-RP-xyr" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="sJU-b4-izK"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mzS-7V-ODe">
@@ -971,12 +963,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Ed-P3-fY7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2604" y="-542"/>
+            <point key="canvasLocation" x="-3071" y="-683"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="WPF-a9-CcI"/>
-        <segue reference="KkG-md-PrS"/>
+        <segue reference="FlC-MB-fCl"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Cosmic_Fireball_Falling_Over_ALMA.jpg" width="1024" height="683"/>
