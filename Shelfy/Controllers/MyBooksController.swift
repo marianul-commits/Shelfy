@@ -12,9 +12,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var myBookScrollView: UIScrollView!
     @IBOutlet weak var myBooksSearchBar: UISearchBar!
     @IBOutlet weak var myBooksTable: UITableView!
-    @IBOutlet weak var btnView: UIView!
-    @IBOutlet weak var btnOnMyShelf: UIButton!
-    @IBOutlet weak var btnReading: UIButton!
+    @IBOutlet weak var segCtrl: UISegmentedControl!
     
     // Keep track of the
     private var isAnimationInProgress = false
@@ -47,36 +45,29 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         myBooksTable.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
         myBooksTable.backgroundColor = UIColor.clear
         myBooksTable.layer.backgroundColor = UIColor.clear.cgColor
-        btnView.layer.cornerRadius = btnView.frame.size.height / 2
-        btnReading.layer.cornerRadius = btnReading.layer.frame.size.height / 2
-        btnOnMyShelf.layer.cornerRadius = btnOnMyShelf.layer.frame.size.height / 2
-        btnOnMyShelf.backgroundColor = UIColor(named: "Accent7")
+        let font = UIFont(name: "MicroPremium-Regular", size: 16)
+        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: font!], for: .selected)
+        let font2 = UIFont(name: "MicroPremium-Light", size: 16)
+        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: font2!], for: .normal)
+        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent5")], for: .normal)
+        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent6")], for: .selected)
+  
         
     }
-    
-    @IBAction func readingBtn(_ sender: Any) {
-        isThisOn = true
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
-            self.btnReading.backgroundColor = UIColor(named: "Accent5")
-        
-    }
-        btnOnMyShelf.backgroundColor = UIColor(named: "Accent7")
-        btnReading.backgroundColor = UIColor(named: "Accent5")
-        myBooksTable.reloadData()
-    }
-    
-    @IBAction func shelfyBtn(_ sender: Any) {
-        isThisOn = false
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
-            self.btnOnMyShelf.backgroundColor = UIColor(named: "Accent5")
+    @IBAction func segCtrlClick(_ sender: Any) {
+        switch segCtrl.selectedSegmentIndex{
+        case 0:
+            isThisOn = true
+            myBooksTable.reloadData()
+        case 1:
+            isThisOn = false
+            myBooksTable.reloadData()
+        default:
+            isThisOn = true
         }
-        btnReading.backgroundColor = UIColor(named: "Accent7")
-        btnOnMyShelf.backgroundColor = UIColor(named: "Accent5")
-        print("\(isThisOn)")
-        myBooksTable.reloadData()
     }
     
-    
+//    Micro Premium Font names: ["MicroPremium-Regular", "MicroPremium-Light", "MicroPremium-Medium", "MicroPremium-SemiBold", "MicroPremium-Bold", "MicroPremium-ExtraBold", "MicroPremium-Black"]
     
 }
 
@@ -153,8 +144,11 @@ extension MyBooksController: UITableViewDataSource {
         cell.isUserInteractionEnabled = true
             if isThisOn == true {
                 cell.MBTitle?.text = testData[indexPath.row]
+                cell.MBTitle.font = UIFont(name: "MicroPremium-Medium", size: 16)
                 cell.MBAuthor?.text = authData[indexPath.row]
+                cell.MBAuthor.font = UIFont(name: "MicroPremium-Medium", size: 15)
                 cell.MBDescr?.text = descData[indexPath.row]
+                cell.MBDescr.font = UIFont(name: "MicroPremium-Regular", size: 13)
             } else {
                 cell.MBTitle?.text = testData2[indexPath.row]
                 cell.MBAuthor?.text = authData2[indexPath.row]

@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MicroPremium-Black.ttf</string>
+		<string>MicroPremium-Bold.ttf</string>
+		<string>MicroPremium-ExtraBold.ttf</string>
+		<string>MicroPremium-Light.ttf</string>
+		<string>MicroPremium-Medium.ttf</string>
+		<string>MicroPremium-Regular.ttf</string>
+		<string>MicroPremium-SemiBold.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -15,6 +15,13 @@
 		56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */; };
 		56783DE22A3C49AB0001A14B /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */; };
 		56783DE32A3C49AB0001A14B /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */; };
+		568146472A56024B00E27D75 /* MicroPremium-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146402A56024B00E27D75 /* MicroPremium-Black.ttf */; };
+		568146482A56024B00E27D75 /* MicroPremium-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146412A56024B00E27D75 /* MicroPremium-ExtraBold.ttf */; };
+		568146492A56024B00E27D75 /* MicroPremium-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146422A56024B00E27D75 /* MicroPremium-Bold.ttf */; };
+		5681464A2A56024B00E27D75 /* MicroPremium-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146432A56024B00E27D75 /* MicroPremium-Medium.ttf */; };
+		5681464B2A56024B00E27D75 /* MicroPremium-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146442A56024B00E27D75 /* MicroPremium-Light.ttf */; };
+		5681464C2A56024B00E27D75 /* MicroPremium-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146452A56024B00E27D75 /* MicroPremium-SemiBold.ttf */; };
+		5681464D2A56024B00E27D75 /* MicroPremium-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146462A56024B00E27D75 /* MicroPremium-Regular.ttf */; };
 		568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568D36552A2E73E20028C51C /* MyBooksCell.swift */; };
 		568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 568D36562A2E73E20028C51C /* MyBooksCell.xib */; };
 		56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */; };
@@ -31,6 +38,9 @@
 		56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56B711BB2A2D53D70030DC6E /* SearchCell.xib */; };
 		56BBA5912A360D78001C2779 /* BookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBA5902A360D78001C2779 /* BookView.swift */; };
 		56BBA5942A3613BD001C2779 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 56BBA5932A3613BD001C2779 /* Cosmos */; };
+		56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47A2A5DDBA60021F5AF /* LoginView.swift */; };
+		56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */; };
+		56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47E2A5DEC210021F5AF /* TestView.swift */; };
 		56F8286C2A50EA8F00203481 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */; };
 		8329D128F2E97F4648A824AB /* Pods_Shelfy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */; };
 /* End PBXBuildFile section */
@@ -45,6 +55,13 @@
 		56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenu.swift; sourceTree = "<group>"; };
 		56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
+		568146402A56024B00E27D75 /* MicroPremium-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Black.ttf"; sourceTree = "<group>"; };
+		568146412A56024B00E27D75 /* MicroPremium-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-ExtraBold.ttf"; sourceTree = "<group>"; };
+		568146422A56024B00E27D75 /* MicroPremium-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Bold.ttf"; sourceTree = "<group>"; };
+		568146432A56024B00E27D75 /* MicroPremium-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Medium.ttf"; sourceTree = "<group>"; };
+		568146442A56024B00E27D75 /* MicroPremium-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Light.ttf"; sourceTree = "<group>"; };
+		568146452A56024B00E27D75 /* MicroPremium-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-SemiBold.ttf"; sourceTree = "<group>"; };
+		568146462A56024B00E27D75 /* MicroPremium-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Regular.ttf"; sourceTree = "<group>"; };
 		568D36552A2E73E20028C51C /* MyBooksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCell.swift; sourceTree = "<group>"; };
 		568D36562A2E73E20028C51C /* MyBooksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyBooksCell.xib; sourceTree = "<group>"; };
 		56B7119A2A2CA41C0030DC6E /* Shelfy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelfy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +79,9 @@
 		56B711BA2A2D53D70030DC6E /* SBCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBCell.swift; sourceTree = "<group>"; };
 		56B711BB2A2D53D70030DC6E /* SearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
 		56BBA5902A360D78001C2779 /* BookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookView.swift; sourceTree = "<group>"; };
+		56F7C47A2A5DDBA60021F5AF /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		56F7C47E2A5DEC210021F5AF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shelfy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7C5D5348FDA29D8FF298F12 /* Pods-Shelfy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.release.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.release.xcconfig"; sourceTree = "<group>"; };
@@ -116,6 +136,20 @@
 			path = ChidoriIntegration;
 			sourceTree = "<group>";
 		};
+		5681463F2A56023100E27D75 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				568146402A56024B00E27D75 /* MicroPremium-Black.ttf */,
+				568146422A56024B00E27D75 /* MicroPremium-Bold.ttf */,
+				568146412A56024B00E27D75 /* MicroPremium-ExtraBold.ttf */,
+				568146442A56024B00E27D75 /* MicroPremium-Light.ttf */,
+				568146432A56024B00E27D75 /* MicroPremium-Medium.ttf */,
+				568146462A56024B00E27D75 /* MicroPremium-Regular.ttf */,
+				568146452A56024B00E27D75 /* MicroPremium-SemiBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		568D36542A2E703B0028C51C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +181,7 @@
 		56B7119C2A2CA41C0030DC6E /* Shelfy */ = {
 			isa = PBXGroup;
 			children = (
+				5681463F2A56023100E27D75 /* Fonts */,
 				56613CDD2A50E4E20063C141 /* ChidoriIntegration */,
 				56F0BF8E2A4F8BA4003B89E3 /* Supporting Files */,
 				56F0BF8D2A4F8B86003B89E3 /* Views */,
@@ -170,6 +205,9 @@
 				56B711B32A2D50FA0030DC6E /* SearchController.swift */,
 				56B711B52A2D51010030DC6E /* MoreController.swift */,
 				56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */,
+				56F7C47A2A5DDBA60021F5AF /* LoginView.swift */,
+				56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */,
+				56F7C47E2A5DEC210021F5AF /* TestView.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -270,10 +308,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				56B711AA2A2CA41D0030DC6E /* LaunchScreen.storyboard in Resources */,
+				5681464B2A56024B00E27D75 /* MicroPremium-Light.ttf in Resources */,
+				568146492A56024B00E27D75 /* MicroPremium-Bold.ttf in Resources */,
+				568146482A56024B00E27D75 /* MicroPremium-ExtraBold.ttf in Resources */,
 				56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */,
 				56783DE32A3C49AB0001A14B /* CollectionViewCell.xib in Resources */,
 				56B711A72A2CA41D0030DC6E /* Assets.xcassets in Resources */,
+				568146472A56024B00E27D75 /* MicroPremium-Black.ttf in Resources */,
+				5681464D2A56024B00E27D75 /* MicroPremium-Regular.ttf in Resources */,
 				56B711A52A2CA41C0030DC6E /* Main.storyboard in Resources */,
+				5681464A2A56024B00E27D75 /* MicroPremium-Medium.ttf in Resources */,
+				5681464C2A56024B00E27D75 /* MicroPremium-SemiBold.ttf in Resources */,
 				568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,7 +372,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */,
 				56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */,
+				56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */,
 				56B711BC2A2D53D70030DC6E /* SBCell.swift in Sources */,
 				56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */,
 				56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */,
@@ -343,6 +390,7 @@
 				56B711B92A2D538A0030DC6E /* Constants.swift in Sources */,
 				56B711B62A2D51010030DC6E /* MoreController.swift in Sources */,
 				56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */,
+				56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */,
 				56BBA5912A360D78001C2779 /* BookView.swift in Sources */,
 				56783DE22A3C49AB0001A14B /* CollectionViewCell.swift in Sources */,
 			);
