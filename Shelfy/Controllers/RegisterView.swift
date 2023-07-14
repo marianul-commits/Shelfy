@@ -6,14 +6,22 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseCore
+import Firebase
 
 class RegisterView: UIViewController, UITextFieldDelegate{
     
     
+    @IBOutlet weak var showPass1: UIButton!
+    @IBOutlet weak var showPass2: UIButton!
+    
     @IBOutlet weak var createAccBtn: UIButton!
     
+    @IBOutlet weak var emailField: UITextField!
     
     @IBOutlet weak var passField: UITextField!
+    
     @IBOutlet weak var passField2: UITextField!
     
     var timer: Timer?
@@ -28,6 +36,48 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         
     }
     
+    @IBAction func createAcc(_ sender: Any) {
+        
+        if passField.text == passField2.text {
+            
+            if let email = emailField.text, let password = passField.text {
+                Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                    if let e = error {
+                        print(e.localizedDescription)
+                        print(e)
+                    } else {
+                        self.showAlertWithSegue()
+                    }
+                }
+            }
+        }
+    }
+    
+    @IBAction func showPass1Pressed(_ sender: Any) {
+        
+        passField.isSecureTextEntry.toggle()
+        
+        if passField.isSecureTextEntry == true {
+            showPass1.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        } else {
+            showPass1.setImage(UIImage(systemName: "eye"), for: .normal)
+        }
+        
+    }
+    
+    @IBAction func showPass2Pressed(_ sender: Any) {
+        
+        passField2.isSecureTextEntry.toggle()
+        
+        if passField2.isSecureTextEntry == true {
+            showPass2.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        } else {
+            showPass2.setImage(UIImage(systemName: "eye"), for: .normal)
+        }
+        
+    }
+    
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         validateTextFields()
         
@@ -37,6 +87,18 @@ class RegisterView: UIViewController, UITextFieldDelegate{
             self.animateBorderColorChange(textField: self.passField, to: .clear)
             self.animateBorderColorChange(textField: self.passField2, to: .clear)
         }
+    }
+    
+    func showAlertWithSegue() {
+        let alertController = UIAlertController(title: "Success", message: "Account created successfully!", preferredStyle: .alert)
+        
+        let dismissAction = UIAlertAction(title: "OK", style: .default) { _ in
+            self.performSegue(withIdentifier: K.registerIdentifier, sender: self)
+        }
+        
+        alertController.addAction(dismissAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     
@@ -74,4 +136,5 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
 }
+
 

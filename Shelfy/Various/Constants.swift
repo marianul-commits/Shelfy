@@ -8,6 +8,9 @@
 import Foundation
 
 struct K {
+    static let loginIdentifier = "loginSuccess"
+    static let registerIdentifier = "accCreated"
+    static let createAccIdentifier = "registerAcc"
     static let cellIdentifier = "ReusableCell"
     static let cellNibName = "SearchCell"
     static let cellIdentifier2 = "MyBooksCell"

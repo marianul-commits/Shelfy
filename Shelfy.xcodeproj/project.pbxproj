@@ -22,6 +22,8 @@
 		5681464B2A56024B00E27D75 /* MicroPremium-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146442A56024B00E27D75 /* MicroPremium-Light.ttf */; };
 		5681464C2A56024B00E27D75 /* MicroPremium-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146452A56024B00E27D75 /* MicroPremium-SemiBold.ttf */; };
 		5681464D2A56024B00E27D75 /* MicroPremium-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146462A56024B00E27D75 /* MicroPremium-Regular.ttf */; };
+		568A37932A5F335000E84667 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 568A37922A5F335000E84667 /* FirebaseAuth */; };
+		568A37952A5F335000E84667 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 568A37942A5F335000E84667 /* FirebaseFirestore */; };
 		568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568D36552A2E73E20028C51C /* MyBooksCell.swift */; };
 		568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 568D36562A2E73E20028C51C /* MyBooksCell.xib */; };
 		56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */; };
@@ -42,6 +44,7 @@
 		56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */; };
 		56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47E2A5DEC210021F5AF /* TestView.swift */; };
 		56F8286C2A50EA8F00203481 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */; };
+		56F9A8282A61268F0071FA5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56F9A8272A61268F0071FA5F /* GoogleService-Info.plist */; };
 		8329D128F2E97F4648A824AB /* Pods_Shelfy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +86,7 @@
 		56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		56F7C47E2A5DEC210021F5AF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
+		56F9A8272A61268F0071FA5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shelfy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7C5D5348FDA29D8FF298F12 /* Pods-Shelfy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.release.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,6 +97,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				56BBA5942A3613BD001C2779 /* Cosmos in Frameworks */,
+				568A37952A5F335000E84667 /* FirebaseFirestore in Frameworks */,
+				568A37932A5F335000E84667 /* FirebaseAuth in Frameworks */,
 				8329D128F2E97F4648A824AB /* Pods_Shelfy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,6 +169,7 @@
 		56B711912A2CA41C0030DC6E = {
 			isa = PBXGroup;
 			children = (
+				56F9A8272A61268F0071FA5F /* GoogleService-Info.plist */,
 				56B7119C2A2CA41C0030DC6E /* Shelfy */,
 				56B7119B2A2CA41C0030DC6E /* Products */,
 				4CEE54AA49B24BCA2EB39B6F /* Pods */,
@@ -261,6 +268,8 @@
 			name = Shelfy;
 			packageProductDependencies = (
 				56BBA5932A3613BD001C2779 /* Cosmos */,
+				568A37922A5F335000E84667 /* FirebaseAuth */,
+				568A37942A5F335000E84667 /* FirebaseFirestore */,
 			);
 			productName = Shelfy;
 			productReference = 56B7119A2A2CA41C0030DC6E /* Shelfy.app */;
@@ -292,6 +301,7 @@
 			mainGroup = 56B711912A2CA41C0030DC6E;
 			packageReferences = (
 				56BBA5922A3613BD001C2779 /* XCRemoteSwiftPackageReference "Cosmos" */,
+				568A37912A5F335000E84667 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 56B7119B2A2CA41C0030DC6E /* Products */;
 			projectDirPath = "";
@@ -320,6 +330,7 @@
 				5681464A2A56024B00E27D75 /* MicroPremium-Medium.ttf in Resources */,
 				5681464C2A56024B00E27D75 /* MicroPremium-SemiBold.ttf in Resources */,
 				568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */,
+				56F9A8282A61268F0071FA5F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +639,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		568A37912A5F335000E84667 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		56BBA5922A3613BD001C2779 /* XCRemoteSwiftPackageReference "Cosmos" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/evgenyneu/Cosmos.git";
@@ -639,6 +658,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		568A37922A5F335000E84667 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 568A37912A5F335000E84667 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		568A37942A5F335000E84667 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 568A37912A5F335000E84667 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		56BBA5932A3613BD001C2779 /* Cosmos */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 56BBA5922A3613BD001C2779 /* XCRemoteSwiftPackageReference "Cosmos" */;

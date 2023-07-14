@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jvG-MN-jTW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1iJ-RP-xyr">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -47,7 +47,7 @@
                                 <rect key="frame" x="42" y="346" width="335" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" textContentType="password"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Shelfy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Mu-rH-yKS">
                                 <rect key="frame" x="129" y="106" width="135" height="73"/>
@@ -80,7 +80,7 @@
                                     <color key="baseBackgroundColor" name="Accent6"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="67y-yU-GLg" kind="show" identifier="loginSuccess" id="KkG-md-PrS"/>
+                                    <action selector="loginPressed:" destination="aS1-Tz-96L" eventType="touchUpInside" id="ZA9-i4-dQi"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Join the Bookworm Brigade!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oa3-V6-9mp">
@@ -138,13 +138,27 @@
                                     <segue destination="Cx2-F4-Mmd" kind="show" identifier="registerAcc" id="Qvk-wj-T2Q"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mEk-Vc-Dje">
+                                <rect key="frame" x="349" y="358" width="20" height="10"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="eye.slash" catalog="system"/>
+                                <connections>
+                                    <action selector="showPassPressed:" destination="aS1-Tz-96L" eventType="touchUpInside" id="VkB-vM-Rko"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="FEH-2J-46f"/>
                         <color key="backgroundColor" name="Background"/>
                     </view>
                     <navigationItem key="navigationItem" id="eTf-kU-ibX"/>
                     <connections>
+                        <outlet property="emailField" destination="d1d-XJ-lNh" id="lXR-x8-7Qb"/>
                         <outlet property="loginBtn" destination="p8M-hJ-QDD" id="jck-mC-fZA"/>
+                        <outlet property="pwdField" destination="ix3-gi-HTI" id="IHR-ys-9RJ"/>
+                        <outlet property="showPass" destination="mEk-Vc-Dje" id="j1R-9V-GK3"/>
+                        <segue destination="67y-yU-GLg" kind="show" identifier="loginSuccess" id="lTP-fN-Lmm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4fF-PU-n3J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -166,19 +180,19 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Rj-3k-KBO">
-                                <rect key="frame" x="48" y="306" width="298" height="34"/>
+                                <rect key="frame" x="48" y="302" width="298" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9cY-2G-IHd">
-                                <rect key="frame" x="48" y="365" width="298" height="34"/>
+                                <rect key="frame" x="48" y="357" width="298" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N0q-e9-j6p">
-                                <rect key="frame" x="48" y="453" width="298" height="35"/>
+                                <rect key="frame" x="48" y="423" width="298" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" name="Color 3"/>
                                 <state key="normal" title="Button"/>
@@ -187,7 +201,7 @@
                                     <color key="baseForegroundColor" name="Accent5"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="67y-yU-GLg" kind="show" identifier="accCreated" id="FlC-MB-fCl"/>
+                                    <action selector="createAcc:" destination="Cx2-F4-Mmd" eventType="touchUpInside" id="2ny-LV-UM0"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Embark on Your Reading Journey with Shelfy!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndk-Hv-ugZ">
@@ -197,6 +211,30 @@
                                 <color key="textColor" name="Color 5"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPD-je-yBB">
+                                <rect key="frame" x="316" y="314" width="20" height="10"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="eye.slash" catalog="system" symbolScale="small" renderingMode="original"/>
+                                </state>
+                                <connections>
+                                    <action selector="showPass1Pressed:" destination="Cx2-F4-Mmd" eventType="touchUpInside" id="iYg-c1-qem"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNA-bt-IQ5">
+                                <rect key="frame" x="316" y="369" width="20" height="10"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="eye.slash" catalog="system" symbolScale="small" renderingMode="original"/>
+                                </state>
+                                <connections>
+                                    <action selector="showPass2Pressed:" destination="Cx2-F4-Mmd" eventType="touchUpInside" id="2hp-40-VVg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RBd-3q-atV"/>
                         <color key="backgroundColor" name="Background"/>
@@ -204,13 +242,17 @@
                     <navigationItem key="navigationItem" id="i7m-tc-xQv"/>
                     <connections>
                         <outlet property="createAccBtn" destination="N0q-e9-j6p" id="sQy-ej-0K2"/>
-                        <outlet property="passField" destination="6Rj-3k-KBO" id="1PS-EF-J4X"/>
-                        <outlet property="passField2" destination="9cY-2G-IHd" id="Bng-bi-auD"/>
+                        <outlet property="emailField" destination="bzx-ta-E2Z" id="Ocn-cs-FV8"/>
+                        <outlet property="passField" destination="6Rj-3k-KBO" id="r6i-pp-MLq"/>
+                        <outlet property="passField2" destination="9cY-2G-IHd" id="cIn-G1-bk8"/>
+                        <outlet property="showPass1" destination="dPD-je-yBB" id="PI4-2F-bHT"/>
+                        <outlet property="showPass2" destination="bNA-bt-IQ5" id="b1z-N8-b7D"/>
+                        <segue destination="67y-yU-GLg" kind="show" identifier="accCreated" id="7Tl-Bm-1Je"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7f-0K-vUC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1187.0229007633586" y="-976.05633802816908"/>
+            <point key="canvasLocation" x="-1183.969465648855" y="-976.05633802816908"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="bsy-HZ-EaT">
@@ -968,13 +1010,14 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="WPF-a9-CcI"/>
-        <segue reference="FlC-MB-fCl"/>
+        <segue reference="lTP-fN-Lmm"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Cosmic_Fireball_Falling_Over_ALMA.jpg" width="1024" height="683"/>
         <image name="book.fill" catalog="system" width="128" height="95"/>
         <image name="camera.fill" catalog="system" width="128" height="93"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
+        <image name="eye.slash" catalog="system" width="128" height="84"/>
         <image name="house.fill" catalog="system" width="128" height="104"/>
         <image name="lock.fill" catalog="system" width="125" height="128"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
@@ -1021,6 +1064,9 @@
         <namedColor name="Disabled">
             <color red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
