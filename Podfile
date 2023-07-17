@@ -7,8 +7,7 @@ target 'Shelfy' do
   # Pods for Shelfy
 
 pod 'SwipeCellKit'
-pod 'TableViewReloadAnimation', '~> 0.0.5'
 pod 'SwiftMessages'
-pod 'Kingfisher'
+pod 'IQKeyboardManagerSwift'
 
 end

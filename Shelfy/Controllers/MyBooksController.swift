@@ -18,7 +18,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     private var isAnimationInProgress = false
     
     
-    let testData = ["test1", "test2", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
+    let testData = [String]()
     let authData = ["Ion Creanga", "Mihai Eminesc", "C. Brancoveanu", "Mircea Eliade", "JJ Abrahms", "Naruto", "Jiraya", "Sasuke", "Kakashi", "Madara"]
     let descData = ["lorem ipsum dolores", "test2", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
     let testData2 = ["banana", "potato", "tomato", "apple", "pear", "berry", "ice", "mango", "coconut", "nutnut"]
@@ -101,6 +101,11 @@ extension MyBooksController: UISearchBarDelegate {
 extension MyBooksController: UITableViewDataSource {
     
     func tableView(_ myBooksTable: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if testData.count == 0 {
+            self.myBooksTable.setEmptyMessage(K.emptyTableMessage.randomElement()!)
+        }else{
+            self.myBooksTable.restore()
+        }
         return testData.count
     }
     
@@ -113,11 +118,18 @@ extension MyBooksController: UITableViewDataSource {
             let selectedBook = testData[indexPath.row]
             let bookAuth = authData[indexPath.row]
             let bookDesc = descData[indexPath.row]
-            let destination = BookView()
-//            destination.bookAuth = bookAuth
-//            destination.bookTitle = selectedBook
-//            destination.bookDesc = bookDesc
-            performSegue(withIdentifier: K.cellSegue, sender: cell)
+            
+            func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+                
+                let destinationVC = segue.destination as! BookView
+                
+                if let indexPath = myBooksTable.indexPathForSelectedRow{
+                    destinationVC.bookAuth.text = bookAuth
+                    destinationVC.bookTitle.text = selectedBook
+                    destinationVC.descrLbl.text = bookDesc
+                }
+                
+            }
             
             print("hewwo")
         } else {
@@ -160,3 +172,26 @@ extension MyBooksController: UITableViewDataSource {
         
     }
 
+extension UITableView {
+
+    func setEmptyMessage(_ message: String) {
+        let padding = UIEdgeInsets(top: 5, left: 30, bottom: 5, right: 30)
+        let container = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
+        let messageLabel = UILabel(frame: container)
+        messageLabel.frame = container.inset(by: padding)
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont(name: "MicroPremium-Medium", size: 16)
+        messageLabel.sizeToFit()
+
+        self.backgroundView = messageLabel
+        self.separatorStyle = .none
+    }
+
+    func restore() {
+        self.backgroundView = nil
+        self.separatorStyle = .none
+    }
+}

@@ -28,7 +28,9 @@ class TestView: UIViewController {
         
         menuBtn.menu = UIMenu(children: [
             UIAction(title: "Want To Read", state: .on, handler: optionClosure),
-            UIAction(title: "Read", handler: optionClosure)])
+            UIAction(title: "Have Read", handler: optionClosure),
+            UIAction(title: "Favorite", handler: optionClosure),
+        ])
         
         menuBtn.showsMenuAsPrimaryAction = true
         if #available(iOS 15.0, *) {
