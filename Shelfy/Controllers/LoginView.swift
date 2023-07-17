@@ -10,7 +10,6 @@ import FirebaseAuth
 
 class LoginView: UIViewController {
     
-    @IBOutlet weak var showPass: UIButton!
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var pwdField: UITextField!
@@ -20,6 +19,7 @@ class LoginView: UIViewController {
         super.viewDidLoad()
         
         loginBtn.layer.cornerRadius = loginBtn.frame.size.height / 5
+        pwdField.enablePasswordToggle()
         
     }
     
@@ -36,19 +36,33 @@ class LoginView: UIViewController {
                 }
         }
     }
-    
-    @IBAction func showPassPressed(_ sender: Any) {
-        
-        pwdField.isSecureTextEntry.toggle()
-        
-        if pwdField.isSecureTextEntry == true {
-            showPass.setImage(UIImage(systemName: "eye.slash"), for: .normal)
-        } else {
-            showPass.setImage(UIImage(systemName: "eye"), for: .normal)
-        }
-        
+}
+
+// Toggle Password display button
+
+extension UITextField {
+fileprivate func setPasswordToggleImage(_ button: UIButton) {
+    if(isSecureTextEntry){
+        button.setImage(UIImage(systemName: "eye.slash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), for: .normal)
+    }else{
+        button.setImage(UIImage(systemName: "eye.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), for: .normal)
+
     }
-    
-    
-    
+}
+
+func enablePasswordToggle(){
+    let button = UIButton(type: .custom)
+    setPasswordToggleImage(button)
+    button.tintColor = UIColor(named: "Color1")
+    button.backgroundColor = UIColor(named: "Color1")
+    button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+    button.frame = CGRect(x: CGFloat(self.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+    button.addTarget(self, action: #selector(self.togglePasswordView), for: .touchUpInside)
+    self.rightView = button
+    self.rightViewMode = .always
+}
+@IBAction func togglePasswordView(_ sender: Any) {
+    self.isSecureTextEntry = !self.isSecureTextEntry
+    setPasswordToggleImage(sender as! UIButton)
+}
 }

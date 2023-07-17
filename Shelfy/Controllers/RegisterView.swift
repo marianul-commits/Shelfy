@@ -13,13 +13,10 @@ import Firebase
 class RegisterView: UIViewController, UITextFieldDelegate{
     
     
-    @IBOutlet weak var showPass1: UIButton!
-    @IBOutlet weak var showPass2: UIButton!
-    
     @IBOutlet weak var createAccBtn: UIButton!
     
     @IBOutlet weak var emailField: UITextField!
-    
+     
     @IBOutlet weak var passField: UITextField!
     
     @IBOutlet weak var passField2: UITextField!
@@ -31,8 +28,12 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         
         createAccBtn.layer.cornerRadius = createAccBtn.frame.size.height / 5
         
+        emailField.delegate = self
+        
         passField.delegate = self
+        passField.enablePasswordToggle()
         passField2.delegate = self
+        passField2.enablePasswordToggle()
         
     }
     
@@ -53,39 +54,17 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-    @IBAction func showPass1Pressed(_ sender: Any) {
-        
-        passField.isSecureTextEntry.toggle()
-        
-        if passField.isSecureTextEntry == true {
-            showPass1.setImage(UIImage(systemName: "eye.slash"), for: .normal)
-        } else {
-            showPass1.setImage(UIImage(systemName: "eye"), for: .normal)
-        }
-        
-    }
-    
-    @IBAction func showPass2Pressed(_ sender: Any) {
-        
-        passField2.isSecureTextEntry.toggle()
-        
-        if passField2.isSecureTextEntry == true {
-            showPass2.setImage(UIImage(systemName: "eye.slash"), for: .normal)
-        } else {
-            showPass2.setImage(UIImage(systemName: "eye"), for: .normal)
-        }
-        
-    }
-    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         validateTextFields()
+        validateMailField()
         
         timer?.invalidate()
         
         timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
             self.animateBorderColorChange(textField: self.passField, to: .clear)
             self.animateBorderColorChange(textField: self.passField2, to: .clear)
+            self.animateBorderColorChange(textField: self.emailField, to: .clear)
         }
     }
     
@@ -102,6 +81,21 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     
+    func validateMailField(){
+        
+        let emailText = emailField.text ?? ""
+        
+        if emailText.contains("@") {
+            emailField.layer.borderWidth = 1.5
+            animateBorderColorChange(textField: emailField, to: .green)
+        } else {
+            emailField.layer.borderWidth = 1.5
+            animateBorderColorChange(textField: emailField, to: .red)
+        }
+        
+    }
+    
+    
     func validateTextFields() {
         let pass1 = passField.text ?? ""
         let pass2 = passField2.text ?? ""
@@ -113,11 +107,15 @@ class RegisterView: UIViewController, UITextFieldDelegate{
             self.animateBorderColorChange(textField: self.passField2, to: .red)
             passField2.layer.borderWidth = 1.5
             addShakeAnimation(to: passField2)
-        } else {
+        } else if pass2 != pass1{
             self.animateBorderColorChange(textField: self.passField, to: .red)
             passField.layer.borderWidth = 1.5
             addShakeAnimation(to: passField)
-            
+        } else if pass1 == pass2 {
+            passField.layer.borderWidth = 1.5
+            animateBorderColorChange(textField: passField, to: .green)
+            passField2.layer.borderWidth = 1.5
+            animateBorderColorChange(textField: passField2, to: .green)
         }
     }
     
