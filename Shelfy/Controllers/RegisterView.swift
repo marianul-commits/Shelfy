@@ -34,6 +34,8 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         passField.enablePasswordToggle()
         passField2.delegate = self
         passField2.enablePasswordToggle()
+        emailConfig()
+        passConfig()
         
     }
     
@@ -55,7 +57,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+     func textFieldDidEndEditing(_ textField: UITextField) {
         validateTextFields()
         validateMailField()
         
@@ -68,7 +70,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-    func showAlertWithSegue() {
+    private func showAlertWithSegue() {
         let alertController = UIAlertController(title: "Success", message: "Account created successfully!", preferredStyle: .alert)
         
         let dismissAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -81,7 +83,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     
-    func validateMailField(){
+    private func validateMailField(){
         
         let emailText = emailField.text ?? ""
         
@@ -93,6 +95,38 @@ class RegisterView: UIViewController, UITextFieldDelegate{
             animateBorderColorChange(textField: emailField, to: .red)
         }
         
+    }
+    
+    private func emailConfig() {
+        let color = UIColor(named: "Color1")
+        let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
+        imageView.tintColor = color
+        let image = UIImage(systemName: "envelope.fill")
+        image?.withTintColor(color!)
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFit
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
+        view.addSubview(imageView)
+        view.backgroundColor = .clear
+        emailField.leftViewMode = UITextField.ViewMode.always
+        emailField.leftView = view
+    }
+    
+    private func passConfig() {
+        let color = UIColor(named: "Color1")
+        let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
+        imageView.tintColor = color
+        let image = UIImage(systemName: "lock.fill")
+        image?.withTintColor(color!)
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFit
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
+        view.addSubview(imageView)
+        view.backgroundColor = .clear
+        passField.leftViewMode = UITextField.ViewMode.always
+        passField.leftView = view
+        passField2.leftViewMode = UITextField.ViewMode.always
+        passField2.leftView = view
     }
     
     

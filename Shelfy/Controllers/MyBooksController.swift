@@ -9,19 +9,16 @@ import UIKit
 
 class MyBooksController: UIViewController, UITableViewDelegate {
     
-    @IBOutlet weak var myBookScrollView: UIScrollView!
-    @IBOutlet weak var myBooksSearchBar: UISearchBar!
     @IBOutlet weak var myBooksTable: UITableView!
     @IBOutlet weak var segCtrl: UISegmentedControl!
     
-    // Keep track of the
     private var isAnimationInProgress = false
-    
+    var searcBar: UISearchBar!
     
     let testData = [String]()
     let authData = ["Ion Creanga", "Mihai Eminesc", "C. Brancoveanu", "Mircea Eliade", "JJ Abrahms", "Naruto", "Jiraya", "Sasuke", "Kakashi", "Madara"]
     let descData = ["lorem ipsum dolores", "test2", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
-    let testData2 = ["banana", "potato", "tomato", "apple", "pear", "berry", "ice", "mango", "coconut", "nutnut"]
+    let testData2 = [String]()
     let authData2 = ["Marvel", "DC", "SpooderMan", "Blalde", "JJ McDonalds", "Boruto", "Hinata", "Tom Ford", "YSL", "Autor"]
     let descData2 = ["lorem ipsum doloret", "cum te jucai prin cotet", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
     var filter: [String]!
@@ -51,6 +48,14 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: font2!], for: .normal)
         segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent5")], for: .normal)
         segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent6")], for: .selected)
+        searcBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: myBooksTable.frame.width, height: 50))
+        searcBar.delegate = self
+        searcBar.placeholder = "Find books"
+        searcBar.backgroundColor = UIColor.clear
+        searcBar.searchBarStyle = .minimal
+        searcBar.tintColor = UIColor(named: "Color1")!
+        searcBar.isHidden = testData.count <= 15
+        myBooksTable.tableHeaderView = searcBar
   
         
     }
