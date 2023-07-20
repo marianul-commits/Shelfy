@@ -21,6 +21,8 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     
     @IBOutlet weak var passField2: UITextField!
     
+    @IBOutlet weak var backBtn: UIButton!
+    
     var timer: Timer?
     
     override func viewDidLoad() {
@@ -36,6 +38,10 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         passField2.enablePasswordToggle()
         emailConfig()
         passConfig()
+        passConfig2()
+        
+        createAccBtn.backgroundColor = UIColor(named: "Color1")
+        createAccBtn.tintColor = UIColor(named: "Color1")
         
     }
     
@@ -56,6 +62,9 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
+    @IBAction func unwindSegue(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
     
      func textFieldDidEndEditing(_ textField: UITextField) {
         validateTextFields()
@@ -70,7 +79,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-    private func showAlertWithSegue() {
+     func showAlertWithSegue() {
         let alertController = UIAlertController(title: "Success", message: "Account created successfully!", preferredStyle: .alert)
         
         let dismissAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -83,7 +92,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     
-    private func validateMailField(){
+     func validateMailField(){
         
         let emailText = emailField.text ?? ""
         
@@ -125,6 +134,19 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         view.backgroundColor = .clear
         passField.leftViewMode = UITextField.ViewMode.always
         passField.leftView = view
+    }
+    
+    private func passConfig2() {
+        let color = UIColor(named: "Color1")
+        let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
+        imageView.tintColor = color
+        let image = UIImage(systemName: "lock.fill")
+        image?.withTintColor(color!)
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFit
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
+        view.addSubview(imageView)
+        view.backgroundColor = .clear
         passField2.leftViewMode = UITextField.ViewMode.always
         passField2.leftView = view
     }
@@ -153,7 +175,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-    private func addShakeAnimation(to textField: UITextField) {
+     func addShakeAnimation(to textField: UITextField) {
         let shakeAnimation = CAKeyframeAnimation(keyPath: "transform.translation.x")
         shakeAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
         shakeAnimation.duration = 0.6
@@ -161,7 +183,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         textField.layer.add(shakeAnimation, forKey: "shakeAnimation")
     }
     
-    private func animateBorderColorChange(textField: UITextField, to color: UIColor) {
+     func animateBorderColorChange(textField: UITextField, to color: UIColor) {
         UIView.animate(withDuration: 0.3) {
             textField.layer.borderColor = color.cgColor
         }

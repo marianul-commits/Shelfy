@@ -114,6 +114,15 @@ extension MyBooksController: UITableViewDataSource {
         return testData.count
     }
     
+    // Disable table view scrolling when the data source is empty
+        func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+            if testData.isEmpty {
+                scrollView.isScrollEnabled = false
+            } else {
+                scrollView.isScrollEnabled = true
+            }
+        }
+    
     func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
         myBooksTable.deselectRow(at: indexPath, animated: true)
 

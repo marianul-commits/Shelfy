@@ -26,10 +26,6 @@ class LoginView: UIViewController {
         
     }
     
-    @IBAction func registerPressed(_ sender: Any) {
-        self.performSegue(withIdentifier: K.createAccIdentifier, sender: self)
-    }
-    
     @IBAction func loginPressed(_ sender: Any) {
         if let email = emailField.text, let password = pwdField.text{
         
