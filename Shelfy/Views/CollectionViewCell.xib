@@ -22,7 +22,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tgt-FC-yFT">
                         <rect key="frame" x="0.0" y="0.0" width="120" height="180"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WMAP_image_of_the_CMB_anisotropy.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="IV1-fu-24O">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="IV1-fu-24O">
                                 <rect key="frame" x="0.0" y="0.0" width="120" height="180"/>
                             </imageView>
                         </subviews>
@@ -71,9 +71,9 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="WMAP_image_of_the_CMB_anisotropy.jpg" width="648" height="375.83999633789062"/>
+        <image name="placeholder" width="416" height="416"/>
         <namedColor name="Accent8">
-            <color red="0.97254901960784312" green="0.94509803921568625" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.97299998998641968" green="0.94499999284744263" blue="0.93300002813339233" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

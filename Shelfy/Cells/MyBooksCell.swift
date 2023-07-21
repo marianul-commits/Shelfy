@@ -21,6 +21,9 @@ class MyBooksCell: UITableViewCell {
     
         MBPhoto.layer.cornerRadius = MBPhoto.frame.size.height / 25
         MBView.layer.cornerRadius = MBView.frame.size.height / 25
+        MBTitle.font = SetFont.setFontStyle(.medium, 16)
+        MBAuthor.font = SetFont.setFontStyle(.medium, 16)
+        MBDescr.font = SetFont.setFontStyle(.regular, 13)
         
     }
 

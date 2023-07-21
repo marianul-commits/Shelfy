@@ -91,23 +91,23 @@ extension SearchController: UISearchBarDelegate {
 //MARK: - TableView Extension
 extension SearchController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ searchTable: UITableView, numberOfRowsInSection section: Int) -> Int {
         return testData.count
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ searchTable: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tableView.deselectRow(at: indexPath, animated: true)
+        searchTable.deselectRow(at: indexPath, animated: true)
         
     }
     
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SBCell
+    func tableView(_ searchTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = searchTable.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SBCell
     
     cell.clipsToBounds = true
     cell.backgroundColor = .clear
-    cell.searchCellTitle?.text = testData[indexPath.row]
+    cell.searchCellTitle.text = testData[indexPath.row]
         
     return cell
 }

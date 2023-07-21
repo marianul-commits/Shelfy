@@ -13,6 +13,7 @@
 		56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */; };
 		56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */; };
 		56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */; };
+		566BA4862A6B49420006899E /* AccountSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566BA4852A6B49420006899E /* AccountSettingsController.swift */; };
 		56783DE22A3C49AB0001A14B /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */; };
 		56783DE32A3C49AB0001A14B /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */; };
 		568146472A56024B00E27D75 /* MicroPremium-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146402A56024B00E27D75 /* MicroPremium-Black.ttf */; };
@@ -40,6 +41,7 @@
 		56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56B711BB2A2D53D70030DC6E /* SearchCell.xib */; };
 		56BBA5912A360D78001C2779 /* BookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBA5902A360D78001C2779 /* BookView.swift */; };
 		56BBA5942A3613BD001C2779 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 56BBA5932A3613BD001C2779 /* Cosmos */; };
+		56E1F2212A6B315B001541AE /* Colours.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56E1F2202A6B315B001541AE /* Colours.xcassets */; };
 		56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47A2A5DDBA60021F5AF /* LoginView.swift */; };
 		56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */; };
 		56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47E2A5DEC210021F5AF /* TestView.swift */; };
@@ -56,6 +58,7 @@
 		56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriPresentationController.swift; sourceTree = "<group>"; };
 		56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriAnimationController.swift; sourceTree = "<group>"; };
 		56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenu.swift; sourceTree = "<group>"; };
+		566BA4852A6B49420006899E /* AccountSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsController.swift; sourceTree = "<group>"; };
 		56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 		568146402A56024B00E27D75 /* MicroPremium-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Black.ttf"; sourceTree = "<group>"; };
@@ -82,6 +85,7 @@
 		56B711BA2A2D53D70030DC6E /* SBCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBCell.swift; sourceTree = "<group>"; };
 		56B711BB2A2D53D70030DC6E /* SearchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
 		56BBA5902A360D78001C2779 /* BookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookView.swift; sourceTree = "<group>"; };
+		56E1F2202A6B315B001541AE /* Colours.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colours.xcassets; sourceTree = "<group>"; };
 		56F7C47A2A5DDBA60021F5AF /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		56F7C47E2A5DEC210021F5AF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
@@ -198,6 +202,7 @@
 				568D36542A2E703B0028C51C /* Cells */,
 				56B711AB2A2CA41D0030DC6E /* Info.plist */,
 				56B711A62A2CA41D0030DC6E /* Assets.xcassets */,
+				56E1F2202A6B315B001541AE /* Colours.xcassets */,
 			);
 			path = Shelfy;
 			sourceTree = "<group>";
@@ -215,6 +220,7 @@
 				56F7C47A2A5DDBA60021F5AF /* LoginView.swift */,
 				56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */,
 				56F7C47E2A5DEC210021F5AF /* TestView.swift */,
+				566BA4852A6B49420006899E /* AccountSettingsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -318,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				56B711AA2A2CA41D0030DC6E /* LaunchScreen.storyboard in Resources */,
+				56E1F2212A6B315B001541AE /* Colours.xcassets in Resources */,
 				5681464B2A56024B00E27D75 /* MicroPremium-Light.ttf in Resources */,
 				568146492A56024B00E27D75 /* MicroPremium-Bold.ttf in Resources */,
 				568146482A56024B00E27D75 /* MicroPremium-ExtraBold.ttf in Resources */,
@@ -383,6 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				566BA4862A6B49420006899E /* AccountSettingsController.swift in Sources */,
 				56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */,
 				56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */,
 				56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */,

@@ -12,9 +12,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var myBooksTable: UITableView!
     @IBOutlet weak var segCtrl: UISegmentedControl!
     
-    private var isAnimationInProgress = false
     var searcBar: UISearchBar!
-    
     let testData = [String]()
     let authData = ["Ion Creanga", "Mihai Eminesc", "C. Brancoveanu", "Mircea Eliade", "JJ Abrahms", "Naruto", "Jiraya", "Sasuke", "Kakashi", "Madara"]
     let descData = ["lorem ipsum dolores", "test2", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
@@ -46,8 +44,8 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: font!], for: .selected)
         let font2 = UIFont(name: "MicroPremium-Light", size: 16)
         segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: font2!], for: .normal)
-        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent5")], for: .normal)
-        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent6")], for: .selected)
+        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent5")!], for: .normal)
+        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent6")!], for: .selected)
         searcBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: myBooksTable.frame.width, height: 50))
         searcBar.delegate = self
         searcBar.placeholder = "Find books"
@@ -71,8 +69,6 @@ class MyBooksController: UIViewController, UITableViewDelegate {
             isThisOn = true
         }
     }
-    
-//    Micro Premium Font names: ["MicroPremium-Regular", "MicroPremium-Light", "MicroPremium-Medium", "MicroPremium-SemiBold", "MicroPremium-Bold", "MicroPremium-ExtraBold", "MicroPremium-Black"]
     
 }
 
@@ -107,7 +103,7 @@ extension MyBooksController: UITableViewDataSource {
     
     func tableView(_ myBooksTable: UITableView, numberOfRowsInSection section: Int) -> Int {
         if testData.count == 0 {
-            self.myBooksTable.setEmptyMessage(K.emptyTableMessage.randomElement()!)
+            self.myBooksTable.setEmptyMessage(EmptyTable.message.randomElement()!)
         }else{
             self.myBooksTable.restore()
         }
@@ -170,11 +166,8 @@ extension MyBooksController: UITableViewDataSource {
         cell.isUserInteractionEnabled = true
             if isThisOn == true {
                 cell.MBTitle?.text = testData[indexPath.row]
-                cell.MBTitle.font = UIFont(name: "MicroPremium-Medium", size: 16)
                 cell.MBAuthor?.text = authData[indexPath.row]
-                cell.MBAuthor.font = UIFont(name: "MicroPremium-Medium", size: 15)
                 cell.MBDescr?.text = descData[indexPath.row]
-                cell.MBDescr.font = UIFont(name: "MicroPremium-Regular", size: 13)
             } else {
                 cell.MBTitle?.text = testData2[indexPath.row]
                 cell.MBAuthor?.text = authData2[indexPath.row]
@@ -189,7 +182,7 @@ extension MyBooksController: UITableViewDataSource {
 extension UITableView {
 
     func setEmptyMessage(_ message: String) {
-        let padding = UIEdgeInsets(top: 5, left: 30, bottom: 5, right: 30)
+        let padding = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 30)
         let container = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
         let messageLabel = UILabel(frame: container)
         messageLabel.frame = container.inset(by: padding)
@@ -197,7 +190,7 @@ extension UITableView {
         messageLabel.textColor = .black
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
-        messageLabel.font = UIFont(name: "MicroPremium-Medium", size: 16)
+        messageLabel.font = SetFont.setFontStyle(.medium, 16)
         messageLabel.sizeToFit()
 
         self.backgroundView = messageLabel

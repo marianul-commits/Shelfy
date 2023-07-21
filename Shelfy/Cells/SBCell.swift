@@ -20,6 +20,9 @@ class SBCell: UITableViewCell {
         
         scPhoto.layer.cornerRadius = scPhoto.frame.size.height / 25
         searchCellView.layer.cornerRadius = searchCellView.frame.size.height / 25
+        searchCellTitle.font = SetFont.setFontStyle(.medium, 16)
+        searchCellAuthor.font = SetFont.setFontStyle(.medium, 16)
+        searchCellDescription.font = SetFont.setFontStyle(.regular, 13)
         
     }
 
