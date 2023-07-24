@@ -7,12 +7,12 @@
 
 import UIKit
 
-struct GoogleBooksResponse: Decodable {
-    let items: [Items]
+struct BooksResponse: Decodable {
+    let docs: [OLBook]
 }
 
-func fetchBooks(completion: @escaping ([Items]?) -> Void) {
-    let urlString = "https://www.googleapis.com/books/v1/volumes?q=subject:thriller&key=\(K.apiKey)"
+func fetchBooks(completion: @escaping ([OLBook]?) -> Void) {
+    let urlString = "https://openlibrary.org/search.json?q=Nicola+Yoon"
     guard let url = URL(string: urlString) else {
         completion(nil)
         return
@@ -26,8 +26,8 @@ func fetchBooks(completion: @escaping ([Items]?) -> Void) {
 
         do {
             let decoder = JSONDecoder()
-            let booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
-            completion(booksResponse.items)
+            let booksResponse = try decoder.decode(BooksResponse.self, from: data)
+            completion(booksResponse.docs)
         } catch {
             print("Error decoding JSON: \(error)")
             completion(nil)

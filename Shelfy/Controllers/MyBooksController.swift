@@ -21,7 +21,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     let descData2 = EmptyTable.bookDescriptions2
     var filter: [String]!
     var isThisOn = true
-    var books: [Items] = []
+    var books: [OLBook] = []
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -185,29 +185,29 @@ extension MyBooksController: UITableViewDataSource {
         // Data Set 1 enabled
         if isThisOn == true {
             
-            cell.MBTitle?.text = bookz.volumeInfo.title
-            cell.MBDescr?.text = bookz.volumeInfo.description
+            cell.MBTitle?.text = bookz.title
+            cell.MBDescr?.text = bookz.descritption
             // Setting the cell author label from the API
-            if let author = bookz.volumeInfo.authors {
-                    cell.MBAuthor?.text = (author.joined(separator: ", "))
-                   } else {
-                    cell.MBAuthor?.text = "N/A"
-                   }
+            let author = bookz.author_name
+            cell.MBAuthor.text = "N/A"
             // Setting the cell image from the API
-            if let imageURLString = bookz.volumeInfo.imageLinks?.thumbnail,
-               let imageURL = URL(string: imageURLString) {
-                DispatchQueue.global().async {
-                    if let imageData = try? Data(contentsOf: imageURL),
-                       let image = UIImage(data: imageData) {
-                        DispatchQueue.main.async {
-                            cell.MBPhoto?.image = image
-                        }
-                    }
-                }
-            } else {
+//            if let imgAsString = String(contentsOf: bookz.coverURL) else {
+//                print("no link found")
+//            }
+//            if let imageURLString = imgAsString,
+//               let imageURL = URL(string: imageURLString) {
+//                DispatchQueue.global().async {
+//                    if let imageData = try? Data(contentsOf: imageURL),
+//                       let image = UIImage(data: imageData) {
+//                        DispatchQueue.main.async {
+//                            cell.MBPhoto?.image = image
+//                        }
+//                    }
+//                }
+//            } else {
                 // If the book has no photo, set a placeholder image
                 cell.MBPhoto?.image = UIImage(named: "placeholder")
-            }
+//            }
           
             // Data Set 2 enabled
         } else {
