@@ -13,6 +13,8 @@ class LoginView: UIViewController {
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var pwdField: UITextField!
+    @IBOutlet weak var dashLbl: UILabel!
+    @IBOutlet weak var orLbl: UILabel!
     @IBOutlet weak var registerBtn: UIButton!
     
     override func viewDidLoad() {
@@ -23,6 +25,8 @@ class LoginView: UIViewController {
         emailConfig()
         passConfig()
         pwdField.enablePasswordToggle()
+        dashLbl.isHidden = true
+        orLbl.isHidden = true
         
     }
     

@@ -12,7 +12,7 @@ struct GoogleBooksResponse: Decodable {
 }
 
 func fetchBooks(completion: @escaping ([Items]?) -> Void) {
-    let urlString = "https://www.googleapis.com/books/v1/volumes?q=harry+potter&key=\(K.apiKey)"
+    let urlString = "https://www.googleapis.com/books/v1/volumes?q=subject:thriller&key=\(K.apiKey)"
     guard let url = URL(string: urlString) else {
         completion(nil)
         return

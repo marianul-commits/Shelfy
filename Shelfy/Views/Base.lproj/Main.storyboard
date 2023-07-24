@@ -144,8 +144,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="eTf-kU-ibX"/>
                     <connections>
+                        <outlet property="dashLbl" destination="fse-ze-y86" id="Y2S-vy-K7z"/>
                         <outlet property="emailField" destination="d1d-XJ-lNh" id="lXR-x8-7Qb"/>
                         <outlet property="loginBtn" destination="p8M-hJ-QDD" id="jck-mC-fZA"/>
+                        <outlet property="orLbl" destination="5OO-Df-qVU" id="3xN-Sj-nfT"/>
                         <outlet property="pwdField" destination="ix3-gi-HTI" id="IHR-ys-9RJ"/>
                         <segue destination="67y-yU-GLg" kind="show" identifier="loginSuccess" id="lTP-fN-Lmm"/>
                     </connections>
@@ -1123,7 +1125,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WPF-a9-CcI"/>
+        <segue reference="66A-DS-czv"/>
         <segue reference="lTP-fN-Lmm"/>
     </inferredMetricsTieBreakers>
     <resources>
