@@ -9,5 +9,6 @@ target 'Shelfy' do
 pod 'SwipeCellKit'
 pod 'SwiftMessages'
 pod 'IQKeyboardManagerSwift'
+pod 'Kingfisher'
 
 end

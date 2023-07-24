@@ -16,6 +16,7 @@
 		566BA4862A6B49420006899E /* AccountSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566BA4852A6B49420006899E /* AccountSettingsController.swift */; };
 		56783DE22A3C49AB0001A14B /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */; };
 		56783DE32A3C49AB0001A14B /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */; };
+		5680CA492A6DD37D00C13DD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5680CA482A6DD37D00C13DD6 /* Extensions.swift */; };
 		568146472A56024B00E27D75 /* MicroPremium-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146402A56024B00E27D75 /* MicroPremium-Black.ttf */; };
 		568146482A56024B00E27D75 /* MicroPremium-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146412A56024B00E27D75 /* MicroPremium-ExtraBold.ttf */; };
 		568146492A56024B00E27D75 /* MicroPremium-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146422A56024B00E27D75 /* MicroPremium-Bold.ttf */; };
@@ -27,6 +28,7 @@
 		568A37952A5F335000E84667 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 568A37942A5F335000E84667 /* FirebaseFirestore */; };
 		568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568D36552A2E73E20028C51C /* MyBooksCell.swift */; };
 		568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 568D36562A2E73E20028C51C /* MyBooksCell.xib */; };
+		56AF58F92A6DC2180045793E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF58F82A6DC2180045793E /* NetworkManager.swift */; };
 		56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */; };
 		56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */; };
 		56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711A12A2CA41C0030DC6E /* HomeController.swift */; };
@@ -61,6 +63,7 @@
 		566BA4852A6B49420006899E /* AccountSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsController.swift; sourceTree = "<group>"; };
 		56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
+		5680CA482A6DD37D00C13DD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		568146402A56024B00E27D75 /* MicroPremium-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Black.ttf"; sourceTree = "<group>"; };
 		568146412A56024B00E27D75 /* MicroPremium-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-ExtraBold.ttf"; sourceTree = "<group>"; };
 		568146422A56024B00E27D75 /* MicroPremium-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Bold.ttf"; sourceTree = "<group>"; };
@@ -70,6 +73,7 @@
 		568146462A56024B00E27D75 /* MicroPremium-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Regular.ttf"; sourceTree = "<group>"; };
 		568D36552A2E73E20028C51C /* MyBooksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCell.swift; sourceTree = "<group>"; };
 		568D36562A2E73E20028C51C /* MyBooksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyBooksCell.xib; sourceTree = "<group>"; };
+		56AF58F82A6DC2180045793E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		56B7119A2A2CA41C0030DC6E /* Shelfy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelfy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				56097D742A3CB2DB0053E1C2 /* BookModel.swift */,
+				56AF58F82A6DC2180045793E /* NetworkManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -131,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				56B711B82A2D538A0030DC6E /* Constants.swift */,
+				5680CA482A6DD37D00C13DD6 /* Extensions.swift */,
 			);
 			path = Various;
 			sourceTree = "<group>";
@@ -399,6 +405,7 @@
 				56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */,
 				56F8286C2A50EA8F00203481 /* SwipeTableViewController.swift in Sources */,
 				565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */,
+				56AF58F92A6DC2180045793E /* NetworkManager.swift in Sources */,
 				56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */,
 				56B711B42A2D50FA0030DC6E /* SearchController.swift in Sources */,
 				56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */,
@@ -408,6 +415,7 @@
 				56097D752A3CB2DB0053E1C2 /* BookModel.swift in Sources */,
 				56B711B92A2D538A0030DC6E /* Constants.swift in Sources */,
 				56B711B62A2D51010030DC6E /* MoreController.swift in Sources */,
+				5680CA492A6DD37D00C13DD6 /* Extensions.swift in Sources */,
 				56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */,
 				56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */,
 				56BBA5912A360D78001C2779 /* BookView.swift in Sources */,

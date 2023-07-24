@@ -24,6 +24,7 @@ class MyBooksCell: UITableViewCell {
         MBTitle.font = SetFont.setFontStyle(.medium, 16)
         MBAuthor.font = SetFont.setFontStyle(.medium, 16)
         MBDescr.font = SetFont.setFontStyle(.regular, 13)
+
         
     }
 

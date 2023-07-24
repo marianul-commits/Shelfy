@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MyBooksController: UIViewController, UITableViewDelegate {
     
@@ -13,20 +14,21 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var segCtrl: UISegmentedControl!
     
     var searcBar: UISearchBar!
-    let testData = [String]()
-    let authData = ["Ion Creanga", "Mihai Eminesc", "C. Brancoveanu", "Mircea Eliade", "JJ Abrahms", "Naruto", "Jiraya", "Sasuke", "Kakashi", "Madara"]
-    let descData = ["lorem ipsum dolores", "test2", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
-    let testData2 = [String]()
-    let authData2 = ["Marvel", "DC", "SpooderMan", "Blalde", "JJ McDonalds", "Boruto", "Hinata", "Tom Ford", "YSL", "Autor"]
-    let descData2 = ["lorem ipsum doloret", "cum te jucai prin cotet", "test3", "test5", "test14", "test12", "test13", "test15", "test11", "test22"]
+    let testData = EmptyTable.bookTitle
+    let authData = EmptyTable.bookAuthors
+    let descData = EmptyTable.bookDescriptions
+    let testData2 = EmptyTable.bookTitles2
+    let authData2 = EmptyTable.bookAuthors2
+    let descData2 = EmptyTable.bookDescriptions2
     var filter: [String]!
     var isThisOn = true
+    var books: [Items] = []
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -40,12 +42,12 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         myBooksTable.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
         myBooksTable.backgroundColor = UIColor.clear
         myBooksTable.layer.backgroundColor = UIColor.clear.cgColor
-        let font = UIFont(name: "MicroPremium-Regular", size: 16)
-        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: font!], for: .selected)
-        let font2 = UIFont(name: "MicroPremium-Light", size: 16)
-        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: font2!], for: .normal)
+        // Segment Control Customization
+        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: SetFont.setFontStyle(.regular, 16)], for: .selected)
+        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: SetFont.setFontStyle(.light, 16)], for: .normal)
         segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent5")!], for: .normal)
         segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent6")!], for: .selected)
+        // Search Bar as Table View header customization
         searcBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: myBooksTable.frame.width, height: 50))
         searcBar.delegate = self
         searcBar.placeholder = "Find books"
@@ -54,7 +56,18 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         searcBar.tintColor = UIColor(named: "Color1")!
         searcBar.isHidden = testData.count <= 15
         myBooksTable.tableHeaderView = searcBar
-  
+        // API Call
+        fetchBooks { (books) in
+            guard let books = books else {
+                print("Error fetching books")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.books = books
+                self.myBooksTable.reloadData()
+            }
+        }
         
     }
     @IBAction func segCtrlClick(_ sender: Any) {
@@ -102,58 +115,61 @@ extension MyBooksController: UISearchBarDelegate {
 extension MyBooksController: UITableViewDataSource {
     
     func tableView(_ myBooksTable: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if testData.count == 0 {
-            self.myBooksTable.setEmptyMessage(EmptyTable.message.randomElement()!)
-        }else{
-            self.myBooksTable.restore()
+        if isThisOn == true{
+            if books.count == 0 {
+                self.myBooksTable.setEmptyMessage(EmptyTable.message.randomElement()!)
+            }else{
+                self.myBooksTable.restore()
+            }
+            return books.count
+        } else {
+            if testData2.count == 0 {
+                self.myBooksTable.setEmptyMessage(EmptyTable.message.randomElement()!)
+            }else{
+                self.myBooksTable.restore()
+            }
+            return testData2.count
         }
-        return testData.count
     }
     
     // Disable table view scrolling when the data source is empty
-        func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-            if testData.isEmpty {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if isThisOn == true {
+            if books.isEmpty {
                 scrollView.isScrollEnabled = false
             } else {
                 scrollView.isScrollEnabled = true
             }
         }
+        else {
+            if testData2.isEmpty {
+                scrollView.isScrollEnabled = false
+            } else {
+                scrollView.isScrollEnabled = true
+            }
+        }
+    }
     
     func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
         myBooksTable.deselectRow(at: indexPath, animated: true)
-
+        
         let cell = myBooksTable.cellForRow(at: indexPath as IndexPath)
         
         if isThisOn == true {
-            let selectedBook = testData[indexPath.row]
-            let bookAuth = authData[indexPath.row]
-            let bookDesc = descData[indexPath.row]
-            
-            func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-                
-                let destinationVC = segue.destination as! BookView
-                
-                if let indexPath = myBooksTable.indexPathForSelectedRow{
-                    destinationVC.bookAuth.text = bookAuth
-                    destinationVC.bookTitle.text = selectedBook
-                    destinationVC.descrLbl.text = bookDesc
-                }
-                
-            }
-            
-            print("hewwo")
+  
+            print("Data Set 1")
         } else {
             
-            let selectedBook2 = testData2[indexPath.row]
-            let bookAuth2 = authData2[indexPath.row]
-            let bookDesc2 = descData2[indexPath.row]
-            let destination2 = BookView()
-//            destination2.bookAuth = bookAuth2
-//            destination2.bookTitle = selectedBook2
-//            destination2.bookDesc = bookDesc2
-            performSegue(withIdentifier: K.cellSegue, sender: cell)
+//            let selectedBook2 = testData2[indexPath.row]
+//            let bookAuth2 = authData2[indexPath.row]
+//            let bookDesc2 = descData2[indexPath.row]
+//            let destination2 = BookView()
+            //            destination2.bookAuth = bookAuth2
+            //            destination2.bookTitle = selectedBook2
+            //            destination2.bookDesc = bookDesc2
+//            performSegue(withIdentifier: K.cellSegue, sender: cell)
             
-            print("hewwo data 2")
+            print("Data Set 2")
         }
     }
     
@@ -161,44 +177,47 @@ extension MyBooksController: UITableViewDataSource {
         
         let cell = myBooksTable.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MyBooksCell
         
-            cell.clipsToBounds = true
-            cell.backgroundColor = .clear
+        cell.clipsToBounds = true
+        cell.backgroundColor = .clear
         cell.isUserInteractionEnabled = true
-            if isThisOn == true {
-                cell.MBTitle?.text = testData[indexPath.row]
-                cell.MBAuthor?.text = authData[indexPath.row]
-                cell.MBDescr?.text = descData[indexPath.row]
-            } else {
-                cell.MBTitle?.text = testData2[indexPath.row]
-                cell.MBAuthor?.text = authData2[indexPath.row]
-                cell.MBDescr?.text = descData2[indexPath.row]
-            }
-            return cell
+        
+        let bookz = books[indexPath.row]
+        
+        // Data Set 1 enabled
+        if isThisOn == true {
             
+            cell.MBTitle?.text = bookz.volumeInfo.title
+            cell.MBDescr?.text = bookz.volumeInfo.description
+            // Setting the cell author label from the API
+            if let author = bookz.volumeInfo.authors {
+                    cell.MBAuthor?.text = (author.joined(separator: ", "))
+                   } else {
+                    cell.MBAuthor?.text = "N/A"
+                   }
+            // Setting the cell image from the API
+            if let imageURLString = bookz.volumeInfo.imageLinks?.thumbnail,
+               let imageURL = URL(string: imageURLString) {
+                DispatchQueue.global().async {
+                    if let imageData = try? Data(contentsOf: imageURL),
+                       let image = UIImage(data: imageData) {
+                        DispatchQueue.main.async {
+                            cell.MBPhoto?.image = image
+                        }
+                    }
+                }
+            } else {
+                // If the book has no photo, set a placeholder image
+                cell.MBPhoto?.image = UIImage(named: "placeholder")
+            }
+          
+            // Data Set 2 enabled
+        } else {
+            cell.MBTitle?.text = testData2[indexPath.row]
+            cell.MBAuthor?.text = authData2[indexPath.row]
+            cell.MBDescr?.text = descData2[indexPath.row]
         }
+        return cell
         
     }
-
-extension UITableView {
-
-    func setEmptyMessage(_ message: String) {
-        let padding = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 30)
-        let container = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
-        let messageLabel = UILabel(frame: container)
-        messageLabel.frame = container.inset(by: padding)
-        messageLabel.text = message
-        messageLabel.textColor = .black
-        messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .center
-        messageLabel.font = SetFont.setFontStyle(.medium, 16)
-        messageLabel.sizeToFit()
-
-        self.backgroundView = messageLabel
-        self.separatorStyle = .none
-    }
-
-    func restore() {
-        self.backgroundView = nil
-        self.separatorStyle = .none
-    }
+    
 }
