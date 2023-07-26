@@ -8,11 +8,11 @@
 import UIKit
 
 struct GoogleBooksResponse: Decodable {
-    let items: [Items]
+    var items: [Items]
 }
 
 func fetchBooks(completion: @escaping ([Items]?) -> Void) {
-    let urlString = "https://www.googleapis.com/books/v1/volumes?q=subject:thriller&key=\(K.apiKey)"
+    let urlString = "https://www.googleapis.com/books/v1/volumes?q=author:Nicola+Yoon&key=\(K.apiKey)"
     guard let url = URL(string: urlString) else {
         completion(nil)
         return
@@ -26,7 +26,11 @@ func fetchBooks(completion: @escaping ([Items]?) -> Void) {
 
         do {
             let decoder = JSONDecoder()
-            let booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
+            var booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
+            booksResponse.items =  booksResponse.items.filter{ book in
+                let title = book.volumeInfo.title?.lowercased()
+                return !(title!.contains("set") || title!.contains("bundle") || title!.contains("collection"))
+                }
             completion(booksResponse.items)
         } catch {
             print("Error decoding JSON: \(error)")

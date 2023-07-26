@@ -52,7 +52,7 @@ class SearchController: UIViewController, UITableViewDelegate {
 
         DispatchQueue.global(qos: .userInitiated).async {
             guard let img = UIImage(named: "testImage")?.cgImage else {
-                fatalError("Missing image to scan")
+                 fatalError("Missing image to scan")
             }
 
             let handler = VNImageRequestHandler(cgImage: img, options: [:])
