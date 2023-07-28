@@ -11,6 +11,7 @@ class CollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var collectionImg: UIImageView!
     @IBOutlet weak var collectionTitle: UILabel!
+    @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var titleView: UIView!
     
     override func awakeFromNib() {

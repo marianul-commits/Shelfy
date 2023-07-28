@@ -19,11 +19,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="120" height="218"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tgt-FC-yFT">
-                        <rect key="frame" x="0.0" y="0.0" width="120" height="180"/>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tgt-FC-yFT">
+                        <rect key="frame" x="0.0" y="0.0" width="120" height="190"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="IV1-fu-24O">
-                                <rect key="frame" x="0.0" y="0.0" width="120" height="180"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="IV1-fu-24O">
+                                <rect key="frame" x="0.0" y="0.0" width="120" height="193"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -32,7 +32,7 @@
                             <constraint firstAttribute="height" constant="180" id="ECa-cf-myq"/>
                             <constraint firstAttribute="width" constant="120" id="N5a-O6-eHC"/>
                             <constraint firstItem="IV1-fu-24O" firstAttribute="leading" secondItem="Tgt-FC-yFT" secondAttribute="leading" id="SIh-nl-cCQ"/>
-                            <constraint firstAttribute="bottom" secondItem="IV1-fu-24O" secondAttribute="bottom" id="kf1-nb-jvA"/>
+                            <constraint firstAttribute="bottom" secondItem="IV1-fu-24O" secondAttribute="bottom" constant="-3" id="kf1-nb-jvA"/>
                             <constraint firstItem="IV1-fu-24O" firstAttribute="top" secondItem="Tgt-FC-yFT" secondAttribute="top" id="nP6-SR-YlV"/>
                         </constraints>
                     </view>
@@ -40,9 +40,9 @@
                         <rect key="frame" x="0.0" y="179" width="120" height="39"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JQK-Ud-4Ds">
-                                <rect key="frame" x="8" y="9" width="33" height="21"/>
+                                <rect key="frame" x="8" y="9" width="29" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -65,9 +65,10 @@
             <connections>
                 <outlet property="collectionImg" destination="IV1-fu-24O" id="D9N-Iq-JQH"/>
                 <outlet property="collectionTitle" destination="JQK-Ud-4Ds" id="Chm-CA-gA1"/>
+                <outlet property="titleLbl" destination="JQK-Ud-4Ds" id="gBj-r9-VTn"/>
                 <outlet property="titleView" destination="gYK-v8-gz1" id="jiE-0H-MMa"/>
             </connections>
-            <point key="canvasLocation" x="192.36641221374046" y="79.577464788732399"/>
+            <point key="canvasLocation" x="192.36641221374046" y="78.873239436619727"/>
         </collectionViewCell>
     </objects>
     <resources>

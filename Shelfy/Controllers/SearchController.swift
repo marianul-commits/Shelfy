@@ -9,12 +9,13 @@ import UIKit
 import Vision
 
 class SearchController: UIViewController, UITableViewDelegate {
-
+    
     @IBOutlet weak var searchBooks: UISearchBar!
     @IBOutlet weak var searchTable: UITableView!
     
     let testData = ["test1", "test2", "test3", "test5"]
     var filter: [String]!
+    var displayBooks: [Items] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,8 +28,19 @@ class SearchController: UIViewController, UITableViewDelegate {
         searchTable.backgroundColor = UIColor.clear
         searchTable.layer.backgroundColor = UIColor.clear.cgColor
         
+        fetchSearch(search: "harry+potter") { (books) in
+            guard let displayBooks = books else {
+                print("Error fetching books")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.displayBooks = displayBooks
+                self.searchTable.reloadData()
+            }
+        }
     }
-
+    
     //MARK: - Scan Button
     
     @IBAction func scanButton(_ sender: Any) {
@@ -37,24 +49,24 @@ class SearchController: UIViewController, UITableViewDelegate {
             guard let observations = request.results as? [VNRecognizedTextObservation] else {
                 fatalError("Received invalid observations")
             }
-
+            
             for observation in observations {
                 guard let bestCandidate = observation.topCandidates(1).first else {
                     print("No candidate")
                     continue
                 }
-
+                
                 print("Found this candidate: \(bestCandidate.string)")
             }
         }
         
         let requests = [request]
-
+        
         DispatchQueue.global(qos: .userInitiated).async {
             guard let img = UIImage(named: "testImage")?.cgImage else {
-                 fatalError("Missing image to scan")
+                fatalError("Missing image to scan")
             }
-
+            
             let handler = VNImageRequestHandler(cgImage: img, options: [:])
             try? handler.perform(requests)
         }
@@ -70,14 +82,31 @@ class SearchController: UIViewController, UITableViewDelegate {
 
 //MARK: - SearchBar Extension
 extension SearchController: UISearchBarDelegate {
-
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        var searchItem = searchBooks.text
+        fetchSearch(search: "\(searchItem!)") { (books) in
+            guard let books = books else {
+                print("Error fetching books")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.displayBooks = books
+                self.searchTable.reloadData()
+            }
+        }
+        searchBooks.text = ""
+        
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filter = []
         if searchText == ""
         {
             filter = testData
         }
-
+        
         for word in testData{
             if word.uppercased().contains(searchText.uppercased()){
                 filter.append(word)
@@ -85,14 +114,14 @@ extension SearchController: UISearchBarDelegate {
         }
         self.searchTable.reloadData()
     }
-
+    
 }
 
 //MARK: - TableView Extension
 extension SearchController: UITableViewDataSource {
     
     func tableView(_ searchTable: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return testData.count
+        return displayBooks.count
     }
     
     func tableView(_ searchTable: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -103,14 +132,37 @@ extension SearchController: UITableViewDataSource {
     
     
     func tableView(_ searchTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = searchTable.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SBCell
-    
-    cell.clipsToBounds = true
-    cell.backgroundColor = .clear
-    cell.searchCellTitle.text = testData[indexPath.row]
+        let cell = searchTable.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SBCell
         
-    return cell
-}
+        cell.clipsToBounds = true
+        cell.backgroundColor = .clear
+        
+        let bookz = displayBooks[indexPath.row]
+        
+        cell.searchCellTitle?.text = bookz.volumeInfo.title
+        cell.searchCellDescription?.text = bookz.volumeInfo.description
+        // Setting the cell author label from the API
+        if let author = bookz.volumeInfo.authors {
+            cell.searchCellAuthor?.text = (author.joined(separator: ", ")) ?? "N/A"
+        }
+        // Setting the cell image from the API
+        if let imageURLString = bookz.volumeInfo.imageLinks?.thumbnail,
+           let imageURL = URL(string: imageURLString) {
+            DispatchQueue.global().async {
+                if let imageData = try? Data(contentsOf: imageURL),
+                   let image = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        cell.scPhoto?.image = image
+                    }
+                }
+            }
+        } else {
+            // If the book has no photo, set a placeholder image
+            cell.scPhoto?.image = UIImage(named: "placeholder")
+        }
+        
+        return cell
+    }
     
     
 }

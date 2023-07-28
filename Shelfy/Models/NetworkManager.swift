@@ -29,9 +29,38 @@ func fetchBooks(completion: @escaping ([Items]?) -> Void) {
             var booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
             booksResponse.items =  booksResponse.items.filter{ book in
                 let title = book.volumeInfo.title?.lowercased()
-                return !(title!.contains("set") || title!.contains("bundle") || title!.contains("collection"))
+                return !(title!.contains("set") || title!.contains("bundle") || title!.contains("collection") || title!.contains("movie"))
                 }
             completion(booksResponse.items)
+        } catch {
+            print("Error decoding JSON: \(error)")
+            completion(nil)
+        }
+    }
+
+    task.resume()
+}
+
+func fetchSearch(search: String, completion: @escaping ([Items]?) -> Void) {
+    let urlString = "https://www.googleapis.com/books/v1/volumes?q=\(search)"
+    guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
+        completion(nil)
+        return
+    }
+
+    let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        guard let data = data else {
+            completion(nil)
+            return
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            var booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
+            booksResponse.items =  booksResponse.items.filter{ book in
+                let title = book.volumeInfo.title?.lowercased()
+                return !(title!.contains("set") || title!.contains("bundle") || title!.contains("collection") || title!.contains("movie"))
+                }
         } catch {
             print("Error decoding JSON: \(error)")
             completion(nil)

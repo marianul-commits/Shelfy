@@ -22,6 +22,10 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     var filter: [String]!
     var isThisOn = true
     var books: [Items] = []
+    var bookTitle: String!
+    var bookAuth: [String]!
+    var bookDescr: String!
+    var bookImg: String!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -152,23 +156,42 @@ extension MyBooksController: UITableViewDataSource {
     func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
         myBooksTable.deselectRow(at: indexPath, animated: true)
         
-        let cell = myBooksTable.cellForRow(at: indexPath as IndexPath)
-        
         if isThisOn == true {
-  
+            bookTitle = books[indexPath.row].volumeInfo.title
+            bookAuth = books[indexPath.row].volumeInfo.authors
+            bookDescr = books[indexPath.row].volumeInfo.description
+            bookImg = books[indexPath.row].volumeInfo.imageLinks?.thumbnail
+            
+            performSegue(withIdentifier: "MyBookTransition", sender: self)
             print("Data Set 1")
         } else {
-            
-//            let selectedBook2 = testData2[indexPath.row]
-//            let bookAuth2 = authData2[indexPath.row]
-//            let bookDesc2 = descData2[indexPath.row]
-//            let destination2 = BookView()
-            //            destination2.bookAuth = bookAuth2
-            //            destination2.bookTitle = selectedBook2
-            //            destination2.bookDesc = bookDesc2
-//            performSegue(withIdentifier: K.cellSegue, sender: cell)
-            
             print("Data Set 2")
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MyBookTransition" {
+            if let bookviewVC = segue.destination as? BookView {
+                print("Preparing for segue with book: \(bookTitle)")
+
+                bookviewVC.bTitle = bookTitle
+                bookviewVC.author = bookAuth?.joined(separator: ", ") ?? "N/A"
+                bookviewVC.descr = bookDescr
+                if let imageURLString = bookImg,
+                   let imageURL = URL(string: imageURLString) {
+                    DispatchQueue.global().async {
+                        if let imageData = try? Data(contentsOf: imageURL),
+                           let image = UIImage(data: imageData) {
+                            DispatchQueue.main.async {
+                                bookviewVC.bookImg.image = image
+                            }
+                        }
+                    }
+                } else {
+                    // If the book has no photo, set a placeholder image
+                    bookviewVC.bookImg.image = UIImage(named: "placeholder")
+                }
+            }
         }
     }
     
@@ -188,11 +211,8 @@ extension MyBooksController: UITableViewDataSource {
             cell.MBTitle?.text = bookz.volumeInfo.title
             cell.MBDescr?.text = bookz.volumeInfo.description
             // Setting the cell author label from the API
-            if let author = bookz.volumeInfo.authors {
-                    cell.MBAuthor?.text = (author.joined(separator: ", "))
-                   } else {
-                    cell.MBAuthor?.text = "N/A"
-                   }
+            let author = bookz.volumeInfo.authors
+            cell.MBAuthor?.text = (author?.joined(separator: ", ")) ?? "N/A"
             // Setting the cell image from the API
             if let imageURLString = bookz.volumeInfo.imageLinks?.thumbnail,
                let imageURL = URL(string: imageURLString) {
@@ -211,9 +231,13 @@ extension MyBooksController: UITableViewDataSource {
           
             // Data Set 2 enabled
         } else {
-            cell.MBTitle?.text = testData2[indexPath.row]
-            cell.MBAuthor?.text = authData2[indexPath.row]
-            cell.MBDescr?.text = descData2[indexPath.row]
+            cell.MBTitle?.text = bookz.volumeInfo.title
+            if let author = bookz.volumeInfo.authors {
+                    cell.MBAuthor?.text = (author.joined(separator: ", "))
+                   } else {
+                    cell.MBAuthor?.text = "N/A"
+                   }
+            cell.MBDescr?.text = bookz.volumeInfo.description
         }
         return cell
         
