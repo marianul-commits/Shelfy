@@ -26,7 +26,7 @@ The Home Page will be the central hub of Shelfy, featuring personalized book rec
 ### Search Page - ![Static Badge](https://img.shields.io/badge/status-in_progress-progress?style=plastic&color=yellow)
 The Search Page will allow users to search for books by title, author, or any relevant keywords, making it easy to find specific books of interest.
 
-### Book Detail View - ![Static Badge](https://img.shields.io/badge/status-not_working-progress?style=plastic&color=red)
+### Book Detail View - ![Static Badge](https://img.shields.io/badge/status-in_progress-progress?style=plastic&color=yellow)
 The Book Detail View will provide users with more in-depth information about a selected book, including user reviews, ratings, and the option to add the book to their virtual bookshelf.
 
 ### Pictures 
