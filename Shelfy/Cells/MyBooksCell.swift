@@ -19,7 +19,8 @@ class MyBooksCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     
-        MBPhoto.layer.cornerRadius = MBPhoto.frame.size.height / 25
+//        MBPhoto.layer.cornerRadius = MBPhoto.frame.size.height / 25
+        MBPhoto.contentMode = .scaleAspectFit
         MBView.layer.cornerRadius = MBView.frame.size.height / 25
         MBTitle.font = SetFont.setFontStyle(.medium, 16)
         MBAuthor.font = SetFont.setFontStyle(.medium, 16)
