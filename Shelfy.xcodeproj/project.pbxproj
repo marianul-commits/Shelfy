@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		56097D752A3CB2DB0053E1C2 /* BookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56097D742A3CB2DB0053E1C2 /* BookModel.swift */; };
+		5652A1862A7F27AC008F009C /* MoreByCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1852A7F27AC008F009C /* MoreByCell.swift */; };
+		5652A1882A7F318D008F009C /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1872A7F318D008F009C /* CustomFlowLayout.swift */; };
 		565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */; };
 		56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDE2A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift */; };
 		56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */; };
 		56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */; };
 		56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */; };
 		566BA4862A6B49420006899E /* AccountSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566BA4852A6B49420006899E /* AccountSettingsController.swift */; };
-		56783DE22A3C49AB0001A14B /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */; };
-		56783DE32A3C49AB0001A14B /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */; };
 		5680CA492A6DD37D00C13DD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5680CA482A6DD37D00C13DD6 /* Extensions.swift */; };
 		568146472A56024B00E27D75 /* MicroPremium-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146402A56024B00E27D75 /* MicroPremium-Black.ttf */; };
 		568146482A56024B00E27D75 /* MicroPremium-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 568146412A56024B00E27D75 /* MicroPremium-ExtraBold.ttf */; };
@@ -55,14 +55,14 @@
 /* Begin PBXFileReference section */
 		1635F92D7B1D0B09C0393B0E /* Pods-Shelfy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.debug.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.debug.xcconfig"; sourceTree = "<group>"; };
 		56097D742A3CB2DB0053E1C2 /* BookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookModel.swift; sourceTree = "<group>"; };
+		5652A1852A7F27AC008F009C /* MoreByCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreByCell.swift; sourceTree = "<group>"; };
+		5652A1872A7F318D008F009C /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
 		565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCentralView.swift; sourceTree = "<group>"; };
 		56613CDE2A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenuTableViewCell.swift; sourceTree = "<group>"; };
 		56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriPresentationController.swift; sourceTree = "<group>"; };
 		56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriAnimationController.swift; sourceTree = "<group>"; };
 		56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenu.swift; sourceTree = "<group>"; };
 		566BA4852A6B49420006899E /* AccountSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsController.swift; sourceTree = "<group>"; };
-		56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
-		56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 		5680CA482A6DD37D00C13DD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		568146402A56024B00E27D75 /* MicroPremium-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-Black.ttf"; sourceTree = "<group>"; };
 		568146412A56024B00E27D75 /* MicroPremium-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MicroPremium-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -137,6 +137,7 @@
 			children = (
 				56B711B82A2D538A0030DC6E /* Constants.swift */,
 				5680CA482A6DD37D00C13DD6 /* Extensions.swift */,
+				5652A1872A7F318D008F009C /* CustomFlowLayout.swift */,
 			);
 			path = Various;
 			sourceTree = "<group>";
@@ -169,9 +170,9 @@
 		568D36542A2E703B0028C51C /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				56783DE02A3C49AB0001A14B /* CollectionViewCell.swift */,
 				56B711BA2A2D53D70030DC6E /* SBCell.swift */,
 				568D36552A2E73E20028C51C /* MyBooksCell.swift */,
+				5652A1852A7F27AC008F009C /* MoreByCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -235,7 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				56B711A32A2CA41C0030DC6E /* Main.storyboard */,
-				56783DE12A3C49AB0001A14B /* CollectionViewCell.xib */,
 				56B711BB2A2D53D70030DC6E /* SearchCell.xib */,
 				568D36562A2E73E20028C51C /* MyBooksCell.xib */,
 				56B711A82A2CA41D0030DC6E /* LaunchScreen.storyboard */,
@@ -335,7 +335,6 @@
 				568146492A56024B00E27D75 /* MicroPremium-Bold.ttf in Resources */,
 				568146482A56024B00E27D75 /* MicroPremium-ExtraBold.ttf in Resources */,
 				56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */,
-				56783DE32A3C49AB0001A14B /* CollectionViewCell.xib in Resources */,
 				56B711A72A2CA41D0030DC6E /* Assets.xcassets in Resources */,
 				568146472A56024B00E27D75 /* MicroPremium-Black.ttf in Resources */,
 				5681464D2A56024B00E27D75 /* MicroPremium-Regular.ttf in Resources */,
@@ -404,10 +403,12 @@
 				56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */,
 				56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */,
 				56F8286C2A50EA8F00203481 /* SwipeTableViewController.swift in Sources */,
+				5652A1882A7F318D008F009C /* CustomFlowLayout.swift in Sources */,
 				565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */,
 				56AF58F92A6DC2180045793E /* NetworkManager.swift in Sources */,
 				56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */,
 				56B711B42A2D50FA0030DC6E /* SearchController.swift in Sources */,
+				5652A1862A7F27AC008F009C /* MoreByCell.swift in Sources */,
 				56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */,
 				56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */,
 				56B711B22A2D50EB0030DC6E /* MyBooksController.swift in Sources */,
@@ -419,7 +420,6 @@
 				56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */,
 				56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */,
 				56BBA5912A360D78001C2779 /* BookView.swift in Sources */,
-				56783DE22A3C49AB0001A14B /* CollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

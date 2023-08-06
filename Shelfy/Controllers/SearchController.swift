@@ -16,6 +16,7 @@ class SearchController: UIViewController, UITableViewDelegate {
     let testData = ["test1", "test2", "test3", "test5"]
     var filter: [String]!
     var displayBooks: [Items] = []
+    var searchItem: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,17 +29,6 @@ class SearchController: UIViewController, UITableViewDelegate {
         searchTable.backgroundColor = UIColor.clear
         searchTable.layer.backgroundColor = UIColor.clear.cgColor
         
-        fetchSearch(search: "harry+potter") { (books) in
-            guard let displayBooks = books else {
-                print("Error fetching books")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.displayBooks = displayBooks
-                self.searchTable.reloadData()
-            }
-        }
     }
     
     //MARK: - Scan Button
@@ -84,15 +74,15 @@ class SearchController: UIViewController, UITableViewDelegate {
 extension SearchController: UISearchBarDelegate {
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        var searchItem = searchBooks.text
-        fetchSearch(search: "\(searchItem!)") { (books) in
-            guard let books = books else {
+        searchItem = searchBooks.text
+        fetchSearch(searchItem!) { (displayBooks) in
+            guard let displayBooks = displayBooks else {
                 print("Error fetching books")
                 return
             }
             
             DispatchQueue.main.async {
-                self.displayBooks = books
+                self.displayBooks = displayBooks
                 self.searchTable.reloadData()
             }
         }

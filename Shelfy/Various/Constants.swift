@@ -18,9 +18,7 @@ struct K {
     static let cellNibName2 = "MyBooksCell"
     static let cellSegue = "MyBookTransition"
     static let searchSegue = "SearchTransition"
-    static let searchItem = ""
     static let baseUrl = "https://www.googleapis.com/books/v1/volumes?q=orderBy=averageRating&key=\(K.apiKey)"
-    static let searchUrl = "https://www.googleapis.com/books/v1/volumes?q=\(K.searchItem)&key=\(K.apiKey)"
     static let apiKey = "AIzaSyB1oX9pSTe6WX_l86TUnvCV0MF6CqhBp04"
 }
 

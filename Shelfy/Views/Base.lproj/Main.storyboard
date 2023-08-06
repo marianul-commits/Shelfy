@@ -796,72 +796,6 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aDK-am-31L">
-                                <rect key="frame" x="15" y="656" width="363" height="141"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="More By Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuq-Zb-tEP">
-                                        <rect key="frame" x="10" y="9.9999999999999982" width="343" height="20.333333333333329"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                        <color key="textColor" name="Color3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="s1c-Kv-A7g">
-                                        <rect key="frame" x="8" y="46" width="345" height="88"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zKv-Mx-zrY">
-                                            <size key="itemSize" width="128" height="128"/>
-                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                        <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="moreByAuthor" id="HAh-Py-YXi">
-                                                <rect key="frame" x="0.0" y="-20" width="128" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vJk-CS-oW6">
-                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </collectionViewCellContentView>
-                                            </collectionViewCell>
-                                        </cells>
-                                    </collectionView>
-                                </subviews>
-                                <color key="backgroundColor" name="AccentColor"/>
-                                <color key="tintColor" name="Accent"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uYk-Mr-rXj">
-                                <rect key="frame" x="15" y="390" width="363" height="239"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7n-Jl-zvR">
-                                        <rect key="frame" x="10" y="9.9999999999999982" width="343" height="20.333333333333329"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                        <color key="textColor" name="Color2"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hky-M4-26h">
-                                        <rect key="frame" x="8" y="43" width="345" height="176"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Testy McTestFace" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Akb-xm-nc9">
-                                                <rect key="frame" x="8" y="8" width="329" height="384"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="15"/>
-                                                <color key="textColor" name="Disabled"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <viewLayoutGuide key="contentLayoutGuide" id="mqp-Tg-Deg"/>
-                                        <viewLayoutGuide key="frameLayoutGuide" id="CIt-jN-6Tb"/>
-                                    </scrollView>
-                                </subviews>
-                                <color key="backgroundColor" name="Accent9"/>
-                                <color key="tintColor" name="Accent"/>
-                            </view>
                             <stackView opaque="NO" contentMode="center" fixedFrame="YES" axis="vertical" distribution="equalCentering" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zL1-2u-Mi1">
                                 <rect key="frame" x="174" y="262" width="45" height="45.666666666666686"/>
                                 <subviews>
@@ -883,6 +817,59 @@
                                 <rect key="frame" x="121" y="34" width="150" height="220"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Iq-ua-Wve">
+                                <rect key="frame" x="15" y="390" width="362" height="452"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aDK-am-31L">
+                                        <rect key="frame" x="-1" y="155" width="363" height="141"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="More By Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuq-Zb-tEP">
+                                                <rect key="frame" x="10" y="9.9999999999999982" width="343" height="20.333333333333329"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="textColor" name="Color3"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" name="AccentColor"/>
+                                        <color key="tintColor" name="Accent"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uYk-Mr-rXj">
+                                        <rect key="frame" x="-1" y="106" width="363" height="239"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7n-Jl-zvR">
+                                                <rect key="frame" x="10" y="9.9999999999999982" width="343" height="20.333333333333329"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="textColor" name="Color2"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hky-M4-26h">
+                                                <rect key="frame" x="8" y="43" width="345" height="176"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Testy McTestFace" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Akb-xm-nc9">
+                                                        <rect key="frame" x="8" y="8" width="329" height="384"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="15"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <viewLayoutGuide key="contentLayoutGuide" id="mqp-Tg-Deg"/>
+                                                <viewLayoutGuide key="frameLayoutGuide" id="CIt-jN-6Tb"/>
+                                            </scrollView>
+                                        </subviews>
+                                        <color key="backgroundColor" name="Accent9"/>
+                                        <color key="tintColor" name="Accent"/>
+                                    </view>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="atk-PV-zHi"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="vfA-E2-VMa"/>
+                            </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Jhb-BC-Ufu"/>
                         <color key="backgroundColor" name="Background"/>
@@ -893,13 +880,13 @@
                         <outlet property="bookDescr" destination="Akb-xm-nc9" id="YQA-zY-eI0"/>
                         <outlet property="bookDetailStack" destination="zL1-2u-Mi1" id="RhE-Sb-ZlC"/>
                         <outlet property="bookImg" destination="3Ym-Cx-gkt" id="M6L-zs-3jO"/>
+                        <outlet property="bookScrollView" destination="1Iq-ua-Wve" id="fj5-ct-unz"/>
                         <outlet property="bookTitle" destination="Ubd-8H-u93" id="Fja-6Q-fEE"/>
                         <outlet property="buttonStack" destination="20K-Yq-Jwi" id="hxE-4I-hrb"/>
                         <outlet property="descrLbl" destination="w7n-Jl-zvR" id="pd9-hA-EWh"/>
                         <outlet property="descrScrollView" destination="Hky-M4-26h" id="Ygq-lV-vri"/>
                         <outlet property="descrView" destination="uYk-Mr-rXj" id="FLD-Ra-Gy7"/>
                         <outlet property="moreByView" destination="aDK-am-31L" id="tY0-SH-1cf"/>
-                        <outlet property="moreCollection" destination="s1c-Kv-A7g" id="TEx-Zg-8nf"/>
                         <outlet property="moreViewLbl" destination="xuq-Zb-tEP" id="mG0-Yx-EJB"/>
                         <outlet property="readBtn" destination="KUe-Xm-bJ1" id="0le-jL-Ji3"/>
                         <outlet property="wantToBuyBtn" destination="kTh-75-o7h" id="3cS-YX-Jr1"/>
@@ -1045,9 +1032,6 @@
         </namedColor>
         <namedColor name="Color5">
             <color red="0.0" green="0.4779999852180481" blue="0.6470000147819519" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Disabled">
-            <color red="0.11800000071525574" green="0.11800000071525574" blue="0.11800000071525574" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
