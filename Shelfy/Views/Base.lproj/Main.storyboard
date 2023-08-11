@@ -22,9 +22,6 @@
         <array key="MicroPremium-Regular.ttf">
             <string>MicroPremium-Regular</string>
         </array>
-        <array key="MicroPremium-SemiBold.ttf">
-            <string>MicroPremium-SemiBold</string>
-        </array>
     </customFonts>
     <scenes>
         <!--Login View-->
@@ -765,132 +762,9 @@
                     <view key="view" contentMode="scaleToFill" id="KCB-MS-COw">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="20K-Yq-Jwi">
-                                <rect key="frame" x="15" y="325" width="307" height="32.333333333333314"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NHq-3s-1wd">
-                                        <rect key="frame" x="0.0" y="0.0" width="98.333333333333329" height="32.333333333333336"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Add to Shelfy">
-                                            <fontDescription key="titleFontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="12"/>
-                                            <color key="baseForegroundColor" name="Accent5"/>
-                                            <color key="baseBackgroundColor" name="Accent7"/>
-                                        </buttonConfiguration>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KUe-Xm-bJ1">
-                                        <rect key="frame" x="104.33333333333334" y="0.0" width="98.333333333333343" height="32.333333333333336"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Read">
-                                            <fontDescription key="titleFontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="15"/>
-                                            <color key="baseForegroundColor" name="Accent5"/>
-                                            <color key="baseBackgroundColor" name="Accent7"/>
-                                        </buttonConfiguration>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kTh-75-o7h">
-                                        <rect key="frame" x="208.66666666666666" y="0.0" width="98.333333333333343" height="32.333333333333336"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Want to buy">
-                                            <fontDescription key="titleFontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="13"/>
-                                            <color key="baseForegroundColor" name="Accent5"/>
-                                            <color key="baseBackgroundColor" name="Accent7"/>
-                                        </buttonConfiguration>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="center" fixedFrame="YES" axis="vertical" distribution="equalCentering" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zL1-2u-Mi1">
-                                <rect key="frame" x="174" y="262" width="45" height="45.666666666666686"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ubd-8H-u93">
-                                        <rect key="frame" x="5.6666666666666679" y="0.0" width="34" height="20.666666666666668"/>
-                                        <fontDescription key="fontDescription" name="MicroPremium-SemiBold" family="Micro Premium" pointSize="17"/>
-                                        <color key="textColor" name="Accent"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Bs-v6-nFp">
-                                        <rect key="frame" x="0.0" y="28.666666666666671" width="45" height="17"/>
-                                        <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="14"/>
-                                        <color key="textColor" name="Accent2"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="3Ym-Cx-gkt">
-                                <rect key="frame" x="121" y="34" width="150" height="220"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Iq-ua-Wve">
-                                <rect key="frame" x="15" y="390" width="362" height="452"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aDK-am-31L">
-                                        <rect key="frame" x="-1" y="155" width="363" height="141"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="More By Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuq-Zb-tEP">
-                                                <rect key="frame" x="10" y="9.9999999999999982" width="343" height="20.333333333333329"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <color key="textColor" name="Color3"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" name="AccentColor"/>
-                                        <color key="tintColor" name="Accent"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uYk-Mr-rXj">
-                                        <rect key="frame" x="-1" y="106" width="363" height="239"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7n-Jl-zvR">
-                                                <rect key="frame" x="10" y="9.9999999999999982" width="343" height="20.333333333333329"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <color key="textColor" name="Color2"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hky-M4-26h">
-                                                <rect key="frame" x="8" y="43" width="345" height="176"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Testy McTestFace" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Akb-xm-nc9">
-                                                        <rect key="frame" x="8" y="8" width="329" height="384"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="15"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <viewLayoutGuide key="contentLayoutGuide" id="mqp-Tg-Deg"/>
-                                                <viewLayoutGuide key="frameLayoutGuide" id="CIt-jN-6Tb"/>
-                                            </scrollView>
-                                        </subviews>
-                                        <color key="backgroundColor" name="Accent9"/>
-                                        <color key="tintColor" name="Accent"/>
-                                    </view>
-                                </subviews>
-                                <viewLayoutGuide key="contentLayoutGuide" id="atk-PV-zHi"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="vfA-E2-VMa"/>
-                            </scrollView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Jhb-BC-Ufu"/>
                         <color key="backgroundColor" name="Background"/>
                     </view>
-                    <connections>
-                        <outlet property="addToShelfyBtn" destination="NHq-3s-1wd" id="TgH-wY-qG1"/>
-                        <outlet property="bookAuth" destination="8Bs-v6-nFp" id="swN-K1-4Za"/>
-                        <outlet property="bookDescr" destination="Akb-xm-nc9" id="YQA-zY-eI0"/>
-                        <outlet property="bookDetailStack" destination="zL1-2u-Mi1" id="RhE-Sb-ZlC"/>
-                        <outlet property="bookImg" destination="3Ym-Cx-gkt" id="M6L-zs-3jO"/>
-                        <outlet property="bookScrollView" destination="1Iq-ua-Wve" id="fj5-ct-unz"/>
-                        <outlet property="bookTitle" destination="Ubd-8H-u93" id="Fja-6Q-fEE"/>
-                        <outlet property="buttonStack" destination="20K-Yq-Jwi" id="hxE-4I-hrb"/>
-                        <outlet property="descrLbl" destination="w7n-Jl-zvR" id="pd9-hA-EWh"/>
-                        <outlet property="descrScrollView" destination="Hky-M4-26h" id="Ygq-lV-vri"/>
-                        <outlet property="descrView" destination="uYk-Mr-rXj" id="FLD-Ra-Gy7"/>
-                        <outlet property="moreByView" destination="aDK-am-31L" id="tY0-SH-1cf"/>
-                        <outlet property="moreViewLbl" destination="xuq-Zb-tEP" id="mG0-Yx-EJB"/>
-                        <outlet property="readBtn" destination="KUe-Xm-bJ1" id="0le-jL-Ji3"/>
-                        <outlet property="wantToBuyBtn" destination="kTh-75-o7h" id="3cS-YX-Jr1"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UKF-a2-7lk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -976,7 +850,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="66A-DS-czv"/>
-        <segue reference="lTP-fN-Lmm"/>
+        <segue reference="7Tl-Bm-1Je"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="book.fill" catalog="system" width="128" height="95"/>
@@ -985,7 +859,6 @@
         <image name="house.fill" catalog="system" width="128" height="104"/>
         <image name="multiply.circle.fill" catalog="system" width="128" height="123"/>
         <image name="pencil" catalog="system" width="128" height="113"/>
-        <image name="placeholder" width="416" height="416"/>
         <image name="profile_placeholder" width="1920" height="1920"/>
         <image name="safari.fill" catalog="system" width="128" height="123"/>
         <namedColor name="Accent">
@@ -1011,9 +884,6 @@
         </namedColor>
         <namedColor name="Accent9">
             <color red="0.8666666666666667" green="0.82745098039215681" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="AccentColor">
-            <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Background">
             <color red="0.97254901960784312" green="0.96470588235294119" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
