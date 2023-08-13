@@ -35,6 +35,7 @@ The Book Detail View will provide users with more in-depth information about a s
 <img src="https://user-images.githubusercontent.com/80788036/255537672-d9be457f-1643-4fa7-a003-b81aa4007e3e.png" alt= “” width="22%" />
 <img src="https://user-images.githubusercontent.com/80788036/255537687-e215bd9c-109d-4b03-8e88-c5b3d1ec4829.png" alt= “” width="22%" />
 <img src="https://user-images.githubusercontent.com/80788036/255537692-bc86960e-e474-4c72-8c50-761df8331d58.png" alt= “” width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/260270970-56d7cff2-ad68-4a78-aaec-f1da3e5b46c9.gif" alt= "" width="22%" />
 </p>
 
 
