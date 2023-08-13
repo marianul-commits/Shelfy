@@ -18,6 +18,9 @@ class TestView: UIViewController, UITextFieldDelegate, UICollectionViewDataSourc
         present(alertController, animated: true, completion: nil)
     }
     
+    let mainView1 = TopView()
+    let mainView2 = BottomView()
+    
     let bookImg = makeImgView(withImage: "placeholder")
     let bookImg2 = makeImgView(withImage: "placeholder")
     let bookTitle = makeLabel(withText: "Title")
@@ -32,7 +35,7 @@ class TestView: UIViewController, UITextFieldDelegate, UICollectionViewDataSourc
     let spacer4 = makeSpacerView()
     let descrView = makeView(color: UIColor(named: "Accent9")!)
     let descrHeader = makeLabel(withText: "Description")
-    let descrContent = makeLabel(withText: "Description Long Long very long")
+    let descrContent = makeLabel(withText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
     let moreView = makeCollectionView()
     let stackView = makeStackView(withOrientation: .vertical)
     
@@ -46,6 +49,7 @@ class TestView: UIViewController, UITextFieldDelegate, UICollectionViewDataSourc
         moreView.dataSource = self
         moreView.delegate = self
         moreView.register(MoreByCell.self, forCellWithReuseIdentifier: "testIdentifier")
+        mainView2.layer.cornerRadius = mainView2.frame.size.height / 25
     }
     
     func setupBoo2kView() {
@@ -54,9 +58,9 @@ class TestView: UIViewController, UITextFieldDelegate, UICollectionViewDataSourc
         let middleX = screenBound.width / 2
         let middleY = screenBound.height / 2
         
-        let bookSV = UIScrollView(frame: CGRect(x: middleX, y: middleY, width: screenBound.width, height: screenBound.height / 2))
+        let bookSV = UIScrollView(frame: CGRect(x: middleX, y: middleY, width: mainView2.bounds.width, height: mainView2.bounds.height))
         bookSV.translatesAutoresizingMaskIntoConstraints = false
-        bookSV.contentSize = CGSize(width: screenBound.width * 2, height: screenBound.height / 2)
+        bookSV.contentSize = CGSize(width: mainView2.bounds.width * 2, height: mainView2.bounds.height)
         bookSV.isPagingEnabled = true
         bookSV.alwaysBounceVertical = false
         scrollViewDidScroll(bookSV)
@@ -67,11 +71,6 @@ class TestView: UIViewController, UITextFieldDelegate, UICollectionViewDataSourc
 
         let testView = UIView(frame: CGRect(x: 0, y: 0, width: screenBound.width, height: 400))
         testView.backgroundColor = .orange
-        
-        let mainView1 = TopView()
-        let mainView2 = BottomView()
-        
-        
         
         let testView2 = UIView(frame: CGRect(x: screenBound.width, y: 0, width: screenBound.width, height: 400))
         testView2.backgroundColor = .cyan
@@ -99,7 +98,7 @@ class TestView: UIViewController, UITextFieldDelegate, UICollectionViewDataSourc
         bookSV.addSubview(testView2)
         testView2.addSubview(moreView)
         bookSV.addSubview(testView)
-        testView.addSubview(shelfyBtn)
+        testView.addSubview(descrContent)
 //        descrView.addSubview(descrHeader)
 //        descrView.addSubview(descrScroll)
 //        descrScroll.addSubview(descrContent)
@@ -171,6 +170,10 @@ class TestView: UIViewController, UITextFieldDelegate, UICollectionViewDataSourc
             testView2.leadingAnchor.constraint(equalTo: bookSV.leadingAnchor).isActive = true
             testView2.trailingAnchor.constraint(equalTo: bookSV.trailingAnchor).isActive = true
             testView2.bottomAnchor.constraint(equalTo: bookSV.bottomAnchor).isActive = true
+        
+        descrContent.leadingAnchor.constraint(equalTo: testView2.leadingAnchor, constant: 5).isActive = true
+        descrContent.trailingAnchor.constraint(equalTo: testView2.trailingAnchor, constant: -5).isActive = true
+        descrContent.bottomAnchor.constraint(equalTo: testView2.bottomAnchor, constant: -5).isActive = true
         
     }
     

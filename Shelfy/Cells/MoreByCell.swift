@@ -42,18 +42,16 @@ class MoreByCell: UICollectionViewCell {
         // so we can set constraints programmatically
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.numberOfLines = 1
+        titleLabel.lineBreakMode = .byTruncatingTail
     }
 
     private func setupConstraints() {
-        // Add your custom constraints here
-        // For example, you can use NSLayoutConstraint or Auto Layout Anchors
 
-        // Example constraint: center the titleLabel horizontally and vertically
         titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-//        titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
+        titleLabel.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
 
-        // Example constraint: set imageView to fill the cell's contentView
 
         imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true

@@ -12,7 +12,7 @@ struct GoogleBooksResponse: Decodable {
 }
 
 func fetchBooks(completion: @escaping ([Items]?) -> Void) {
-    let urlString = "https://www.googleapis.com/books/v1/volumes?q=author:Nicola+Yoon&key=\(K.apiKey)"
+    let urlString = "https://www.googleapis.com/books/v1/volumes?q=subject:horror&key=\(K.apiKey)"
     guard let url = URL(string: urlString) else {
         completion(nil)
         return
@@ -70,8 +70,17 @@ func fetchSearch(_ search: String, completion: @escaping ([Items]?) -> Void) {
     task.resume()
 }
 
-func fetchAuthor(_ author: String, completion: @escaping ([Items]?) -> Void) {
-    let urlString = "https://www.googleapis.com/books/v1/volumes?q=author:\(author)=\(K.apiKey)"
+func getRecommandations(for bookTitle: String, completion: @escaping ([Items]?) -> Void) {
+    let baseUrl = "https://www.googleapis.com/books/v1/volumes"
+    
+    guard let encodedTitle = bookTitle.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+        print("Error encoding book title")
+        return
+    }
+    
+    let querry = "q=\(encodedTitle)&key=\(K.apiKey)"
+    let urlString = "\(baseUrl)?\(querry)"
+    
     guard let url = URL(string: urlString) else {
         completion(nil)
         return
@@ -88,7 +97,9 @@ func fetchAuthor(_ author: String, completion: @escaping ([Items]?) -> Void) {
             var booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
             booksResponse.items =  booksResponse.items.filter{ book in
                 let title = book.volumeInfo.title?.lowercased()
-                return !(title!.contains("set") || title!.contains("bundle") || title!.contains("collection") || title!.contains("movie"))
+                let filters = ["set", "bundle", "collection", "movie"]
+                return !filters.contains { keyword in
+                    title!.contains(keyword)} && !title!.contains(encodedTitle)
                 }
             completion(booksResponse.items)
         } catch {

@@ -24,7 +24,7 @@ class TopView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 200, height: 400)
+        return CGSize(width: 400, height: 400)
     }
     
 }

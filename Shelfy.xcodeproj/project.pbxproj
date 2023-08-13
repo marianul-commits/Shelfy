@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		56002C962A81769D0009F6AC /* DescrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56002C952A81769D0009F6AC /* DescrView.swift */; };
-		56002C982A81784E0009F6AC /* MoreByView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56002C972A81784E0009F6AC /* MoreByView.swift */; };
 		56097D752A3CB2DB0053E1C2 /* BookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56097D742A3CB2DB0053E1C2 /* BookModel.swift */; };
 		5652A1862A7F27AC008F009C /* MoreByCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1852A7F27AC008F009C /* MoreByCell.swift */; };
 		5652A1882A7F318D008F009C /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1872A7F318D008F009C /* CustomFlowLayout.swift */; };
-		5652A18A2A80026D008F009C /* BookViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1892A80026D008F009C /* BookViewV2.swift */; };
 		5652A18C2A8002A5008F009C /* Factories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A18B2A8002A5008F009C /* Factories.swift */; };
 		565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */; };
 		56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDE2A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift */; };
@@ -60,12 +57,9 @@
 
 /* Begin PBXFileReference section */
 		1635F92D7B1D0B09C0393B0E /* Pods-Shelfy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.debug.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.debug.xcconfig"; sourceTree = "<group>"; };
-		56002C952A81769D0009F6AC /* DescrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescrView.swift; sourceTree = "<group>"; };
-		56002C972A81784E0009F6AC /* MoreByView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreByView.swift; sourceTree = "<group>"; };
 		56097D742A3CB2DB0053E1C2 /* BookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookModel.swift; sourceTree = "<group>"; };
 		5652A1852A7F27AC008F009C /* MoreByCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreByCell.swift; sourceTree = "<group>"; };
 		5652A1872A7F318D008F009C /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
-		5652A1892A80026D008F009C /* BookViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewV2.swift; sourceTree = "<group>"; };
 		5652A18B2A8002A5008F009C /* Factories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factories.swift; sourceTree = "<group>"; };
 		565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCentralView.swift; sourceTree = "<group>"; };
 		56613CDE2A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenuTableViewCell.swift; sourceTree = "<group>"; };
@@ -139,8 +133,6 @@
 			isa = PBXGroup;
 			children = (
 				56F7C47E2A5DEC210021F5AF /* TestView.swift */,
-				56002C952A81769D0009F6AC /* DescrView.swift */,
-				56002C972A81784E0009F6AC /* MoreByView.swift */,
 				56E0EAD12A86E5110031C4EA /* TopView.swift */,
 				56E0EAD32A86E52F0031C4EA /* BottomView.swift */,
 			);
@@ -253,7 +245,6 @@
 				56F7C47A2A5DDBA60021F5AF /* LoginView.swift */,
 				56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */,
 				566BA4852A6B49420006899E /* AccountSettingsController.swift */,
-				5652A1892A80026D008F009C /* BookViewV2.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -423,7 +414,6 @@
 			files = (
 				5652A18C2A8002A5008F009C /* Factories.swift in Sources */,
 				566BA4862A6B49420006899E /* AccountSettingsController.swift in Sources */,
-				56002C962A81769D0009F6AC /* DescrView.swift in Sources */,
 				56E0EAD42A86E52F0031C4EA /* BottomView.swift in Sources */,
 				56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */,
 				56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */,
@@ -431,7 +421,6 @@
 				56B711BC2A2D53D70030DC6E /* SBCell.swift in Sources */,
 				56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */,
 				56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */,
-				5652A18A2A80026D008F009C /* BookViewV2.swift in Sources */,
 				56F8286C2A50EA8F00203481 /* SwipeTableViewController.swift in Sources */,
 				5652A1882A7F318D008F009C /* CustomFlowLayout.swift in Sources */,
 				565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */,
@@ -444,7 +433,6 @@
 				56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */,
 				56B711B22A2D50EB0030DC6E /* MyBooksController.swift in Sources */,
 				568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */,
-				56002C982A81784E0009F6AC /* MoreByView.swift in Sources */,
 				56097D752A3CB2DB0053E1C2 /* BookModel.swift in Sources */,
 				56B711B92A2D538A0030DC6E /* Constants.swift in Sources */,
 				56B711B62A2D51010030DC6E /* MoreController.swift in Sources */,
