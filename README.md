@@ -15,19 +15,19 @@ Since Shelfy is still a work in progress, this is the current status of the appl
 Shelfy allows users to browse through a vast collection of books retrieved from the Google Books API. Users can view book details, such as title, author, description, cover image, and other relevant information.
 
 ### Login and Register - ![Static Badge](https://img.shields.io/badge/status-working-progress?style=plastic&color=green)
-Users can create accounts on Shelfy by registering with their email and password. Once registered, they can log in using their credentials and gain access to additional features like book reviews, creating custom bookshelves, and connecting with other users.
+Users can create accounts on Shelfy by registering with their email and password.
 
 ### Account Page - ![Static Badge](https://img.shields.io/badge/status-not_working-progress?style=plastic&color=red)
 The Account Page will enable users to manage their profile information, change passwords, and update account settings.
 
 ### Home Page - ![Static Badge](https://img.shields.io/badge/status-not_working-progress?style=plastic&color=red)
-The Home Page will be the central hub of Shelfy, featuring personalized book recommendations based on the user's reading history and preferences.
+The Home Page will be the central hub of Shelfy, featuring book recommendations, tranding this day, and goal tracking
 
 ### Search Page - ![Static Badge](https://img.shields.io/badge/status-in_progress-progress?style=plastic&color=yellow)
-The Search Page will allow users to search for books by title, author, or any relevant keywords, making it easy to find specific books of interest.
+The Search Page will allow users to search for books by title, author, or by scanning the ISBN code, making it easy to find and keep track of specific books of interest.
 
 ### Book Detail View - ![Static Badge](https://img.shields.io/badge/status-in_progress-progress?style=plastic&color=yellow)
-The Book Detail View will provide users with more in-depth information about a selected book, including user reviews, ratings, and the option to add the book to their virtual bookshelf.
+The Book Detail View will provide users with more in-depth information about a selected book, including ratings, description, similar books, and the option to add the book to their virtual bookshelf.
 
 ### Pictures 
 <p float="left">
