@@ -23,7 +23,7 @@ class AccountSettingsController: UIViewController, UITextFieldDelegate {
         profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
         nameTxtF.delegate = self
         nameTxtF.isHidden = true
-        nameLbl.font = SetFont.setFontStyle(.light, 16)
+        nameLbl.font = SetFont.setFontStyle(.mono, 16)
         
 //        darkenView(profileView, withAlpha: 0.3)
         profileView.layer.cornerRadius = profileView.frame.height / 25

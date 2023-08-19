@@ -8,7 +8,7 @@
 import UIKit
 import Cosmos
 
-class BookView: UIViewController {
+class BookView: UIViewController, UIScrollViewDelegate {
     
     let bookImg = makeImgView(withImage: "placeholder")
     let bookTitle = makeLabel(withText: "Title")
@@ -25,6 +25,8 @@ class BookView: UIViewController {
     let stackView = makeStackView(withOrientation: .vertical)
     let topView = TopView()
     let bottomView = BottomView()
+    let pageControl = UIPageControl()
+    let numberOfPages = 2
     
     var bTitle: String?
     var author: String?
@@ -75,9 +77,9 @@ class BookView: UIViewController {
         
         
         setupBookView()
+        
         view.backgroundColor = UIColor(named: "Background")
         
-        //        bottomView.layer.cornerRadius = bottomView.frame.size.height / 25
     }
     
     func setupBookView() {
@@ -88,9 +90,10 @@ class BookView: UIViewController {
         bookTitle.font = SetFont.setFontStyle(.regular, 16)
         bookTitle.textColor = .label
         bookTitle.numberOfLines = 1
-        bookTitle.lineBreakMode = .byClipping
+        bookTitle.lineBreakMode = .byTruncatingTail
         bookAuthor.font = SetFont.setFontStyle(.regular, 14)
-        bookAuthor.lineBreakMode = .byClipping
+        bookAuthor.numberOfLines = 1
+        bookAuthor.lineBreakMode = .byTruncatingTail
         bookAuthor.textColor = UIColor(named: "Accent2")
         descrHeader.font = SetFont.setFontStyle(.medium, 16)
         descrHeader.textColor = UIColor(named: "Color1")
@@ -111,8 +114,12 @@ class BookView: UIViewController {
         bookSV.contentSize = CGSize(width: screenBound.width * 2, height: screenBound.height)
         bookSV.isPagingEnabled = true
         bookSV.alwaysBounceVertical = false
+        bookSV.showsVerticalScrollIndicator = false
+        bookSV.showsHorizontalScrollIndicator = false
         disableVerticalScroll(bookSV)
         bookSV.layer.cornerRadius = bookSV.frame.size.height / 45
+        bookSV.delegate = self
+
         
         //Creating Scroll View subviews
         let descrView = UIView(frame: CGRect(x: 0, y: 0, width: screenBound.width, height: screenBound.height))
@@ -124,7 +131,13 @@ class BookView: UIViewController {
         moreByView.translatesAutoresizingMaskIntoConstraints = false
         moreByView.backgroundColor = UIColor(named: "Accent9")
         moreByView.layer.cornerRadius = moreByView.frame.size.height / 45
-
+        
+        // Page Control
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.numberOfPages = numberOfPages
+        pageControl.currentPage = 0
+        pageControl.currentPageIndicatorTintColor = UIColor(named: "Accent5")
+        pageControl.pageIndicatorTintColor = UIColor(named: "Accent6")
         
         //MARK: Adding the elements to the view
         stackView.addArrangedSubview(topView)
@@ -140,6 +153,7 @@ class BookView: UIViewController {
         btnStack.addArrangedSubview(buyBtn)
         
         bottomView.addSubview(bookSV)
+        bottomView.addSubview(pageControl)
         
         bookSV.addSubview(descrView)
         descrView.addSubview(descrHeader)
@@ -157,6 +171,8 @@ class BookView: UIViewController {
         let imageWidthConstant = UIScreen.main.bounds.width * imageWidthPercentage
         let imageHeightConstant = UIScreen.main.bounds.height * imageHeightPercentage
         
+        let maxWidth = UIScreen.main.bounds.width - 45
+        
         
         //MARK: Top View Constraints
         
@@ -169,6 +185,9 @@ class BookView: UIViewController {
         bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 5).isActive = true
         bookTitle.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
         bookAuthor.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
+        bookTitle.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
+        bookAuthor.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
+        
         
         btnStack.topAnchor.constraint(equalTo: bookAuthor.bottomAnchor, constant: 15).isActive = true
         btnStack.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
@@ -202,7 +221,7 @@ class BookView: UIViewController {
         descrContent.topAnchor.constraint(equalTo: descrHeader.bottomAnchor, constant: 8).isActive = true
         descrContent.leadingAnchor.constraint(equalTo: descrView.leadingAnchor,constant: 15).isActive = true
         descrContent.trailingAnchor.constraint(equalTo: descrView.trailingAnchor, constant: -15).isActive = true
-        descrContent.bottomAnchor.constraint(equalTo: descrView.bottomAnchor, constant: -5).isActive = true
+        descrContent.bottomAnchor.constraint(equalTo: descrView.bottomAnchor, constant: -15).isActive = true
         
         //More View
         
@@ -210,7 +229,6 @@ class BookView: UIViewController {
         moreByView.leadingAnchor.constraint(equalTo: descrView.trailingAnchor).isActive = true
         moreByView.widthAnchor.constraint(equalTo: bookSV.widthAnchor).isActive = true
         moreByView.trailingAnchor.constraint(equalTo: bookSV.trailingAnchor).isActive = true
-//        moreByView.bottomAnchor.constraint(equalTo: bookSV.bottomAnchor).isActive = true
         moreByView.heightAnchor.constraint(equalTo: moreCollection.heightAnchor, multiplier: 1.25).isActive = true
         
         moreByHeader.topAnchor.constraint(equalTo: moreByView.topAnchor, constant: 15).isActive = true
@@ -221,6 +239,13 @@ class BookView: UIViewController {
         moreCollection.trailingAnchor.constraint(equalTo: moreByView.trailingAnchor, constant: -5).isActive = true
         moreCollection.heightAnchor.constraint(equalToConstant: 250).isActive = true
         
+        pageControl.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor, constant: 8).isActive = true
+        pageControl.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor).isActive = true
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let currentPage = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+        pageControl.currentPage = currentPage
     }
         
     func disableVerticalScroll(_ scrollView: UIScrollView) {

@@ -10,60 +10,65 @@ import Vision
 
 class SearchController: UIViewController, UITableViewDelegate {
     
-    @IBOutlet weak var searchBooks: UISearchBar!
-    @IBOutlet weak var searchTable: UITableView!
-    
-    let testData = ["test1", "test2", "test3", "test5"]
-    var filter: [String]!
     var displayBooks: [Items] = []
-    var searchItem: String!
+
+    let searchTable = makeTableView()
+    let searchBar = makeSearchBar(withPlaceholder: "Search Books, Authors, ISBN")
+    let searchBtn = makeImgButton(withImg: "camera.fill")
+    let topStack = makeStackView(withOrientation: .horizontal)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        filter = testData
+        setupSearchV()
         
         searchTable.dataSource = self
         searchTable.delegate = self
         searchTable.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
+        
         searchTable.backgroundColor = UIColor.clear
         searchTable.layer.backgroundColor = UIColor.clear.cgColor
+        
+
+        
+    }
+    
+    func setupSearchV() {
+        
+        
+        //MARK: Adding the elements to the view
+        
+//        topStack.addArrangedSubview(searchBar)
+//        topStack.addArrangedSubview(searchBtn)
+//
+//        view.addSubview(topStack)
+        view.addSubview(searchBar)
+        view.addSubview(searchBtn)
+        view.addSubview(searchTable)
+        
+        searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+        searchBtn.firstBaselineAnchor.constraint(equalTo: searchBar.firstBaselineAnchor).isActive = true
+
+        searchBtn.leadingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8).isActive = true
+        searchBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8).isActive = true
+        searchBtn.topAnchor.constraint(equalTo: searchBar.topAnchor).isActive = true
+        
+//        topStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+//        topStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8).isActive = true
+//        topStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8).isActive = true
+//        topStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        searchTable.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 15).isActive = true
+        searchTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+        searchTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        searchTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+        
+        
         
     }
     
     //MARK: - Scan Button
-    
-    @IBAction func scanButton(_ sender: Any) {
-        
-        let request = VNRecognizeTextRequest { request, error in
-            guard let observations = request.results as? [VNRecognizedTextObservation] else {
-                fatalError("Received invalid observations")
-            }
-            
-            for observation in observations {
-                guard let bestCandidate = observation.topCandidates(1).first else {
-                    print("No candidate")
-                    continue
-                }
-                
-                print("Found this candidate: \(bestCandidate.string)")
-            }
-        }
-        
-        let requests = [request]
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            guard let img = UIImage(named: "testImage")?.cgImage else {
-                fatalError("Missing image to scan")
-            }
-            
-            let handler = VNImageRequestHandler(cgImage: img, options: [:])
-            try? handler.perform(requests)
-        }
-        
-        request.recognitionLevel = .fast
-        
-    }
     
     
     
@@ -73,37 +78,7 @@ class SearchController: UIViewController, UITableViewDelegate {
 //MARK: - SearchBar Extension
 extension SearchController: UISearchBarDelegate {
     
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchItem = searchBooks.text
-        fetchSearch(searchItem!) { (displayBooks) in
-            guard let displayBooks = displayBooks else {
-                print("Error fetching books")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.displayBooks = displayBooks
-                self.searchTable.reloadData()
-            }
-        }
-        searchBooks.text = ""
-        
-    }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filter = []
-        if searchText == ""
-        {
-            filter = testData
-        }
-        
-        for word in testData{
-            if word.uppercased().contains(searchText.uppercased()){
-                filter.append(word)
-            }
-        }
-        self.searchTable.reloadData()
-    }
     
 }
 
@@ -119,7 +94,6 @@ extension SearchController: UITableViewDataSource {
         searchTable.deselectRow(at: indexPath, animated: true)
         
     }
-    
     
     func tableView(_ searchTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTable.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! SBCell
@@ -153,6 +127,5 @@ extension SearchController: UITableViewDataSource {
         
         return cell
     }
-    
     
 }

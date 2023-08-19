@@ -97,7 +97,7 @@ func getRecommandations(for bookTitle: String, completion: @escaping ([Items]?) 
             var booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
             booksResponse.items =  booksResponse.items.filter{ book in
                 let title = book.volumeInfo.title?.lowercased()
-                let filters = ["set", "bundle", "collection", "movie"]
+                let filters = ["set", "bundle", "collection", "movie", "audiobook"]
                 return !filters.contains { keyword in
                     title!.contains(keyword)} && !title!.contains(encodedTitle)
                 }

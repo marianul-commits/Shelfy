@@ -81,7 +81,7 @@ func makeButton(withTitle title: String) -> UIButton {
     button.contentHorizontalAlignment = .center
     
     let attributedText = NSMutableAttributedString(string: title, attributes: [
-        NSAttributedString.Key.font: UIFont(name: "MicroPremium-Regular", size: 14),
+        NSAttributedString.Key.font: SetFont.setFontStyle(.regular, 14),
         NSAttributedString.Key.foregroundColor: UIColor.white,
         NSAttributedString.Key.kern: 0.5
         ])
@@ -101,16 +101,17 @@ func makeButton(withTitle title: String) -> UIButton {
     return button
 }
 
-//func makeStackView(withAxis axis: NSLayoutConstraint.Axis, withSpacing spacing: CGFloat, withAlignment alignment: UIStackView.Alignment, withDistribution distribute: UIStackView.Distribution) -> UIStackView {
-//    let stackView = UIStackView()
-//
-//    stackView.axis = axis
-//    stackView.spacing = spacing
-//    stackView.alignment = alignment
-//    stackView.distribution = distribute
-//
-//    return stackView
-//}
+func makeImgButton(withImg img: String) -> UIButton {
+    let btn = UIButton()
+    let image = UIImage(systemName: img)?.withRenderingMode(.alwaysTemplate)
+    
+    btn.setImage(image, for: .normal)
+    btn.translatesAutoresizingMaskIntoConstraints = false
+    btn.tintColor = UIColor(named: "Accent")
+    btn.imageView?.contentMode = .scaleAspectFit
+    
+    return btn
+}
 
 func makeStackView(withOrientation axis: NSLayoutConstraint.Axis) -> UIStackView {
     let stackView = UIStackView()
@@ -121,4 +122,26 @@ func makeStackView(withOrientation axis: NSLayoutConstraint.Axis) -> UIStackView
     stackView.spacing = 3.0
 
     return stackView
+}
+
+func makeTableView() -> UITableView {
+    
+    let tableView = UITableView()
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.separatorStyle = .none
+    
+    return tableView
+    
+}
+
+func makeSearchBar(withPlaceholder placeholder: String) -> UISearchBar {
+    
+    let searchBar = UISearchBar()
+    searchBar.translatesAutoresizingMaskIntoConstraints = false
+    searchBar.placeholder = placeholder
+    searchBar.searchBarStyle = .minimal
+    searchBar.tintColor = UIColor(named: "Accent")
+    
+    return searchBar
+    
 }

@@ -30,6 +30,11 @@
 		568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568D36552A2E73E20028C51C /* MyBooksCell.swift */; };
 		568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 568D36562A2E73E20028C51C /* MyBooksCell.xib */; };
 		56AF58F92A6DC2180045793E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF58F82A6DC2180045793E /* NetworkManager.swift */; };
+		56AFCD262A8EA1010091D774 /* TripSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD212A8EA1000091D774 /* TripSans-Medium.ttf */; };
+		56AFCD272A8EA1010091D774 /* TripSans-Ultra.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD222A8EA1000091D774 /* TripSans-Ultra.ttf */; };
+		56AFCD282A8EA1010091D774 /* TripSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD232A8EA1000091D774 /* TripSans-Regular.ttf */; };
+		56AFCD292A8EA1010091D774 /* TripSansMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD242A8EA1000091D774 /* TripSansMono-Regular.ttf */; };
+		56AFCD2A2A8EA1010091D774 /* TripSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD252A8EA1000091D774 /* TripSans-Bold.ttf */; };
 		56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */; };
 		56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */; };
 		56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711A12A2CA41C0030DC6E /* HomeController.swift */; };
@@ -78,6 +83,11 @@
 		568D36552A2E73E20028C51C /* MyBooksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCell.swift; sourceTree = "<group>"; };
 		568D36562A2E73E20028C51C /* MyBooksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyBooksCell.xib; sourceTree = "<group>"; };
 		56AF58F82A6DC2180045793E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		56AFCD212A8EA1000091D774 /* TripSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSans-Medium.ttf"; sourceTree = "<group>"; };
+		56AFCD222A8EA1000091D774 /* TripSans-Ultra.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSans-Ultra.ttf"; sourceTree = "<group>"; };
+		56AFCD232A8EA1000091D774 /* TripSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSans-Regular.ttf"; sourceTree = "<group>"; };
+		56AFCD242A8EA1000091D774 /* TripSansMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSansMono-Regular.ttf"; sourceTree = "<group>"; };
+		56AFCD252A8EA1000091D774 /* TripSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSans-Bold.ttf"; sourceTree = "<group>"; };
 		56B7119A2A2CA41C0030DC6E /* Shelfy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shelfy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -180,6 +190,11 @@
 				568146432A56024B00E27D75 /* MicroPremium-Medium.ttf */,
 				568146462A56024B00E27D75 /* MicroPremium-Regular.ttf */,
 				568146452A56024B00E27D75 /* MicroPremium-SemiBold.ttf */,
+				56AFCD252A8EA1000091D774 /* TripSans-Bold.ttf */,
+				56AFCD212A8EA1000091D774 /* TripSans-Medium.ttf */,
+				56AFCD232A8EA1000091D774 /* TripSans-Regular.ttf */,
+				56AFCD222A8EA1000091D774 /* TripSans-Ultra.ttf */,
+				56AFCD242A8EA1000091D774 /* TripSansMono-Regular.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -348,12 +363,17 @@
 			files = (
 				56B711AA2A2CA41D0030DC6E /* LaunchScreen.storyboard in Resources */,
 				56E1F2212A6B315B001541AE /* Colours.xcassets in Resources */,
+				56AFCD262A8EA1010091D774 /* TripSans-Medium.ttf in Resources */,
 				5681464B2A56024B00E27D75 /* MicroPremium-Light.ttf in Resources */,
+				56AFCD282A8EA1010091D774 /* TripSans-Regular.ttf in Resources */,
 				568146492A56024B00E27D75 /* MicroPremium-Bold.ttf in Resources */,
+				56AFCD292A8EA1010091D774 /* TripSansMono-Regular.ttf in Resources */,
 				568146482A56024B00E27D75 /* MicroPremium-ExtraBold.ttf in Resources */,
 				56B711BD2A2D53D70030DC6E /* SearchCell.xib in Resources */,
+				56AFCD272A8EA1010091D774 /* TripSans-Ultra.ttf in Resources */,
 				56B711A72A2CA41D0030DC6E /* Assets.xcassets in Resources */,
 				568146472A56024B00E27D75 /* MicroPremium-Black.ttf in Resources */,
+				56AFCD2A2A8EA1010091D774 /* TripSans-Bold.ttf in Resources */,
 				5681464D2A56024B00E27D75 /* MicroPremium-Regular.ttf in Resources */,
 				56B711A52A2CA41C0030DC6E /* Main.storyboard in Resources */,
 				5681464A2A56024B00E27D75 /* MicroPremium-Medium.ttf in Resources */,

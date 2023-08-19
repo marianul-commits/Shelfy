@@ -47,7 +47,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         myBooksTable.layer.backgroundColor = UIColor.clear.cgColor
         // Segment Control Customization
         segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: SetFont.setFontStyle(.regular, 16)], for: .selected)
-        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: SetFont.setFontStyle(.light, 16)], for: .normal)
+        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: SetFont.setFontStyle(.mono, 16)], for: .normal)
         segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent5")!], for: .normal)
         segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent6")!], for: .selected)
         // Search Bar as Table View header customization

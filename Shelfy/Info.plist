@@ -19,6 +19,11 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>TripSansMono-Regular.ttf</string>
+		<string>TripSans-Bold.ttf</string>
+		<string>TripSans-Regular.ttf</string>
+		<string>TripSans-Medium.ttf</string>
+		<string>TripSans-Ultra.ttf</string>
 		<string>MicroPremium-Black.ttf</string>
 		<string>MicroPremium-Bold.ttf</string>
 		<string>MicroPremium-ExtraBold.ttf</string>

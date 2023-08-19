@@ -127,23 +127,21 @@ struct SetFont {
     
     enum FontStyle {
         case regular
-        case light
+        case mono
         case medium
-        case semiBold
         case bold
-        case extraBold
-        case black
+        case ultra
+
     }
     
     static func setFontStyle(_ style: FontStyle, _ size: CGFloat) -> UIFont  {
         switch style {
-        case .regular: return UIFont(name:"MicroPremium-Regular", size: size)!
-        case .light: return UIFont(name: "MicroPremium-Light", size: size)!
-        case .medium: return UIFont(name: "MicroPremium-Medium", size: size)!
-        case .semiBold: return UIFont(name: "MicroPremium-SemiBold", size: size)!
-        case .bold: return UIFont(name: "MicroPremium-Bold", size: size)!
-        case .extraBold: return UIFont(name: "MicroPremium-ExtraBold", size: size)!
-        case .black: return UIFont(name: "MicroPremium-Black", size: size)!
+        case .regular: return UIFont(name:"TripSans-Regular", size: size)!
+        case .mono: return UIFont(name: "TripSansMono-Regular", size: size)!
+        case .medium: return UIFont(name: "TripSans-Medium", size: size)!
+        case .bold: return UIFont(name: "TripSans-Bold", size: size)!
+        case .ultra: return UIFont(name: "TripSans-Ultra", size: size)!
+
         }
     }
 }
