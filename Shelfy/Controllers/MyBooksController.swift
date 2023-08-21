@@ -26,6 +26,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     var bookAuth: [String]!
     var bookDescr: String!
     var bookImg: String!
+    var bookRtg: Double?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -161,6 +162,7 @@ extension MyBooksController: UITableViewDataSource {
             bookAuth = books[indexPath.row].volumeInfo.authors
             bookDescr = books[indexPath.row].volumeInfo.description
             bookImg = books[indexPath.row].volumeInfo.imageLinks?.thumbnail
+            bookRtg = books[indexPath.row].volumeInfo.averageRating
             
             performSegue(withIdentifier: "MyBookTransition", sender: self)
             print("Data Set 1")
@@ -177,6 +179,7 @@ extension MyBooksController: UITableViewDataSource {
                 bookviewVC.bTitle = bookTitle
                 bookviewVC.author = bookAuth?.joined(separator: ", ") ?? "N/A"
                 bookviewVC.descr = bookDescr
+                bookviewVC.avgRating = bookRtg
                 if let imageURLString = bookImg,
                    let imageURL = URL(string: imageURLString) {
                     DispatchQueue.global().async {

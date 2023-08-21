@@ -10,6 +10,8 @@ import Cosmos
 
 class BookView: UIViewController, UIScrollViewDelegate {
     
+    //MARK: - Page Elements
+    
     let bookImg = makeImgView(withImage: "placeholder")
     let bookTitle = makeLabel(withText: "Title")
     let bookAuthor = makeLabel(withText: "Author")
@@ -27,18 +29,24 @@ class BookView: UIViewController, UIScrollViewDelegate {
     let bottomView = BottomView()
     let pageControl = UIPageControl()
     let numberOfPages = 2
+    let rating = CosmosView()
+    let rtgNumb = makeLabel(withText: "")
+    let ratingGroup = makeStackView(withOrientation: .horizontal)
+    
+    //MARK: - Segue Values
     
     var bTitle: String?
     var author: String?
     var bImage: String?
     var descr: String?
+    var avgRating: Double?
     var recommendedBooks = [Items]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        //MARK: API Call
+        //MARK: -  API Call
         
         getRecommandations(for: bTitle!) { (recommendedBooks) in
             guard let similarBooks = recommendedBooks else {
@@ -51,11 +59,11 @@ class BookView: UIViewController, UIScrollViewDelegate {
             }
         }
         
-        //MARK: Collection View
+        //MARK: -  Collection View
         moreCollection.dataSource = self
         moreCollection.delegate = self
         moreCollection.register(MoreByCell.self, forCellWithReuseIdentifier: "testIdentifier")
-        //MARK: Book Details
+        //MARK: -  Book Details
         bookTitle.text = bTitle
         bookAuthor.text = author
         descrContent.text = descr
@@ -82,11 +90,14 @@ class BookView: UIViewController, UIScrollViewDelegate {
         
     }
     
+    //MARK: - Setup View
     func setupBookView() {
         
         bookImg.contentMode = .scaleAspectFit
         
-        //Text Customization
+        rating.translatesAutoresizingMaskIntoConstraints = false
+                
+        //MARK: Text Customization
         bookTitle.font = SetFont.setFontStyle(.regular, 16)
         bookTitle.textColor = .label
         bookTitle.numberOfLines = 1
@@ -104,7 +115,22 @@ class BookView: UIViewController, UIScrollViewDelegate {
         moreCollMsg.font = SetFont.setFontStyle(.regular, 16)
         moreCollMsg.textColor = .label
         
-        //Book Scroll View
+        //MARK: Cosmos Customization
+        rating.rating = avgRating ?? 0
+        rating.settings.fillMode = .half
+        rating.settings.emptyBorderColor = UIColor(named: "Accent7")!
+        rating.settings.emptyColor = UIColor(named: "Accent7")!
+        rating.settings.filledColor = UIColor(named: "Accent5")!
+        rating.settings.filledBorderColor = UIColor(named: "Accent5")!
+        rating.isUserInteractionEnabled = false
+        
+        let rtgNumbNew = rating.rating
+        rtgNumb.font = SetFont.setFontStyle(.regular, 14)
+        rtgNumb.textColor = .label
+        rtgNumb.numberOfLines = 1
+        rtgNumb.text = String(format: "%.1f", rtgNumbNew)
+        
+        //MARK: Book Scroll View
         let screenBound = UIScreen.main.bounds
         let middleX = screenBound.width / 2
         let middleY = screenBound.height / 2
@@ -121,7 +147,7 @@ class BookView: UIViewController, UIScrollViewDelegate {
         bookSV.delegate = self
 
         
-        //Creating Scroll View subviews
+        //MARK: Creating Scroll View subviews
         let descrView = UIView(frame: CGRect(x: 0, y: 0, width: screenBound.width, height: screenBound.height))
         descrView.translatesAutoresizingMaskIntoConstraints = false
         descrView.backgroundColor = UIColor(named: "Accent9")
@@ -132,7 +158,7 @@ class BookView: UIViewController, UIScrollViewDelegate {
         moreByView.backgroundColor = UIColor(named: "Accent9")
         moreByView.layer.cornerRadius = moreByView.frame.size.height / 45
         
-        // Page Control
+        //MARK: Page Control
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.numberOfPages = numberOfPages
         pageControl.currentPage = 0
@@ -142,8 +168,11 @@ class BookView: UIViewController, UIScrollViewDelegate {
         //MARK: Adding the elements to the view
         stackView.addArrangedSubview(topView)
         stackView.addArrangedSubview(bottomView)
+        ratingGroup.addArrangedSubview(rating)
+        ratingGroup.addArrangedSubview(rtgNumb)
         
         topView.addSubview(bookImg)
+        topView.addSubview(ratingGroup)
         topView.addSubview(bookTitle)
         topView.addSubview(bookAuthor)
         topView.addSubview(btnStack)
@@ -164,9 +193,9 @@ class BookView: UIViewController, UIScrollViewDelegate {
         
         view.addSubview(stackView)
         
-        // Calculate the percentage of screen width and height for the image size
-        let imageWidthPercentage: CGFloat = 0.35
-        let imageHeightPercentage: CGFloat = 0.25
+        // Have the image size scale per device screen
+        let imageWidthPercentage: CGFloat = 0.32
+        let imageHeightPercentage: CGFloat = 0.22
         
         let imageWidthConstant = UIScreen.main.bounds.width * imageWidthPercentage
         let imageHeightConstant = UIScreen.main.bounds.height * imageHeightPercentage
@@ -181,7 +210,10 @@ class BookView: UIViewController, UIScrollViewDelegate {
         bookImg.widthAnchor.constraint(equalToConstant: imageWidthConstant).isActive = true
         bookImg.heightAnchor.constraint(equalToConstant: imageHeightConstant).isActive = true
         
-        bookTitle.topAnchor.constraint(equalTo: bookImg.bottomAnchor, constant: 8).isActive = true
+        ratingGroup.topAnchor.constraint(equalTo: bookImg.bottomAnchor, constant: 8).isActive = true
+        ratingGroup.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
+        
+        bookTitle.topAnchor.constraint(equalTo: rating.bottomAnchor, constant: 8).isActive = true
         bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 5).isActive = true
         bookTitle.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
         bookAuthor.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
@@ -207,13 +239,13 @@ class BookView: UIViewController, UIScrollViewDelegate {
         bookSV.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -15).isActive = true
         bookSV.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
-        //Description View Constraints
+        //MARK: Description View Constraints
         
         descrView.topAnchor.constraint(equalTo: bookSV.topAnchor).isActive = true
         descrView.leadingAnchor.constraint(equalTo: bookSV.leadingAnchor).isActive = true
         descrView.trailingAnchor.constraint(equalTo: moreByView.leadingAnchor).isActive = true
         descrView.widthAnchor.constraint(equalTo: bookSV.widthAnchor).isActive = true
-        descrView.bottomAnchor.constraint(equalTo: bookSV.bottomAnchor).isActive = true
+        descrView.bottomAnchor.constraint(equalTo: bookSV.bottomAnchor, constant: -8).isActive = true
         
         descrHeader.topAnchor.constraint(equalTo: descrView.topAnchor, constant: 15).isActive = true
         descrHeader.leadingAnchor.constraint(equalTo: descrView.leadingAnchor, constant: 15).isActive = true
@@ -223,7 +255,7 @@ class BookView: UIViewController, UIScrollViewDelegate {
         descrContent.trailingAnchor.constraint(equalTo: descrView.trailingAnchor, constant: -15).isActive = true
         descrContent.bottomAnchor.constraint(equalTo: descrView.bottomAnchor, constant: -15).isActive = true
         
-        //More View
+        //MARK: More View Constraints
         
         moreByView.topAnchor.constraint(equalTo: bookSV.topAnchor).isActive = true
         moreByView.leadingAnchor.constraint(equalTo: descrView.trailingAnchor).isActive = true
@@ -237,17 +269,23 @@ class BookView: UIViewController, UIScrollViewDelegate {
         moreCollection.topAnchor.constraint(equalTo: moreByHeader.bottomAnchor, constant: 5).isActive = true
         moreCollection.leadingAnchor.constraint(equalTo: moreByView.leadingAnchor, constant: 5).isActive = true
         moreCollection.trailingAnchor.constraint(equalTo: moreByView.trailingAnchor, constant: -5).isActive = true
-        moreCollection.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        moreCollection.bottomAnchor.constraint(equalTo: moreByView.safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
         
-        pageControl.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor, constant: 8).isActive = true
+        //MARK: Page Control Constraints
+        
+        pageControl.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor, constant: 4).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor).isActive = true
     }
     
+    //MARK: - Helper functions
+    
+    //MARK: Update Page Control
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentPage = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
         pageControl.currentPage = currentPage
     }
-        
+    
+    //MARK: Disable Vertical Scroll in paginated Scroll View
     func disableVerticalScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y > 0 {
             scrollView.contentOffset.y = 0
@@ -258,6 +296,8 @@ class BookView: UIViewController, UIScrollViewDelegate {
     }
     
 }
+
+//MARK: - Collection View Extensions
 
 extension BookView: UICollectionViewDataSource, UICollectionViewDelegate {
     
