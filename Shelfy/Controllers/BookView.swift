@@ -63,6 +63,7 @@ class BookView: UIViewController, UIScrollViewDelegate {
         moreCollection.dataSource = self
         moreCollection.delegate = self
         moreCollection.register(MoreByCell.self, forCellWithReuseIdentifier: "testIdentifier")
+        
         //MARK: -  Book Details
         bookTitle.text = bTitle
         bookAuthor.text = author
@@ -237,7 +238,7 @@ class BookView: UIViewController, UIScrollViewDelegate {
         bookSV.topAnchor.constraint(equalTo: bottomView.topAnchor).isActive = true
         bookSV.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 15).isActive = true
         bookSV.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -15).isActive = true
-        bookSV.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        bookSV.bottomAnchor.constraint(equalTo: pageControl.topAnchor, constant: 5).isActive = true
         
         //MARK: Description View Constraints
         
@@ -304,7 +305,7 @@ extension BookView: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if recommendedBooks.count == 0 {
             moreCollMsg.isHidden = false
-            moreCollMsg.text = EmptyTable.collectionMessage.randomElement()!
+            moreCollMsg.text = EmptyTable.searchMsg.randomElement()!
             moreCollection.isHidden = true
         }else{
             moreCollMsg.isHidden = true

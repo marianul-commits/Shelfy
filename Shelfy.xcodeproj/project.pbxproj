@@ -35,7 +35,7 @@
 		56B711A72A2CA41D0030DC6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56B711A62A2CA41D0030DC6E /* Assets.xcassets */; };
 		56B711AA2A2CA41D0030DC6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56B711A82A2CA41D0030DC6E /* LaunchScreen.storyboard */; };
 		56B711B22A2D50EB0030DC6E /* MyBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711B12A2D50EA0030DC6E /* MyBooksController.swift */; };
-		56B711B42A2D50FA0030DC6E /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711B32A2D50FA0030DC6E /* SearchController.swift */; };
+		56B711B42A2D50FA0030DC6E /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711B32A2D50FA0030DC6E /* SearchView.swift */; };
 		56B711B62A2D51010030DC6E /* MoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711B52A2D51010030DC6E /* MoreController.swift */; };
 		56B711B92A2D538A0030DC6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711B82A2D538A0030DC6E /* Constants.swift */; };
 		56B711BC2A2D53D70030DC6E /* SBCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B711BA2A2D53D70030DC6E /* SBCell.swift */; };
@@ -83,7 +83,7 @@
 		56B711A92A2CA41D0030DC6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56B711AB2A2CA41D0030DC6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56B711B12A2D50EA0030DC6E /* MyBooksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksController.swift; sourceTree = "<group>"; };
-		56B711B32A2D50FA0030DC6E /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		56B711B32A2D50FA0030DC6E /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		56B711B52A2D51010030DC6E /* MoreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreController.swift; sourceTree = "<group>"; };
 		56B711B82A2D538A0030DC6E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		56B711BA2A2D53D70030DC6E /* SBCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBCell.swift; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 				565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */,
 				56B711B12A2D50EA0030DC6E /* MyBooksController.swift */,
 				56BBA5902A360D78001C2779 /* BookView.swift */,
-				56B711B32A2D50FA0030DC6E /* SearchController.swift */,
+				56B711B32A2D50FA0030DC6E /* SearchView.swift */,
 				56B711B52A2D51010030DC6E /* MoreController.swift */,
 				56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */,
 				56F7C47A2A5DDBA60021F5AF /* LoginView.swift */,
@@ -419,7 +419,7 @@
 				56E0EAD22A86E5110031C4EA /* TopView.swift in Sources */,
 				56AF58F92A6DC2180045793E /* NetworkManager.swift in Sources */,
 				56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */,
-				56B711B42A2D50FA0030DC6E /* SearchController.swift in Sources */,
+				56B711B42A2D50FA0030DC6E /* SearchView.swift in Sources */,
 				5652A1862A7F27AC008F009C /* MoreByCell.swift in Sources */,
 				56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */,
 				56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */,

@@ -12,7 +12,7 @@ struct GoogleBooksResponse: Decodable {
 }
 
 func fetchBooks(completion: @escaping ([Items]?) -> Void) {
-    let urlString = "https://www.googleapis.com/books/v1/volumes?q=subject:horror&key=\(K.apiKey)"
+    let urlString = "https://www.googleapis.com/books/v1/volumes?q=orderBy=averageRating&ratingCount&key=\(K.apiKey)"
     guard let url = URL(string: urlString) else {
         completion(nil)
         return
@@ -61,6 +61,7 @@ func fetchSearch(_ search: String, completion: @escaping ([Items]?) -> Void) {
                 let title = book.volumeInfo.title?.lowercased()
                 return !(title!.contains("set") || title!.contains("bundle") || title!.contains("collection") || title!.contains("movie"))
                 }
+            completion(booksResponse.items)
         } catch {
             print("Error decoding JSON: \(error)")
             completion(nil)
@@ -69,6 +70,37 @@ func fetchSearch(_ search: String, completion: @escaping ([Items]?) -> Void) {
 
     task.resume()
 }
+
+func fetchISBN(_ isbn: String, completion: @escaping ([Items]?) -> Void) {
+    let urlString = "https://www.googleapis.com/books/v1/volumes?q=isbn:\(isbn)"
+    guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
+        completion(nil)
+        return
+    }
+
+    let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        guard let data = data else {
+            completion(nil)
+            return
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            var booksResponse = try decoder.decode(GoogleBooksResponse.self, from: data)
+            booksResponse.items =  booksResponse.items.filter{ book in
+                let title = book.volumeInfo.title?.lowercased()
+                return !(title!.contains("set") || title!.contains("bundle") || title!.contains("collection") || title!.contains("movie"))
+                }
+            completion(booksResponse.items)
+        } catch {
+            print("Error decoding JSON: \(error)")
+            completion(nil)
+        }
+    }
+
+    task.resume()
+}
+
 
 func getRecommandations(for bookTitle: String, completion: @escaping ([Items]?) -> Void) {
     let baseUrl = "https://www.googleapis.com/books/v1/volumes"

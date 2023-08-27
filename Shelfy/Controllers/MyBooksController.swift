@@ -13,12 +13,6 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var segCtrl: UISegmentedControl!
     
     var searcBar: UISearchBar!
-    let testData = EmptyTable.bookTitle
-    let authData = EmptyTable.bookAuthors
-    let descData = EmptyTable.bookDescriptions
-    let testData2 = EmptyTable.bookTitles2
-    let authData2 = EmptyTable.bookAuthors2
-    let descData2 = EmptyTable.bookDescriptions2
     var filter: [String]!
     var isThisOn = true
     var books: [Items] = []
@@ -58,7 +52,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
         searcBar.backgroundColor = UIColor.clear
         searcBar.searchBarStyle = .minimal
         searcBar.tintColor = UIColor(named: "Color1")!
-        searcBar.isHidden = testData.count <= 15
+        searcBar.isHidden = books.count <= 15
         myBooksTable.tableHeaderView = searcBar
         // API Call
         fetchBooks { (books) in
@@ -96,20 +90,20 @@ class MyBooksController: UIViewController, UITableViewDelegate {
 
 extension MyBooksController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filter = []
-        if searchText == ""
-        {
-            filter = testData
-        }
-        
-        for word in testData{
-            if word.uppercased().contains(searchText.uppercased()){
-                filter.append(word)
-            }
-        }
-        self.myBooksTable.reloadData()
-    }
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        filter = []
+//        if searchText == ""
+//        {
+//            filter =
+//        }
+//
+//        for word in testData{
+//            if word.uppercased().contains(searchText.uppercased()){
+//                filter.append(word)
+//            }
+//        }
+//        self.myBooksTable.reloadData()
+//    }
     
 }
 
@@ -119,57 +113,58 @@ extension MyBooksController: UISearchBarDelegate {
 extension MyBooksController: UITableViewDataSource {
     
     func tableView(_ myBooksTable: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isThisOn == true{
+//        if isThisOn == true{
             if books.count == 0 {
-                self.myBooksTable.setEmptyMessage(EmptyTable.message.randomElement()!)
+                self.myBooksTable.setEmptyMessage(EmptyTable.shelfMsg.randomElement()!)
             }else{
                 self.myBooksTable.restore()
             }
             return books.count
-        } else {
-            if testData2.count == 0 {
-                self.myBooksTable.setEmptyMessage(EmptyTable.message.randomElement()!)
-            }else{
-                self.myBooksTable.restore()
-            }
-            return testData2.count
+            //        } else {
+            //            if testData2.count == 0 {
+            //                self.myBooksTable.setEmptyMessage(EmptyTable.shelfMsg.randomElement()!)
+            //            }else{
+            //                self.myBooksTable.restore()
+            //            }
+            //            return testData2.count
+            //        }
         }
-    }
-    
-    // Disable table view scrolling when the data source is empty
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if isThisOn == true {
-            if books.isEmpty {
-                scrollView.isScrollEnabled = false
-            } else {
-                scrollView.isScrollEnabled = true
-            }
-        }
-        else {
-            if testData2.isEmpty {
-                scrollView.isScrollEnabled = false
-            } else {
-                scrollView.isScrollEnabled = true
-            }
-        }
-    }
-    
-    func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
-        myBooksTable.deselectRow(at: indexPath, animated: true)
         
-        if isThisOn == true {
-            bookTitle = books[indexPath.row].volumeInfo.title
-            bookAuth = books[indexPath.row].volumeInfo.authors
-            bookDescr = books[indexPath.row].volumeInfo.description
-            bookImg = books[indexPath.row].volumeInfo.imageLinks?.thumbnail
-            bookRtg = books[indexPath.row].volumeInfo.averageRating
-            
-            performSegue(withIdentifier: "MyBookTransition", sender: self)
-            print("Data Set 1")
-        } else {
-            print("Data Set 2")
+        // Disable table view scrolling when the data source is empty
+        func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+            if isThisOn == true {
+                if books.isEmpty {
+                    scrollView.isScrollEnabled = false
+                } else {
+                    scrollView.isScrollEnabled = true
+                }
+            }
+            //        else {
+            //            if testData2.isEmpty {
+            //                scrollView.isScrollEnabled = false
+            //            } else {
+            //                scrollView.isScrollEnabled = true
+            //            }
+            //        }
         }
-    }
+        
+        func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
+            myBooksTable.deselectRow(at: indexPath, animated: true)
+            
+            if isThisOn == true {
+                bookTitle = books[indexPath.row].volumeInfo.title
+                bookAuth = books[indexPath.row].volumeInfo.authors
+                bookDescr = books[indexPath.row].volumeInfo.description
+                bookImg = books[indexPath.row].volumeInfo.imageLinks?.thumbnail
+                bookRtg = books[indexPath.row].volumeInfo.averageRating
+                
+                performSegue(withIdentifier: "MyBookTransition", sender: self)
+                print("Data Set 1")
+            } else {
+                print("Data Set 2")
+            }
+        }
+//    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MyBookTransition" {

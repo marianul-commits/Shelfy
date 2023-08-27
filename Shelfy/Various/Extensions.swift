@@ -10,12 +10,11 @@ import UIKit
 extension UITableView {
     
     func setEmptyMessage(_ message: String) {
-        let padding = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 30)
-        let container = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
-        let messageLabel = UILabel(frame: container)
-        messageLabel.frame = container.inset(by: padding)
+        
+        let messageLabel = UILabel()
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.text = message
-        messageLabel.textColor = .black
+        messageLabel.textColor = .label
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.font = SetFont.setFontStyle(.medium, 16)
@@ -23,6 +22,18 @@ extension UITableView {
         
         self.backgroundView = messageLabel
         self.separatorStyle = .none
+        
+        // Add the messageLabel as a subview
+        addSubview(messageLabel)
+        
+        // Apply constraints
+        NSLayoutConstraint.activate([
+            messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            messageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 10),
+            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -10)
+        ])
+        
     }
     
     func restore() {

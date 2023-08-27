@@ -17,7 +17,7 @@ struct VolumeInfo: Decodable{
     let title: String?
     let authors: [String]?
     let description: String?
-    let industryIdentifiers: [ISBN]
+    let industryIdentifiers: [ISBN]?
     let pageCount: Int?
     let categories: [String]?
     let averageRating: Double?
@@ -29,12 +29,12 @@ struct VolumeInfo: Decodable{
 }
 
 struct ISBN: Decodable {
-    let type: String
-    let identifier: String
+    let type: String?
+    let identifier: String?
 }
 
 struct ImageLink: Decodable {
-    let smallThumbnail: String
-    let thumbnail: String
+    let smallThumbnail: String?
+    let thumbnail: String?
 }
 

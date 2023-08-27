@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We use ISBN numbers to search for books</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We use ISBN numbers to search for books</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -24,13 +28,6 @@
 		<string>TripSans-Regular.ttf</string>
 		<string>TripSans-Medium.ttf</string>
 		<string>TripSans-Ultra.ttf</string>
-		<string>MicroPremium-Black.ttf</string>
-		<string>MicroPremium-Bold.ttf</string>
-		<string>MicroPremium-ExtraBold.ttf</string>
-		<string>MicroPremium-Light.ttf</string>
-		<string>MicroPremium-Medium.ttf</string>
-		<string>MicroPremium-Regular.ttf</string>
-		<string>MicroPremium-SemiBold.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

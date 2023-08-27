@@ -41,7 +41,7 @@
                                 <textInputTraits key="textInputTraits" textContentType="username"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your personal bookshelf in your pocket" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pgZ-ak-1oS">
-                                <rect key="frame" x="62.666666666666657" y="117" width="268" height="18.333333333333343"/>
+                                <rect key="frame" x="65.666666666666657" y="117" width="261.66666666666674" height="17.666666666666657"/>
                                 <fontDescription key="fontDescription" name="MicroPremium-Medium" family="Micro Premium" pointSize="15"/>
                                 <color key="textColor" name="Color5"/>
                                 <nil key="highlightedColor"/>
@@ -56,13 +56,13 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⎯⎯⎯           ⎯⎯⎯" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fse-ze-y86">
-                                <rect key="frame" x="121.66666666666669" y="623" width="150" height="20.666666666666629"/>
+                                <rect key="frame" x="121.66666666666669" y="623" width="150" height="20.333333333333371"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" name="Color4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p8M-hJ-QDD">
-                                <rect key="frame" x="50" y="410" width="293" height="33.333333333333314"/>
+                                <rect key="frame" x="50" y="410" width="293" height="32.666666666666686"/>
                                 <color key="backgroundColor" name="Accent6"/>
                                 <color key="tintColor" name="Accent6"/>
                                 <state key="normal" title="Button"/>
@@ -76,7 +76,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Shelfy" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="28" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Mu-rH-yKS">
-                                <rect key="frame" x="132" y="59" width="129.33333333333337" height="50"/>
+                                <rect key="frame" x="137.33333333333334" y="59" width="118.66666666666666" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="ctu-ln-L5L"/>
                                 </constraints>
@@ -85,22 +85,22 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="OR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5OO-Df-qVU">
-                                <rect key="frame" x="184.66666666666666" y="623" width="24" height="20.666666666666629"/>
+                                <rect key="frame" x="184.33333333333334" y="623" width="24.666666666666657" height="20.333333333333371"/>
                                 <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="17"/>
                                 <color key="textColor" name="Color2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLB-nU-dmg">
-                                <rect key="frame" x="44.666666666666657" y="508.00000000000006" width="304" height="34.666666666666686"/>
+                                <rect key="frame" x="45" y="508" width="303.33333333333331" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Join the Bookworm Brigade!" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oa3-V6-9mp">
-                                        <rect key="frame" x="0.0" y="0.0" width="216.66666666666666" height="34.666666666666664"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="216.33333333333334" height="34"/>
                                         <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="17"/>
                                         <color key="textColor" name="Color1"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2YG-dO-oNN">
-                                        <rect key="frame" x="216.66666666666666" y="0.0" width="87.333333333333343" height="34.666666666666664"/>
+                                        <rect key="frame" x="216.33333333333331" y="0.0" width="87" height="34"/>
                                         <color key="tintColor" name="Color1"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Register">
@@ -153,7 +153,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4fF-PU-n3J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2208.3969465648852" y="-684.50704225352115"/>
+            <point key="canvasLocation" x="-1408" y="-961"/>
         </scene>
         <!--Register View-->
         <scene sceneID="oEJ-5Z-Sam">
@@ -174,7 +174,7 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Embark on Your Reading Journey with Shelfy!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndk-Hv-ugZ">
-                                <rect key="frame" x="21" y="132" width="351.33333333333331" height="20.666666666666657"/>
+                                <rect key="frame" x="23" y="132" width="347" height="20"/>
                                 <fontDescription key="fontDescription" name="MicroPremium-Medium" family="Micro Premium" pointSize="17"/>
                                 <color key="textColor" name="Color5"/>
                                 <nil key="highlightedColor"/>
@@ -241,7 +241,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7f-0K-vUC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1187.0229007633586" y="-976.05633802816908"/>
+            <point key="canvasLocation" x="-396" y="-961"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="bsy-HZ-EaT">
@@ -259,12 +259,12 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="QGu-07-A1G"/>
                         <segue destination="u9S-4C-H3f" kind="relationship" relationship="viewControllers" id="K3H-vk-EMT"/>
                         <segue destination="Ada-nk-9kS" kind="relationship" relationship="viewControllers" id="mLs-WO-oTQ"/>
-                        <segue destination="tbd-RV-ZSx" kind="relationship" relationship="viewControllers" id="HgA-9w-I57"/>
+                        <segue destination="Dmd-6u-g9C" kind="relationship" relationship="viewControllers" id="HgA-9w-I57"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CMk-YZ-G7R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1187" y="-227"/>
+            <point key="canvasLocation" x="-1407" y="-227"/>
         </scene>
         <!--Home-->
         <scene sceneID="tne-QT-ifu">
@@ -443,7 +443,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-384" y="-976"/>
+            <point key="canvasLocation" x="-396" y="-227"/>
         </scene>
         <!--My Books Controller-->
         <scene sceneID="MC6-2C-6QS">
@@ -505,7 +505,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XdP-Lk-5pQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="410" y="-227"/>
+            <point key="canvasLocation" x="1336.6412213740457" y="-227.46478873239437"/>
         </scene>
         <!--Account Settings Controller-->
         <scene sceneID="QqT-cs-MtI">
@@ -595,9 +595,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M5U-Vr-Sfl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3341.2213740458014" y="559.85915492957747"/>
+            <point key="canvasLocation" x="-2318" y="1254"/>
         </scene>
-        <!--More-->
+        <!--More Controller-->
         <scene sceneID="B5N-l5-pef">
             <objects>
                 <viewController id="tbd-RV-ZSx" customClass="MoreController" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
@@ -637,29 +637,11 @@
                         <viewLayoutGuide key="safeArea" id="QKf-Af-k01"/>
                         <color key="backgroundColor" name="Background"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="More" image="ellipsis" catalog="system" id="dik-P9-CS8">
-                        <color key="badgeColor" name="Background"/>
-                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="GtZ-ph-dX6"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9xg-NK-0Vr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2627" y="560"/>
-        </scene>
-        <!--Search Controller-->
-        <scene sceneID="bqa-Kk-DZC">
-            <objects>
-                <viewController id="lcz-yJ-RiM" customClass="SearchController" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8hw-1f-VNd">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="xHW-vt-plv"/>
-                        <color key="backgroundColor" name="Background"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="6R7-Xv-Djv"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ayA-ZM-3CP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1166" y="560"/>
+            <point key="canvasLocation" x="-1408" y="1254"/>
         </scene>
         <!--Book View-->
         <scene sceneID="8Hm-d8-sjK">
@@ -674,7 +656,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UKF-a2-7lk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="409.92366412213738" y="559.85915492957747"/>
+            <point key="canvasLocation" x="1337" y="508"/>
         </scene>
         <!--My Books-->
         <scene sceneID="90z-YB-8FF">
@@ -695,11 +677,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vyu-1u-gWW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-338" y="-227"/>
+            <point key="canvasLocation" x="498" y="-227"/>
         </scene>
         <!--Search-->
         <scene sceneID="WO6-qg-Kbu">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ocR-x1-nPL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ada-nk-9kS" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Search" image="safari.fill" catalog="system" id="TyX-OR-ddU">
                         <color key="badgeColor" name="Background"/>
@@ -708,15 +691,31 @@
                     <navigationBar key="navigationBar" hidden="YES" opaque="NO" contentMode="scaleToFill" id="JH5-ek-tIi">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <navigationBarAppearance key="standardAppearance"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="lcz-yJ-RiM" kind="relationship" relationship="rootViewController" id="KfG-ul-Qxr"/>
+                        <segue destination="fGq-ly-UzI" kind="relationship" relationship="rootViewController" id="UVg-Kv-Yvd"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ocR-x1-nPL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1850" y="560"/>
+            <point key="canvasLocation" x="-396" y="508"/>
+        </scene>
+        <!--Search View-->
+        <scene sceneID="4Dv-Zw-otv">
+            <objects>
+                <viewController id="fGq-ly-UzI" customClass="SearchView" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CEa-N4-bTS">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="s2Z-Rb-mdv"/>
+                        <color key="backgroundColor" name="Background"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="45M-yc-wo3"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YGV-2l-9uH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="496.94656488549617" y="507.74647887323948"/>
         </scene>
         <!--Test View-->
         <scene sceneID="OH5-lx-dKR">
@@ -728,10 +727,11 @@
                         <viewLayoutGuide key="safeArea" id="y6b-3e-tJn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="e3b-yo-JoC"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ubx-YU-iRP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3912.2137404580153" y="-96.478873239436624"/>
+            <point key="canvasLocation" x="1337" y="1942"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MvR-E7-Y5u">
@@ -751,11 +751,50 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Ed-P3-fY7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3103" y="-685"/>
+            <point key="canvasLocation" x="-2457" y="-961"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="EHW-Au-PVU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XeB-8s-jvI" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="m2B-H9-fJF">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jvG-MN-jTW" kind="relationship" relationship="rootViewController" id="blf-fD-Y6p"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SCs-28-8Fw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="497" y="1942"/>
+        </scene>
+        <!--More-->
+        <scene sceneID="N74-14-K6E">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Dmd-6u-g9C" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="More" image="ellipsis" catalog="system" id="dik-P9-CS8">
+                        <color key="badgeColor" name="Background"/>
+                    </tabBarItem>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jEl-1S-R2W">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="tbd-RV-ZSx" kind="relationship" relationship="rootViewController" id="WlF-C9-0mp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p3L-1i-W66" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1408" y="508"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7Tl-Bm-1Je"/>
+        <segue reference="lTP-fN-Lmm"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="book.fill" catalog="system" width="128" height="95"/>
@@ -775,7 +814,7 @@
             <color red="0.63899999856948853" green="0.72500002384185791" blue="0.59600001573562622" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Accent4">
-            <color red="0.64300000667572021" green="0.63899999856948853" blue="0.46299999952316284" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68627450980392157" green="0.67450980392156867" blue="0.45490196078431372" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Accent5">
             <color red="0.15299999713897705" green="0.29800000786781311" blue="0.22699999809265137" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
