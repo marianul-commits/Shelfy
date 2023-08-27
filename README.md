@@ -23,8 +23,8 @@ The Account Page will enable users to manage their profile information, change p
 ### Home Page - ![Static Badge](https://img.shields.io/badge/status-not_working-progress?style=plastic&color=red)
 The Home Page will be the central hub of Shelfy, featuring book recommendations, tranding this day, and goal tracking
 
-### Search Page - ![Static Badge](https://img.shields.io/badge/status-in_progress-progress?style=plastic&color=yellow)
-The Search Page will allow users to search for books by title, author, or by scanning the ISBN code, making it easy to find and keep track of specific books of interest.
+### Search Page - ![Static Badge](https://img.shields.io/badge/status-working-progress?style=plastic&color=green)
+The Search Page will allow users to search for books by title, author, or by the ISBN code, making it easy to find and keep track of specific books of interest.
 
 ### Book Detail View - ![Static Badge](https://img.shields.io/badge/status-in_progress-progress?style=plastic&color=yellow)
 The Book Detail View will provide users with more in-depth information about a selected book, including ratings, description, similar books, and the option to add the book to their virtual bookshelf.
