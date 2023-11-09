@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="67y-yU-GLg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1iJ-RP-xyr">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <accessibilityOverrides isEnabled="YES"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -12,9 +12,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="MicroPremium-Bold.ttf">
-            <string>MicroPremium-Bold</string>
-        </array>
         <array key="MicroPremium-Medium.ttf">
             <string>MicroPremium-Medium</string>
         </array>
@@ -31,7 +28,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="E-Mail" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d1d-XJ-lNh">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="E-Mail" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d1d-XJ-lNh">
                                 <rect key="frame" x="10" y="281" width="373" height="33.666666666666686"/>
                                 <color key="tintColor" name="Color4"/>
                                 <constraints>
@@ -40,13 +37,7 @@
                                 <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="username"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your personal bookshelf in your pocket" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pgZ-ak-1oS">
-                                <rect key="frame" x="65.666666666666657" y="117" width="261.66666666666674" height="17.666666666666657"/>
-                                <fontDescription key="fontDescription" name="MicroPremium-Medium" family="Micro Premium" pointSize="15"/>
-                                <color key="textColor" name="Color5"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ix3-gi-HTI">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ix3-gi-HTI">
                                 <rect key="frame" x="10" y="334" width="373" height="33.666666666666686"/>
                                 <color key="tintColor" name="Color4"/>
                                 <constraints>
@@ -55,98 +46,13 @@
                                 <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⎯⎯⎯           ⎯⎯⎯" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fse-ze-y86">
-                                <rect key="frame" x="121.66666666666669" y="623" width="150" height="20.333333333333371"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" name="Color4"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p8M-hJ-QDD">
-                                <rect key="frame" x="50" y="410" width="293" height="32.666666666666686"/>
-                                <color key="backgroundColor" name="Accent6"/>
-                                <color key="tintColor" name="Accent6"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Login">
-                                    <fontDescription key="titleFontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="16"/>
-                                    <color key="baseForegroundColor" name="Accent5"/>
-                                    <color key="baseBackgroundColor" name="Accent6"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="loginPressed:" destination="aS1-Tz-96L" eventType="touchUpInside" id="ZA9-i4-dQi"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Shelfy" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="28" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Mu-rH-yKS">
-                                <rect key="frame" x="137.33333333333334" y="59" width="118.66666666666666" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="ctu-ln-L5L"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="MicroPremium-Bold" family="Micro Premium" pointSize="43"/>
-                                <color key="textColor" name="Color2"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="OR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5OO-Df-qVU">
-                                <rect key="frame" x="184.33333333333334" y="623" width="24.666666666666657" height="20.333333333333371"/>
-                                <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="17"/>
-                                <color key="textColor" name="Color2"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <stackView opaque="NO" tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLB-nU-dmg">
-                                <rect key="frame" x="45" y="508" width="303.33333333333331" height="34"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Join the Bookworm Brigade!" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="9" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oa3-V6-9mp">
-                                        <rect key="frame" x="0.0" y="0.0" width="216.33333333333334" height="34"/>
-                                        <fontDescription key="fontDescription" name="MicroPremium-Regular" family="Micro Premium" pointSize="17"/>
-                                        <color key="textColor" name="Color1"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2YG-dO-oNN">
-                                        <rect key="frame" x="216.33333333333331" y="0.0" width="87" height="34"/>
-                                        <color key="tintColor" name="Color1"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Register">
-                                            <fontDescription key="titleFontDescription" name="MicroPremium-Light" family="Micro Premium" pointSize="17"/>
-                                            <color key="baseForegroundColor" name="Color1"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <segue destination="Cx2-F4-Mmd" kind="show" identifier="registerPressed" id="0mB-fn-aoH"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="FEH-2J-46f"/>
                         <color key="backgroundColor" name="Background"/>
-                        <constraints>
-                            <constraint firstItem="2Mu-rH-yKS" firstAttribute="centerX" secondItem="FEH-2J-46f" secondAttribute="centerX" id="1sD-2p-P07"/>
-                            <constraint firstItem="p8M-hJ-QDD" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" constant="351" id="4Xt-QX-1v8"/>
-                            <constraint firstItem="5OO-Df-qVU" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" constant="564" id="Bcp-wH-CBe"/>
-                            <constraint firstItem="FEH-2J-46f" firstAttribute="trailing" secondItem="d1d-XJ-lNh" secondAttribute="trailing" constant="10" id="DgZ-Pg-H3c"/>
-                            <constraint firstItem="5OO-Df-qVU" firstAttribute="centerX" secondItem="FEH-2J-46f" secondAttribute="centerX" id="IC9-uy-d40"/>
-                            <constraint firstItem="fse-ze-y86" firstAttribute="centerX" secondItem="FEH-2J-46f" secondAttribute="centerX" id="Rg5-lM-fbq"/>
-                            <constraint firstItem="hLB-nU-dmg" firstAttribute="centerX" secondItem="v7d-mN-FK8" secondAttribute="centerX" id="Rhx-se-GyW"/>
-                            <constraint firstItem="FEH-2J-46f" firstAttribute="trailing" secondItem="ix3-gi-HTI" secondAttribute="trailing" constant="10" id="SPO-r5-xDn"/>
-                            <constraint firstItem="5OO-Df-qVU" firstAttribute="centerY" secondItem="fse-ze-y86" secondAttribute="centerY" id="VIC-EX-kdY"/>
-                            <constraint firstItem="p8M-hJ-QDD" firstAttribute="leading" secondItem="FEH-2J-46f" secondAttribute="leading" constant="50" id="aVU-zh-aBr"/>
-                            <constraint firstItem="ix3-gi-HTI" firstAttribute="leading" secondItem="FEH-2J-46f" secondAttribute="leading" constant="10" id="bdH-tp-V1n"/>
-                            <constraint firstItem="fse-ze-y86" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" constant="564" id="dXb-r3-TaI"/>
-                            <constraint firstItem="pgZ-ak-1oS" firstAttribute="centerX" secondItem="FEH-2J-46f" secondAttribute="centerX" id="elo-16-OAz"/>
-                            <constraint firstItem="FEH-2J-46f" firstAttribute="trailing" secondItem="p8M-hJ-QDD" secondAttribute="trailing" constant="50" id="fX4-5n-qde"/>
-                            <constraint firstItem="d1d-XJ-lNh" firstAttribute="leading" secondItem="FEH-2J-46f" secondAttribute="leading" constant="10" id="fc6-dh-9if"/>
-                            <constraint firstItem="hLB-nU-dmg" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" constant="449" id="gi7-Ok-zD5"/>
-                            <constraint firstItem="d1d-XJ-lNh" firstAttribute="centerX" secondItem="FEH-2J-46f" secondAttribute="centerX" id="hFQ-O8-lxi"/>
-                            <constraint firstItem="ix3-gi-HTI" firstAttribute="centerX" secondItem="FEH-2J-46f" secondAttribute="centerX" id="hVX-fv-7pd"/>
-                            <constraint firstItem="ix3-gi-HTI" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" constant="275" id="hWT-ly-Deb"/>
-                            <constraint firstItem="d1d-XJ-lNh" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" constant="222" id="p1c-UL-uwJ"/>
-                            <constraint firstItem="pgZ-ak-1oS" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" constant="58" id="pni-HG-sU8"/>
-                            <constraint firstItem="2Mu-rH-yKS" firstAttribute="top" secondItem="FEH-2J-46f" secondAttribute="top" id="q6g-hW-JKh"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="eTf-kU-ibX"/>
                     <connections>
-                        <outlet property="dashLbl" destination="fse-ze-y86" id="Y2S-vy-K7z"/>
                         <outlet property="emailField" destination="d1d-XJ-lNh" id="lXR-x8-7Qb"/>
-                        <outlet property="loginBtn" destination="p8M-hJ-QDD" id="jck-mC-fZA"/>
-                        <outlet property="orLbl" destination="5OO-Df-qVU" id="3xN-Sj-nfT"/>
                         <outlet property="pwdField" destination="ix3-gi-HTI" id="IHR-ys-9RJ"/>
                         <segue destination="67y-yU-GLg" kind="show" identifier="loginSuccess" id="lTP-fN-Lmm"/>
                     </connections>
@@ -682,7 +588,6 @@
         <!--Search-->
         <scene sceneID="WO6-qg-Kbu">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ocR-x1-nPL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ada-nk-9kS" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Search" image="safari.fill" catalog="system" id="TyX-OR-ddU">
                         <color key="badgeColor" name="Background"/>
@@ -698,6 +603,7 @@
                         <segue destination="fGq-ly-UzI" kind="relationship" relationship="rootViewController" id="UVg-Kv-Yvd"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ocR-x1-nPL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-396" y="508"/>
         </scene>
@@ -731,7 +637,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ubx-YU-iRP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1337" y="1942"/>
+            <point key="canvasLocation" x="1336.6412213740457" y="1941.549295774648"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MvR-E7-Y5u">
@@ -830,9 +736,6 @@
         </namedColor>
         <namedColor name="Background">
             <color red="0.97254901960784312" green="0.96470588235294119" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Color1">
-            <color red="0.33300000429153442" green="0.6589999794960022" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Color2">
             <color red="0.039000000804662704" green="0.62000000476837158" blue="0.52899998426437378" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

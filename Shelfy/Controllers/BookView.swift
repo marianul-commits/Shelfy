@@ -18,20 +18,20 @@ class BookView: UIViewController, UIScrollViewDelegate {
     let buyBtn = makeButton(withTitle: "Share")
     let readBtn = makeButton(withTitle: "Did Read")
     let shelfyBtn = makeButton(withTitle: "Add to Shelfy")
-    let btnStack = makeStackView(withOrientation: .horizontal)
+    let btnStack = makeStackView(withOrientation: .horizontal, withSpacing: 3.0)
     let descrHeader = makeLabel(withText: "Description")
     let moreByHeader = makeLabel(withText: "More like this")
     let descrContent = makeLabel(withText: "")
     let moreCollection = makeCollectionView()
     let moreCollMsg = makeLabel(withText: "")
-    let stackView = makeStackView(withOrientation: .vertical)
+    let stackView = makeStackView(withOrientation: .vertical, withSpacing: 3.0)
     let topView = TopView()
     let bottomView = BottomView()
     let pageControl = UIPageControl()
     let numberOfPages = 2
     let rating = CosmosView()
     let rtgNumb = makeLabel(withText: "")
-    let ratingGroup = makeStackView(withOrientation: .horizontal)
+    let ratingGroup = makeStackView(withOrientation: .horizontal, withSpacing: 3.0)
     
     //MARK: - Segue Values
     
@@ -40,6 +40,7 @@ class BookView: UIViewController, UIScrollViewDelegate {
     var bImage: String?
     var descr: String?
     var avgRating: Double?
+    var bookID: String?
     var recommendedBooks = [Items]()
     
     override func viewDidLoad() {
@@ -84,12 +85,31 @@ class BookView: UIViewController, UIScrollViewDelegate {
             bookImg.image = UIImage(named: "placeholder")
         }
         
+        readBtn.addTarget(self, action: #selector(addToReadTapped), for: .touchUpInside)
         
         setupBookView()
         
         view.backgroundColor = UIColor(named: "Background")
         
     }
+    
+    
+    //MARK: - Button actions
+    
+    @objc func addToReadTapped() {
+        let bookID = bookID! // Replace with the actual book's volume ID
+        let shelfID = SetBookshelf.setBookshelf(.have_read)
+
+        addToShelf(bookID: bookID, shelfID: shelfID) { error in
+            if let error = error {
+                print("Error adding book to shelf: \(error)")
+            } else {
+                print("Book added to shelf successfully!")
+            }
+        }
+    }
+    
+    
     
     //MARK: - Setup View
     func setupBookView() {

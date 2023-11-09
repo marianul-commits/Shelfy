@@ -9,10 +9,22 @@ import UIKit
 
 class MoreController: UIViewController {
 
+    var optBg = makeView()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        
+
+        
     }
 
+    
+    func setupMoreView() {
+        
+        
+        
+    }
 
 }

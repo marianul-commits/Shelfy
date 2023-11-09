@@ -142,3 +142,68 @@ func getRecommandations(for bookTitle: String, completion: @escaping ([Items]?) 
 
     task.resume()
 }
+
+
+func addToShelf(bookID: String, shelfID: String, completion: @escaping (Error?) -> Void) {
+    let urlString = "https://www.googleapis.com/books/v1/mylibrary/bookshelves/\(shelfID)/addVolume?volumeId=\(bookID)&key=\(K.apiKey)"
+    
+    guard let url = URL(string: urlString) else {
+        completion(NSError(domain: "Invalid URL", code: 0, userInfo: nil))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            completion(error)
+            return
+        }
+        
+        // Check the response status code and handle success/failure accordingly
+        if let httpResponse = response as? HTTPURLResponse {
+            if httpResponse.statusCode == 200 {
+                completion(nil) // Success
+            } else {
+                completion(NSError(domain: "Error adding book to shelf", code: httpResponse.statusCode, userInfo: nil))
+            }
+        } else {
+            completion(NSError(domain: "Unexpected response", code: 0, userInfo: nil))
+        }
+    }
+    
+    task.resume()
+}
+
+
+//func fetchBookshelf(bookshelfID: String, completion: @escaping (Error?) -> Void) {
+//    let urlString = "https://www.googleapis.com/books/v1/mylibrary/bookshelves/\(bookshelfID)?key=\(K.apiKey)"
+//
+//    guard let url = URL(string: urlString) else {
+//        completion(NSError(domain: "Invalid URL", code: 0, userInfo: nil))
+//        return
+//    }
+//
+//    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+//        if let error = error {
+//            completion(nil, error)
+//            return
+//        }
+//
+//        guard let data = data else {
+//            completion(nil, NSError(domain: "No data received", code: 0, userInfo: nil))
+//            return
+//        }
+//
+//        do {
+//            let decoder = JSONDecoder()
+//            let bookshelf = try decoder.decode(Bookshelf.self, from: data)
+//            completion(bookshelf, nil)
+//        } catch {
+//            completion(nil, error)
+//        }
+//    }
+//
+//    task.resume()
+//}

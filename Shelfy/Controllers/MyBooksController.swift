@@ -21,6 +21,7 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     var bookDescr: String!
     var bookImg: String!
     var bookRtg: Double?
+    var bookID: String?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -152,6 +153,7 @@ extension MyBooksController: UITableViewDataSource {
             myBooksTable.deselectRow(at: indexPath, animated: true)
             
             if isThisOn == true {
+                bookID = books[indexPath.row].id
                 bookTitle = books[indexPath.row].volumeInfo.title
                 bookAuth = books[indexPath.row].volumeInfo.authors
                 bookDescr = books[indexPath.row].volumeInfo.description
@@ -175,6 +177,7 @@ extension MyBooksController: UITableViewDataSource {
                 bookviewVC.author = bookAuth?.joined(separator: ", ") ?? "N/A"
                 bookviewVC.descr = bookDescr
                 bookviewVC.avgRating = bookRtg
+                bookviewVC.bookID = bookID
                 if let imageURLString = bookImg,
                    let imageURL = URL(string: imageURLString) {
                     DispatchQueue.global().async {

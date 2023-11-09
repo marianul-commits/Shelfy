@@ -22,17 +22,36 @@ struct K {
     static let apiKey = "AIzaSyB1oX9pSTe6WX_l86TUnvCV0MF6CqhBp04"
 }
 
-
-enum BookshelfID {
-    case favorites //0
-    case purchased //1
-    case to_read //2
-    case reading_now //3
-    case have_read //4
-    case reviewed //5
-    case recently_reviewed //6
-    case books_for_you //8
+struct SetBookshelf {
+    
+    enum BookshelfID {
+        case favorites //0
+        case purchased //1
+        case to_read //2
+        case reading_now //3
+        case have_read //4
+        case reviewed //5
+        case recently_reviewed //6
+        case books_for_you //8
+    }
+    
+    static func setBookshelf(_ location: BookshelfID) -> String{
+        
+        switch location {
+            
+        case .favorites: return "0"
+        case .purchased: return "1"
+        case .to_read: return "2"
+        case .reading_now: return "3"
+        case .have_read: return "4"
+        case .reviewed: return "5"
+        case .recently_reviewed: return "6"
+        case .books_for_you: return "8"
+            
+        }
+    }
 }
+
 
 
 
