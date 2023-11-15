@@ -97,7 +97,7 @@ func makeButton(withTitle title: String) -> UIButton {
         NSAttributedString.Key.kern: 0.5
         ])
 
-    button.setAttributedTitle(attributedText, for: .normal) // Note how not button.setTitle()
+    button.setAttributedTitle(attributedText, for: .normal)
 
     if #available(iOS 15.0, *) {
         var config = UIButton.Configuration.filled()
@@ -112,6 +112,35 @@ func makeButton(withTitle title: String) -> UIButton {
     return button
 }
 
+func makeButtonColor(withTitle title: String, withColor colour: String) -> UIButton {
+    let button = UIButton(type: .system)
+    let buttonHeight: CGFloat = 40
+    let colour = UIColor(named: colour)
+    
+    button.translatesAutoresizingMaskIntoConstraints = false
+//    button.setTitle(title, for: .normal)
+    button.contentHorizontalAlignment = .center
+    
+    let attributedText = NSMutableAttributedString(string: title, attributes: [
+        NSAttributedString.Key.font: SetFont.setFontStyle(.regular, 14),
+        NSAttributedString.Key.foregroundColor: UIColor.white,
+        NSAttributedString.Key.kern: 0.5
+        ])
+
+    button.setAttributedTitle(attributedText, for: .normal)
+
+    if #available(iOS 15.0, *) {
+        var config = UIButton.Configuration.filled()
+        config.cornerStyle = .dynamic
+        config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
+        config.baseBackgroundColor = colour
+        button.configuration = config
+    } else {
+        // Fallback on earlier versions
+    }
+    
+    return button
+}
 
 func makeButton2(withTitle title: String) -> UIButton {
     let button = UIButton(type: .system)

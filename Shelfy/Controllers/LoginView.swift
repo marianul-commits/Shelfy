@@ -27,15 +27,16 @@ class LoginView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        emailConfig()
-        passConfig()
-        pwdField.enablePasswordToggle()
+       
         setupLogin()
         
     }
     
     private func setupLogin() {
+        
+        emailConfig()
+        passConfig()
+        pwdField.enablePasswordToggle()
         
         mainLbl.textColor = UIColor(named: "Color2")
         mainLbl.font = SetFont.setFontStyle(.ultra, 40)
@@ -57,7 +58,6 @@ class LoginView: UIViewController {
         otherLbl.textColor = UIColor(named: "Color4")
         otherLbl.font = SetFont.setFontStyle(.regular, 15)
         loginBtn.frame.size = CGSize(width: 200, height: 35)
-//        spacerView.frame.size = CGSize(width: 150, height: 250)
         registerBtn.backgroundColor = .clear
         registerBtn.titleLabel?.numberOfLines = 1
         dashLbl.numberOfLines = 1

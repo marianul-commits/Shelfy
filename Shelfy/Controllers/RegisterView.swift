@@ -12,41 +12,94 @@ import Firebase
 
 class RegisterView: UIViewController, UITextFieldDelegate{
     
-    
-    @IBOutlet weak var createAccBtn: UIButton!
-    
-    @IBOutlet weak var emailField: UITextField!
-     
-    @IBOutlet weak var passField: UITextField!
-    
-    @IBOutlet weak var passField2: UITextField!
-    
-    @IBOutlet weak var backBtn: UIButton!
-    
+    var emailField = makeTextField(withPlaceholder: "E-Mail")
+    var passField = makeTextField(withPlaceholder: "Password")
+    var passField2 = makeTextField(withPlaceholder: "Confirm Password")
+    var backBtn = makeImgButton(withImg: "multiply.circle.fill")
+    var createAccBtn = makeButtonColor(withTitle: "Create Account", withColor: "Color5")
+    var registerMotto = makeLabel(withText: "Embark On Your Reading Journey With Shelfy!")
+    var spacerView = makeSpacerView()
     var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        createAccBtn.layer.cornerRadius = createAccBtn.frame.size.height / 5
+        setupLogin()
+        
+    }
+    
+    private func setupLogin() {
+        
         
         emailField.delegate = self
-        
         passField.delegate = self
-        passField.enablePasswordToggle()
         passField2.delegate = self
+        
+        passField.isSecureTextEntry = true
+        passField2.isSecureTextEntry = true
+        
+        emailField.frame.size.height = 35
+        passField.frame.size.height = 35
+        passField2.frame.size.height = 35
+        emailField.tintColor = UIColor(named: "Color1")
+        passField.tintColor = UIColor(named: "Color1")
+        passField2.tintColor = UIColor(named: "Color1")
+        
+        passField.enablePasswordToggle()
         passField2.enablePasswordToggle()
+        
         emailConfig()
         passConfig()
         passConfig2()
         
-        createAccBtn.backgroundColor = UIColor(named: "Color1")
-        createAccBtn.tintColor = UIColor(named: "Color1")
+        backBtn.frame.size.height = 35
         
+        registerMotto.textColor = UIColor(named: "Color5")
+        registerMotto.font = SetFont.setFontStyle(.medium, 17)
+        
+        createAccBtn.addTarget(self, action: #selector(createPressed), for: .touchUpInside)
+        backBtn.addTarget(self, action: #selector(backPressed), for: .touchUpInside)
+        
+        view.addSubview(backBtn)
+        view.addSubview(registerMotto)
+        view.addSubview(emailField)
+        view.addSubview(passField)
+        view.addSubview(passField2)
+        view.addSubview(createAccBtn)
+        view.addSubview(spacerView)
+        
+        let screenWidth = UIScreen.main.bounds.width
+
+        // Register Lbl Constraints
+        registerMotto.topAnchor.constraint(equalTo: backBtn.bottomAnchor, constant: 20).isActive = true
+        registerMotto.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        // Spacer View
+        spacerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1).isActive = true
+        spacerView.topAnchor.constraint(equalTo: registerMotto.bottomAnchor).isActive = true
+        // Fields Constraints
+        emailField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        emailField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        emailField.topAnchor.constraint(equalTo: spacerView.bottomAnchor, constant: 40).isActive = true
+        passField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 20).isActive = true
+        passField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        passField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        passField2.topAnchor.constraint(equalTo: passField.bottomAnchor, constant: 20).isActive = true
+        passField2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        passField2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        // Create Account Btn Constraints
+        createAccBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        createAccBtn.topAnchor.constraint(equalTo: passField2.bottomAnchor, constant: 30).isActive = true
+        // Back Btn Constraints
+        backBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        backBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.1).isActive = true
     }
     
-    @IBAction func createAcc(_ sender: Any) {
-        
+    @objc func backPressed() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @objc func createPressed() {
         if passField.text == passField2.text {
             
             if let email = emailField.text, let password = passField.text {
@@ -62,17 +115,13 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-    @IBAction func unwindSegue(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
-    }
-    
      func textFieldDidEndEditing(_ textField: UITextField) {
         validateTextFields()
         validateMailField()
         
         timer?.invalidate()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { _ in
             self.animateBorderColorChange(textField: self.passField, to: .clear)
             self.animateBorderColorChange(textField: self.passField2, to: .clear)
             self.animateBorderColorChange(textField: self.emailField, to: .clear)
