@@ -7,6 +7,17 @@
 
 import UIKit
 
+func makeTextField(withPlaceholder placeholder: String) -> UITextField {
+    let textField = UITextField()
+    
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.placeholder = placeholder
+    textField.borderStyle = .roundedRect
+    textField.font = SetFont.setFontStyle(.regular, 14)
+    textField.autocapitalizationType = .none
+    return textField
+}
+
 
 func makeLabel(withText text: String) -> UILabel {
     let label = UILabel()
@@ -104,7 +115,6 @@ func makeButton(withTitle title: String) -> UIButton {
 
 func makeButton2(withTitle title: String) -> UIButton {
     let button = UIButton(type: .system)
-    let buttonHeight: CGFloat = 40
     
     button.translatesAutoresizingMaskIntoConstraints = false
 //    button.setTitle(title, for: .normal)
