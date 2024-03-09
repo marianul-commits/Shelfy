@@ -49,7 +49,7 @@ class LoginView: UIViewController {
         emailField.tintColor = UIColor(named: "Color1")
         pwdField.tintColor = UIColor(named: "Color1")
         
-        registerTxt.textColor = UIColor(named: "Color1")
+        registerTxt.textColor = UIColor(named: "Color4")
         registerTxt.font = SetFont.setFontStyle(.regular, 17)
         dashLbl.textColor = UIColor(named: "Color4")
         dashLbl.font = SetFont.setFontStyle(.bold, 15)
@@ -139,11 +139,11 @@ class LoginView: UIViewController {
     }
     
     private func emailConfig() {
-        let color = UIColor(named: "Accent")
+        let color = UIColor(resource: .brandMint)
         let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
         imageView.tintColor = color
         let image = UIImage(systemName: "envelope.fill")
-        image?.withTintColor(color!)
+        image?.withTintColor(color)
         imageView.image = image
         imageView.contentMode = .scaleAspectFit
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
@@ -154,11 +154,11 @@ class LoginView: UIViewController {
     }
     
     private func passConfig() {
-        let color = UIColor(named: "Accent")
+        let color = UIColor(resource: .brandMint)
         let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
         imageView.tintColor = color
         let image = UIImage(systemName: "lock.fill")
-        image?.withTintColor(color!)
+        image?.withTintColor(color)
         imageView.image = image
         imageView.contentMode = .scaleAspectFit
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
@@ -177,9 +177,9 @@ class LoginView: UIViewController {
 extension UITextField {
 fileprivate func setPasswordToggleImage(_ button: UIButton) {
     if(isSecureTextEntry){
-        button.setImage(UIImage(systemName: "eye.slash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor(named: "Accent")!), for: .normal)
+        button.setImage(UIImage(systemName: "eye.slash.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor(resource: .brandMint)), for: .normal)
     }else{
-        button.setImage(UIImage(systemName: "eye.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor(named: "Accent")!), for: .normal)
+        button.setImage(UIImage(systemName: "eye.fill")?.withRenderingMode(.alwaysOriginal).withTintColor(UIColor(resource: .brandMint)), for: .normal)
 
     }
 }
@@ -187,7 +187,7 @@ fileprivate func setPasswordToggleImage(_ button: UIButton) {
  func enablePasswordToggle(){
     let button = UIButton(type: .custom)
     setPasswordToggleImage(button)
-    button.tintColor = UIColor(named: "Accent")
+     button.tintColor = UIColor(resource: .brandMint)
     button.backgroundColor = .clear
     button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
     button.frame = CGRect(x: CGFloat(self.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
