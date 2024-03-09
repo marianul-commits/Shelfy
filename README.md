@@ -18,7 +18,7 @@ Shelfy allows users to browse through a vast collection of books retrieved from 
 Users can create accounts on Shelfy by registering with their email and password.
 To Add: Guest Mode
 
-### Settigns Page - ![Static Badge](https://img.shields.io/badge/status-not_working-progress?style=plastic&color=red)
+### Settings Page - ![Static Badge](https://img.shields.io/badge/status-not_working-progress?style=plastic&color=red)
 The Settings Page will enable users to manage their goal preference(percentage or x/y), app color scheme preference.
 
 ### Home Page - ![Static Badge](https://img.shields.io/badge/status-in_progress-progress?style=plastic&color=yellow)
