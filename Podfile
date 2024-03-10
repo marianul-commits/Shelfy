@@ -1,4 +1,4 @@
-platform :ios, '13.0'
+platform :ios, '14.0'
 
 target 'Shelfy' do
 
@@ -9,5 +9,6 @@ target 'Shelfy' do
 pod 'SwipeCellKit'
 pod 'SwiftMessages'
 pod 'IQKeyboardManagerSwift'
+pod 'SkeletonView'
 
 end

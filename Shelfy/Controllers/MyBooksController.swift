@@ -6,22 +6,19 @@
 //
 
 import UIKit
+import CoreData
 
-class MyBooksController: UIViewController, UITableViewDelegate {
+class MyBooksController: UIViewController {
     
-    @IBOutlet weak var myBooksTable: UITableView!
-    @IBOutlet weak var segCtrl: UISegmentedControl!
+    var category = [BookCategory]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var addButton = UIButton(type: .custom)
+    var categoriesTable = UITableView()
+    let screenSize = UIScreen.main.bounds
+    var header = UILabel()
+    let cellHeight:CGFloat = 160
+    let padding:CGFloat = 10
     
-    var searcBar: UISearchBar!
-    var filter: [String]!
-    var isThisOn = true
-    var books: [Items] = []
-    var bookTitle: String!
-    var bookAuth: [String]!
-    var bookDescr: String!
-    var bookImg: String!
-    var bookRtg: Double?
-    var bookID: String?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -36,211 +33,184 @@ class MyBooksController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        myBooksTable.delegate = self
-        myBooksTable.dataSource = self
-        myBooksTable.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
-        myBooksTable.backgroundColor = UIColor.clear
-        myBooksTable.layer.backgroundColor = UIColor.clear.cgColor
-        // Segment Control Customization
-        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: SetFont.setFontStyle(.regular, 16)], for: .selected)
-        segCtrl.setTitleTextAttributes([NSAttributedString.Key.font: SetFont.setFontStyle(.mono, 16)], for: .normal)
-        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent5")!], for: .normal)
-        segCtrl.setTitleTextAttributes([.foregroundColor: UIColor(named: "Accent6")!], for: .selected)
-        // Search Bar as Table View header customization
-        searcBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: myBooksTable.frame.width, height: 50))
-        searcBar.delegate = self
-        searcBar.placeholder = "Find books"
-        searcBar.backgroundColor = UIColor.clear
-        searcBar.searchBarStyle = .minimal
-        searcBar.tintColor = UIColor(named: "Color1")!
-        searcBar.isHidden = books.count <= 15
-        myBooksTable.tableHeaderView = searcBar
-        // API Call
-        fetchBooks { (books) in
-            guard let books = books else {
-                print("Error fetching books")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.books = books
-                self.myBooksTable.reloadData()
-            }
-        }
+        loadCategories()
+        
+        setupView()
         
     }
-    @IBAction func segCtrlClick(_ sender: Any) {
-        switch segCtrl.selectedSegmentIndex{
-        case 0:
-            isThisOn = true
-            myBooksTable.reloadData()
-        case 1:
-            isThisOn = false
-            myBooksTable.reloadData()
-        default:
-            isThisOn = true
-        }
-    }
     
-}
-
-
-
-
-//MARK: - SearchBar Extension
-
-extension MyBooksController: UISearchBarDelegate {
-    
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        filter = []
-//        if searchText == ""
-//        {
-//            filter =
-//        }
-//
-//        for word in testData{
-//            if word.uppercased().contains(searchText.uppercased()){
-//                filter.append(word)
-//            }
-//        }
-//        self.myBooksTable.reloadData()
-//    }
-    
-}
-
-
-//MARK: - TableView Extension
-
-extension MyBooksController: UITableViewDataSource {
-    
-    func tableView(_ myBooksTable: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if isThisOn == true{
-            if books.count == 0 {
-                self.myBooksTable.setEmptyMessage(EmptyTable.shelfMsg.randomElement()!)
-            }else{
-                self.myBooksTable.restore()
-            }
-            return books.count
-            //        } else {
-            //            if testData2.count == 0 {
-            //                self.myBooksTable.setEmptyMessage(EmptyTable.shelfMsg.randomElement()!)
-            //            }else{
-            //                self.myBooksTable.restore()
-            //            }
-            //            return testData2.count
-            //        }
-        }
+    func setupView() {
         
-        // Disable table view scrolling when the data source is empty
-        func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-            if isThisOn == true {
-                if books.isEmpty {
-                    scrollView.isScrollEnabled = false
-                } else {
-                    scrollView.isScrollEnabled = true
-                }
-            }
-            //        else {
-            //            if testData2.isEmpty {
-            //                scrollView.isScrollEnabled = false
-            //            } else {
-            //                scrollView.isScrollEnabled = true
-            //            }
-            //        }
-        }
+        header.translatesAutoresizingMaskIntoConstraints = false
+        header.font = SetFont.setFontStyle(.medium, 24)
+        header.text = "Your Shelfies"
         
-        func tableView(_ myBooksTable: UITableView, didSelectRowAt indexPath: IndexPath) {
-            myBooksTable.deselectRow(at: indexPath, animated: true)
-            
-            if isThisOn == true {
-                bookID = books[indexPath.row].id
-                bookTitle = books[indexPath.row].volumeInfo.title
-                bookAuth = books[indexPath.row].volumeInfo.authors
-                bookDescr = books[indexPath.row].volumeInfo.description
-                bookImg = books[indexPath.row].volumeInfo.imageLinks?.thumbnail
-                bookRtg = books[indexPath.row].volumeInfo.averageRating
-                
-                performSegue(withIdentifier: "MyBookTransition", sender: self)
-                print("Data Set 1")
-            } else {
-                print("Data Set 2")
-            }
-        }
-//    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "MyBookTransition" {
-            if let bookviewVC = segue.destination as? BookView {
-                print("Preparing for segue with book: \(bookTitle)")
-
-                bookviewVC.bTitle = bookTitle
-                bookviewVC.author = bookAuth?.joined(separator: ", ") ?? "N/A"
-                bookviewVC.descr = bookDescr
-                bookviewVC.avgRating = bookRtg
-                bookviewVC.bookID = bookID
-                if let imageURLString = bookImg,
-                   let imageURL = URL(string: imageURLString) {
-                    DispatchQueue.global().async {
-                        if let imageData = try? Data(contentsOf: imageURL),
-                           let image = UIImage(data: imageData) {
-                            DispatchQueue.main.async {
-                                bookviewVC.bookImg.image = image
-                            }
-                        }
-                    }
-                } else {
-                    // If the book has no photo, set a placeholder image
-                    bookviewVC.bookImg.image = UIImage(named: "placeholder")
-                }
-            }
-        }
-    }
-    
-    func tableView(_ myBooksTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = myBooksTable.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MyBooksCell
-        
-        cell.clipsToBounds = true
-        cell.backgroundColor = .clear
-        cell.isUserInteractionEnabled = true
-        
-        let bookz = books[indexPath.row]
-        
-        // Data Set 1 enabled
-        if isThisOn == true {
-            
-            cell.MBTitle?.text = bookz.volumeInfo.title
-            cell.MBDescr?.text = bookz.volumeInfo.description
-            // Setting the cell author label from the API
-            let author = bookz.volumeInfo.authors
-            cell.MBAuthor?.text = (author?.joined(separator: ", ")) ?? "N/A"
-            // Setting the cell image from the API
-            if let imageURLString = bookz.volumeInfo.imageLinks?.thumbnail,
-               let imageURL = URL(string: imageURLString) {
-                DispatchQueue.global().async {
-                    if let imageData = try? Data(contentsOf: imageURL),
-                       let image = UIImage(data: imageData) {
-                        DispatchQueue.main.async {
-                            cell.MBPhoto?.image = image
-                        }
-                    }
-                }
-            } else {
-                // If the book has no photo, set a placeholder image
-                cell.MBPhoto?.image = UIImage(named: "placeholder")
-            }
-          
-            // Data Set 2 enabled
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+            config.cornerStyle = .capsule
+            config.contentInsets = NSDirectionalEdgeInsets(top: 7, leading: 5, bottom: 7, trailing: 5)
+            config.baseBackgroundColor = UIColor(resource: .brandPurple)
+            addButton.configuration = config
+            addButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         } else {
-            cell.MBTitle?.text = bookz.volumeInfo.title
-            if let author = bookz.volumeInfo.authors {
-                    cell.MBAuthor?.text = (author.joined(separator: ", "))
-                   } else {
-                    cell.MBAuthor?.text = "N/A"
-                   }
-            cell.MBDescr?.text = bookz.volumeInfo.description
+            addButton.layer.cornerRadius = 20
+            addButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+            addButton.backgroundColor = UIColor(resource: .brandPurple)
+            addButton.tintColor = .black
+            addButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         }
+        
+        categoriesTable.dataSource = self
+        categoriesTable.delegate = self
+        categoriesTable.translatesAutoresizingMaskIntoConstraints = false
+        categoriesTable.backgroundColor = .clear
+        categoriesTable.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        
+        view.addSubview(header)
+        view.addSubview(addButton)
+        view.addSubview(categoriesTable)
+        
+        
+        NSLayoutConstraint.activate([
+            
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
+            
+            categoriesTable.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 12),
+            categoriesTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            categoriesTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            categoriesTable.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -12),
+            
+        ])
+        
+    }
+    
+    func saveCategories() {
+        
+        do {
+            try context.save()
+        } catch {
+            print("error saving \(error)")
+        }
+        
+        categoriesTable.reloadData()
+        
+    }
+    
+    func loadCategories() {
+        
+        let request: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
+        do {
+            category = try context.fetch(request)
+        } catch {
+            print("error loading: \(error)")
+        }
+        
+    }
+    
+    @objc func buttonPressed() {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add a new Shelfy", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+            
+            let newBookCategory = BookCategory(context: self.context)
+            newBookCategory.name = textField.text!
+            
+            self.category.append(newBookCategory)
+            
+            self.saveCategories()
+            
+        }
+        
+        alert.addAction(action)
+        
+        alert.addTextField { (field) in
+            textField = field
+            textField.placeholder = "Add a new Shelfy"
+            
+        }
+        
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+}
+
+extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - UITableViewDataSource
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if category.count == 0 {
+            self.categoriesTable.setEmptyMessage(EmptyTable.shelfMsg.randomElement()!)
+            return 0
+        } else {
+            self.categoriesTable.restore()
+            return category.count
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if category.isEmpty {
+            scrollView.isScrollEnabled = false
+        } else {
+            scrollView.isScrollEnabled = true
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
+        cell.textLabel?.text = category[indexPath.row].name
         return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Remove the item from the data array
+           
+            context.delete(category[indexPath.row])
+            category.remove(at: indexPath.row)
+
+            saveCategories()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return cellHeight + padding
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // Apply inset constraints
+        let verticalPadding: CGFloat = 8
+        
+        let maskLayer = CALayer()
+        maskLayer.cornerRadius = 10 // Optional: if you want round edges
+        maskLayer.backgroundColor = UIColor.white.cgColor // Set the desired background color
+        maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 4, dy: verticalPadding/2)
+        cell.layer.mask = maskLayer
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let selectedCategory = category[indexPath.row]
+        
+        let categoryVC = MyBooksCentralView()
+        
+        
+        
+        present(categoryVC, animated: true, completion: nil)
         
     }
     

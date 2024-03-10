@@ -38,27 +38,29 @@ class LoginView: UIViewController {
         passConfig()
         pwdField.enablePasswordToggle()
         
-        mainLbl.textColor = UIColor(named: "Color2")
+        mainLbl.textColor = UIColor(resource: .brandLogo)
         mainLbl.font = SetFont.setFontStyle(.ultra, 40)
-        mottoLbl.textColor = UIColor(named: "Color5")
+        mottoLbl.textColor = UIColor(resource: .brandLogo3)
         mottoLbl.font = SetFont.setFontStyle(.regular, 20)
         
         pwdField.isSecureTextEntry = true
         emailField.frame.size.height = 35
         pwdField.frame.size.height = 35
-        emailField.tintColor = UIColor(named: "Color1")
-        pwdField.tintColor = UIColor(named: "Color1")
+        emailField.tintColor = UIColor(resource: .brandMint)
+        pwdField.tintColor = UIColor(resource: .brandMint)
         
-        registerTxt.textColor = UIColor(named: "Color4")
+        registerTxt.textColor = UIColor(resource: .brandLogo2)
         registerTxt.font = SetFont.setFontStyle(.regular, 17)
-        dashLbl.textColor = UIColor(named: "Color4")
+        dashLbl.textColor = UIColor(resource: .brandLogo2)
         dashLbl.font = SetFont.setFontStyle(.bold, 15)
-        dashLbl2.textColor = UIColor(named: "Color4")
+        dashLbl2.textColor = UIColor(resource: .brandLogo2)
         dashLbl2.font = SetFont.setFontStyle(.bold, 15)
-        otherLbl.textColor = UIColor(named: "Color4")
+        otherLbl.textColor = UIColor(resource: .brandLogo2)
         otherLbl.font = SetFont.setFontStyle(.regular, 15)
         loginBtn.frame.size = CGSize(width: 200, height: 35)
+        loginBtn.tintColor = UIColor(resource: .brandLogo)
         registerBtn.backgroundColor = .clear
+        registerBtn.tintColor = UIColor(resource: .brandLogo2)
         registerBtn.titleLabel?.numberOfLines = 1
         dashLbl.numberOfLines = 1
         otherLbl.numberOfLines = 1
@@ -187,7 +189,7 @@ fileprivate func setPasswordToggleImage(_ button: UIButton) {
  func enablePasswordToggle(){
     let button = UIButton(type: .custom)
     setPasswordToggleImage(button)
-     button.tintColor = UIColor(resource: .brandMint)
+    button.tintColor = UIColor(resource: .brandMint)
     button.backgroundColor = .clear
     button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
     button.frame = CGRect(x: CGFloat(self.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))

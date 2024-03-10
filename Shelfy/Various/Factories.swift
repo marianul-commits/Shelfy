@@ -88,7 +88,7 @@ func makeButton(withTitle title: String) -> UIButton {
     let buttonHeight: CGFloat = 40
     
     button.translatesAutoresizingMaskIntoConstraints = false
-//    button.setTitle(title, for: .normal)
+    button.sizeToFit()
     button.contentHorizontalAlignment = .center
     
     let attributedText = NSMutableAttributedString(string: title, attributes: [
@@ -146,17 +146,9 @@ func makeButton2(withTitle title: String) -> UIButton {
     let button = UIButton(type: .system)
     
     button.translatesAutoresizingMaskIntoConstraints = false
-//    button.setTitle(title, for: .normal)
+    button.setTitle(title, for: .normal)
     button.contentHorizontalAlignment = .center
     
-    let attributedText = NSMutableAttributedString(string: title, attributes: [
-        NSAttributedString.Key.font: SetFont.setFontStyle(.regular, 17),
-        NSAttributedString.Key.foregroundColor: UIColor(named: "Color1"),
-        NSAttributedString.Key.kern: 0.1
-        ])
-
-    button.setAttributedTitle(attributedText, for: .normal) // Note how not button.setTitle()
-
     if #available(iOS 15.0, *) {
         var config = UIButton.Configuration.borderless()
         config.cornerStyle = .dynamic
@@ -167,6 +159,15 @@ func makeButton2(withTitle title: String) -> UIButton {
         // Fallback on earlier versions
     }
     
+    return button
+}
+
+func makeButton3(withTitle title: String) -> UIButton {
+    let button = UIButton(type: .system)
+    
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle(title, for: .normal)
+    button.contentHorizontalAlignment = .center
     return button
 }
 
@@ -212,5 +213,14 @@ func makeSearchBar(withPlaceholder placeholder: String) -> UISearchBar {
     
     return searchBar
     
+}
+
+func makeProgressBar() -> UIProgressView {
+    
+    let progressBar = UIProgressView()
+    progressBar.translatesAutoresizingMaskIntoConstraints = false
+    progressBar.progressViewStyle = .bar
+    
+    return progressBar
 }
 

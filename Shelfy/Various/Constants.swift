@@ -8,7 +8,7 @@
 import UIKit
 
 struct K {
-
+    
     static let loginIdentifier = "loginSuccess"
     static let registerIdentifier = "accCreated"
     static let createAccIdentifier = "registerAcc"
@@ -20,6 +20,23 @@ struct K {
     static let searchSegue = "SearchTransition"
     static let baseUrl = "https://www.googleapis.com/books/v1/volumes?q=orderBy=averageRating&key=\(K.apiKey)"
     static let apiKey = "AIzaSyB1oX9pSTe6WX_l86TUnvCV0MF6CqhBp04"
+    static let topGenres = [
+        "Fiction",
+        "Mystery",
+        "Thriller",
+        "Romance",
+        "Science Fiction",
+        "Fantasy",
+        "Biography",
+        "History",
+        "Self-Help",
+        "Young Adult"
+    ]
+    static let errorLbl = "Well, this is awkward. The data seems to have vanished into the digital abyss. We'll keep an eye out for its return. 👀"
+    static let placeholder = """
+                                1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut bibendum.
+                                2 Lorem ipsum dolor
+                             """
 }
 
 struct SetBookshelf {
@@ -71,7 +88,7 @@ struct SetFont {
         case medium
         case bold
         case ultra
-
+        
     }
     
     static func setFontStyle(_ style: FontStyle, _ size: CGFloat) -> UIFont  {
@@ -81,7 +98,7 @@ struct SetFont {
         case .medium: return UIFont(name: "TripSans-Medium", size: size)!
         case .bold: return UIFont(name: "TripSans-Bold", size: size)!
         case .ultra: return UIFont(name: "TripSans-Ultra", size: size)!
-
+            
         }
     }
 }

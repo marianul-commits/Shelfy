@@ -7,8 +7,8 @@
 
 import UIKit
 import FirebaseAuth
-import FirebaseCore
-import Firebase
+//import FirebaseCore
+//import Firebase
 
 class RegisterView: UIViewController, UITextFieldDelegate{
     
@@ -16,7 +16,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     var passField = makeTextField(withPlaceholder: "Password")
     var passField2 = makeTextField(withPlaceholder: "Confirm Password")
     var backBtn = makeImgButton(withImg: "multiply.circle.fill")
-    var createAccBtn = makeButtonColor(withTitle: "Create Account", withColor: "Color5")
+    var createAccBtn = makeButtonColor(withTitle: "Create Account", withColor: "brandLogo3")
     var registerMotto = makeLabel(withText: "Embark On Your Reading Journey With Shelfy!")
     var spacerView = makeSpacerView()
     var timer: Timer?
@@ -41,9 +41,9 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         emailField.frame.size.height = 35
         passField.frame.size.height = 35
         passField2.frame.size.height = 35
-        emailField.tintColor = UIColor(named: "Color1")
-        passField.tintColor = UIColor(named: "Color1")
-        passField2.tintColor = UIColor(named: "Color1")
+        emailField.tintColor = UIColor(resource: .brandDarkMint)
+        passField.tintColor = UIColor(resource: .brandDarkMint)
+        passField2.tintColor = UIColor(resource: .brandDarkMint)
         
         passField.enablePasswordToggle()
         passField2.enablePasswordToggle()
@@ -54,7 +54,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         
         backBtn.frame.size.height = 35
         
-        registerMotto.textColor = UIColor(named: "Color5")
+        registerMotto.textColor = UIColor(resource: .brandLogo3)
         registerMotto.font = SetFont.setFontStyle(.medium, 17)
         
         createAccBtn.addTarget(self, action: #selector(createPressed), for: .touchUpInside)
@@ -156,11 +156,11 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     private func emailConfig() {
-        let color = UIColor(named: "Color1")
+        let color = UIColor(resource: .brandMint)
         let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
         imageView.tintColor = color
         let image = UIImage(systemName: "envelope.fill")
-        image?.withTintColor(color!)
+        image?.withTintColor(color)
         imageView.image = image
         imageView.contentMode = .scaleAspectFit
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
@@ -171,11 +171,11 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     private func passConfig() {
-        let color = UIColor(named: "Color1")
+        let color = UIColor(resource: .brandMint)
         let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
         imageView.tintColor = color
         let image = UIImage(systemName: "lock.fill")
-        image?.withTintColor(color!)
+        image?.withTintColor(color)
         imageView.image = image
         imageView.contentMode = .scaleAspectFit
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
@@ -186,11 +186,11 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     private func passConfig2() {
-        let color = UIColor(named: "Color1")
+        let color = UIColor(resource: .brandMint)
         let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
         imageView.tintColor = color
         let image = UIImage(systemName: "lock.fill")
-        image?.withTintColor(color!)
+        image?.withTintColor(color)
         imageView.image = image
         imageView.contentMode = .scaleAspectFit
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))

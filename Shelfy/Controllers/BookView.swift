@@ -8,48 +8,79 @@
 import UIKit
 import Cosmos
 
-class BookView: UIViewController, UIScrollViewDelegate {
+class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     
     //MARK: - Page Elements
     
+    //Main Elements
     let bookImg = makeImgView(withImage: "placeholder")
     let bookTitle = makeLabel(withText: "Title")
     let bookAuthor = makeLabel(withText: "Author")
-    let buyBtn = makeButton(withTitle: "Share")
-    let readBtn = makeButton(withTitle: "Did Read")
-    let shelfyBtn = makeButton(withTitle: "Add to Shelfy")
-    let btnStack = makeStackView(withOrientation: .horizontal, withSpacing: 3.0)
+    let container = makeView()
+
+    //Ratings
+    let rating = CosmosView()
+
+    //Book Stats
+    let bookStats = makeStackView(withOrientation: .horizontal, withSpacing: 3)
+    let bookDoneStack = makeStackView(withOrientation: .vertical, withSpacing: 1)
+    let bookReadingStack = makeStackView(withOrientation: .vertical, withSpacing: 1)
+    let bookToReadStack = makeStackView(withOrientation: .vertical, withSpacing: 1)
+    var bkDoneImg = UIImageView()
+    var bkToReadImg = UIImageView()
+    var bkReadingImg = UIImageView()
+    var bkDone = makeLabel(withText: "")
+    var bkToRead = makeLabel(withText: "")
+    var bkReading = makeLabel(withText: "")
+    var bkDoneLbl = makeLabel(withText: "")
+    var bkToReadLbl = makeLabel(withText: "")
+    var bkReadingLbl = makeLabel(withText: "")
+
+    //Description
     let descrHeader = makeLabel(withText: "Description")
-    let moreByHeader = makeLabel(withText: "More like this")
     let descrContent = makeLabel(withText: "")
+    
+    //More By Author
+    let moreByHeader = makeLabel(withText: "More by author")
     let moreCollection = makeCollectionView()
-    let moreCollMsg = makeLabel(withText: "")
-    let stackView = makeStackView(withOrientation: .vertical, withSpacing: 3.0)
+    
+    
+    //Screen Separation
     let topView = TopView()
     let bottomView = BottomView()
+    let stackView = makeStackView(withOrientation: .vertical, withSpacing: 5.0)
+    
+    //Bottom View Pagination
     let pageControl = UIPageControl()
     let numberOfPages = 2
-    let rating = CosmosView()
-    let rtgNumb = makeLabel(withText: "")
-    let ratingGroup = makeStackView(withOrientation: .horizontal, withSpacing: 3.0)
+    var previousPage: Int = 0
+    
+    //Add to button
+    var actionMappings: [UIAction.Identifier: UIActionHandler] = [:]
+    let addToShelfyImg = UIImage(systemName: "books.vertical")
+    let addToReadImg = UIImage(systemName: "book.closed")
+    let shareBtn = UIImage(systemName: "square.and.arrow.up")
+    var addButton = UIButton(type: .custom)
     
     //MARK: - Segue Values
     
     var bTitle: String?
-    var author: String?
-    var bImage: String?
-    var descr: String?
-    var avgRating: Double?
+    var bAuthor: String?
+    var bImage: Int?
+    var bDescr: String?
     var bookID: String?
-    var recommendedBooks = [Items]()
+
+    
+    var recommendedBooks = [OLBook]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        //MARK: -  API Call
+        //MARK: -  API Calls
         
-        getRecommandations(for: bTitle!) { (recommendedBooks) in
+        //More By Author
+        getRecommandationz( bAuthor! ) { (recommendedBooks) in
             guard let similarBooks = recommendedBooks else {
                 print("Error fetching books")
                 return
@@ -60,103 +91,188 @@ class BookView: UIViewController, UIScrollViewDelegate {
             }
         }
         
-        //MARK: -  Collection View
+        //Book Description
+        fetchBookDescription(forKey: bookID!) { description in
+            DispatchQueue.main.async {
+                if let description = description {
+                    self.descrContent.text = description
+                } else {
+                    self.descrContent.text = "Description not available"
+                }
+            }
+        }
+        
+        //Book Ratings
+        fetchBookRatings(forKey: bookID!) { ratings in
+            DispatchQueue.main.async {
+                if let ratings = ratings, let averageRating = ratings.summary?.average {
+                    self.rating.text = String(format: "%.1f", averageRating)
+                    self.rating.rating = averageRating
+                } else {
+                    self.rating.text = "0"
+                    self.rating.rating = 0.0
+                }
+            }
+        }
+        
+        //Book Stats
+        fetchBookShelves(forKey: bookID!) { shelves in
+            DispatchQueue.main.async {
+                if let shelves = shelves, let counts = shelves.counts {
+                    self.bkDone.text = String(counts.already_read!)
+                    self.bkReading.text = String(counts.currently_reading!)
+                    self.bkToRead.text = String(counts.want_to_read!)
+                } else {
+                    self.bkDone.text = "0"
+                    self.bkReading.text = "0"
+                    self.bkToRead.text = "0"
+                }
+            }
+        }
+        
+        
+        //MARK:  Collection View
         moreCollection.dataSource = self
         moreCollection.delegate = self
         moreCollection.register(MoreByCell.self, forCellWithReuseIdentifier: "testIdentifier")
         
-        //MARK: -  Book Details
-        bookTitle.text = bTitle
-        bookAuthor.text = author
-        descrContent.text = descr
-        
-        if let imageURLString = bImage,
-           let imageURL = URL(string: imageURLString) {
-            DispatchQueue.global().async {
-                if let imageData = try? Data(contentsOf: imageURL),
-                   let image = UIImage(data: imageData) {
-                    DispatchQueue.main.async {
-                        self.bookImg.image = image
-                    }
-                }
-            }
-        } else {
-            // If the book has no photo, set a placeholder image
-            bookImg.image = UIImage(named: "placeholder")
-        }
-        
-        readBtn.addTarget(self, action: #selector(addToReadTapped), for: .touchUpInside)
+
         
         setupBookView()
         
-        view.backgroundColor = UIColor(named: "Background")
+        
         
     }
-    
-    
-    //MARK: - Button actions
-    
-    @objc func addToReadTapped() {
-        let bookID = bookID! // Replace with the actual book's volume ID
-        let shelfID = SetBookshelf.setBookshelf(.have_read)
-
-        addToShelf(bookID: bookID, shelfID: shelfID) { error in
-            if let error = error {
-                print("Error adding book to shelf: \(error)")
-            } else {
-                print("Book added to shelf successfully!")
-            }
-        }
-    }
-    
     
     
     //MARK: - Setup View
     func setupBookView() {
         
+        view.backgroundColor = UIColor(resource: .background)
+        
+        container.backgroundColor = UIColor(resource: .brandPurple)
+        container.layer.cornerRadius = 16
+
+        //MARK: Book Image
+        
         bookImg.contentMode = .scaleAspectFit
         
-        rating.translatesAutoresizingMaskIntoConstraints = false
-                
-        //MARK: Text Customization
+        if let coverImage = bImage {
+            let imageURLString = "https://covers.openlibrary.org/b/id/\(coverImage)-M.jpg"
+            if let imageURL = URL(string: imageURLString) {
+                URLSession.shared.dataTask(with: imageURL) { data, response, error in
+                    if let data = data, let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            self.bookImg.image = image
+                        }
+                    }else {
+                        // If the book has no photo, set a placeholder image
+                        DispatchQueue.main.async {
+                            self.bookImg.image = UIImage(named: "placeholder")
+                        }
+                    }
+                }.resume()
+            }
+        }
+        
+        //MARK: Book Title
+        
+        bookTitle.text = bTitle
         bookTitle.font = SetFont.setFontStyle(.regular, 16)
-        bookTitle.textColor = .label
+        bookTitle.textColor = UIColor(resource: .textBG)
         bookTitle.numberOfLines = 1
         bookTitle.lineBreakMode = .byTruncatingTail
+        
+        //MARK: Book Author
+        
+        bookAuthor.text = bAuthor
         bookAuthor.font = SetFont.setFontStyle(.regular, 14)
         bookAuthor.numberOfLines = 1
         bookAuthor.lineBreakMode = .byTruncatingTail
-        bookAuthor.textColor = UIColor(named: "Accent2")
-        descrHeader.font = SetFont.setFontStyle(.medium, 16)
-        descrHeader.textColor = UIColor(named: "Color1")
-        descrContent.font = SetFont.setFontStyle(.regular, 14)
-        descrContent.textColor = .label
-        moreByHeader.font = SetFont.setFontStyle(.medium, 16)
-        moreByHeader.textColor = UIColor(named: "Color1")
-        moreCollMsg.font = SetFont.setFontStyle(.regular, 16)
-        moreCollMsg.textColor = .label
+        bookAuthor.textColor = UIColor(resource: .textBG)
         
-        //MARK: Cosmos Customization
-        rating.rating = avgRating ?? 0
-        rating.settings.fillMode = .half
-        rating.settings.emptyBorderColor = UIColor(named: "Accent7")!
-        rating.settings.emptyColor = UIColor(named: "Accent7")!
-        rating.settings.filledColor = UIColor(named: "Accent5")!
-        rating.settings.filledBorderColor = UIColor(named: "Accent5")!
+        //MARK: Book Description
+        
+        descrContent.text = bDescr
+        descrHeader.font = SetFont.setFontStyle(.medium, 16)
+        descrHeader.textColor = UIColor(resource: .textBG)
+        descrContent.font = SetFont.setFontStyle(.regular, 14)
+        descrContent.textColor = UIColor(resource: .textBG)
+        
+        //MARK: Ratings
+        
+        rating.translatesAutoresizingMaskIntoConstraints = false
+        rating.settings.fillMode = .precise
+        rating.settings.emptyBorderColor = UIColor(resource: .brandMint)
+        rating.settings.emptyColor = UIColor(resource: .brandMint)
+        rating.settings.filledColor = UIColor(resource: .brandDarkMint)
+        rating.settings.filledBorderColor = UIColor(resource: .brandDarkMint)
+        rating.settings.textColor = UIColor(resource: .textBG)
+        rating.settings.textFont = SetFont.setFontStyle(.regular, 12)
         rating.isUserInteractionEnabled = false
         
-        let rtgNumbNew = rating.rating
-        rtgNumb.font = SetFont.setFontStyle(.regular, 14)
-        rtgNumb.textColor = .label
-        rtgNumb.numberOfLines = 1
-        rtgNumb.text = String(format: "%.1f", rtgNumbNew)
+        //MARK: Book Stats
         
-        //MARK: Book Scroll View
+        bookStats.distribution = .equalCentering
+        bookDoneStack.distribution = .fillEqually
+        bookReadingStack.distribution = .fillEqually
+        bookToReadStack.distribution = .fillEqually
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(stackTapped))
+        bookStats.addGestureRecognizer(tapGesture)
+        bookStats.isUserInteractionEnabled = true
+        
+        bkDoneImg.translatesAutoresizingMaskIntoConstraints = false
+        bkDone.translatesAutoresizingMaskIntoConstraints = false
+        bkDoneLbl.translatesAutoresizingMaskIntoConstraints = false
+        bkDone.font = SetFont.setFontStyle(.regular, 14)
+        bkDone.textAlignment = .center
+        bkDoneLbl.font = SetFont.setFontStyle(.regular, 14)
+        bkDoneLbl.textAlignment = .center
+        bkDoneLbl.isHidden = true
+        bkDoneLbl.text = "Read"
+        bkDoneImg.image = UIImage(systemName: "book.closed")
+        bkDoneImg.contentMode = .scaleAspectFit
+        bkDoneImg.tintColor = UIColor(resource: .brandDarkPurple)
+        
+        bkToReadImg.translatesAutoresizingMaskIntoConstraints = false
+        bkToRead.translatesAutoresizingMaskIntoConstraints = false
+        bkToReadLbl.translatesAutoresizingMaskIntoConstraints = false
+        bkToRead.font = SetFont.setFontStyle(.regular, 14)
+        bkToRead.textAlignment = .center
+        bkToReadLbl.font = SetFont.setFontStyle(.regular, 14)
+        bkToReadLbl.textAlignment = .center
+        bkToReadLbl.isHidden = true
+        bkToReadLbl.text = "To Read"
+        bkToReadImg.image = UIImage(systemName: "bookmark")
+        bkToReadImg.contentMode = .scaleAspectFit
+        bkToReadImg.tintColor = UIColor(resource: .brandDarkPurple)
+        
+        bkReadingImg.translatesAutoresizingMaskIntoConstraints = false
+        bkReading.translatesAutoresizingMaskIntoConstraints = false
+        bkReadingLbl.translatesAutoresizingMaskIntoConstraints = false
+        bkReading.font = SetFont.setFontStyle(.regular, 14)
+        bkReading.textAlignment = .center
+        bkReadingLbl.font = SetFont.setFontStyle(.regular, 14)
+        bkReadingLbl.textAlignment = .center
+        bkReadingLbl.isHidden = true
+        bkReadingLbl.text = "Reading"
+        bkReadingImg.image = UIImage(systemName: "book")
+        bkReadingImg.contentMode = .scaleAspectFit
+        bkReadingImg.tintColor = UIColor(resource: .brandDarkPurple)
+        
+        //MARK: More By Author
+
+        moreByHeader.font = SetFont.setFontStyle(.medium, 16)
+        moreByHeader.textColor = UIColor(resource: .textBG)
+
+        //MARK: - Book Scroll View
         let screenBound = UIScreen.main.bounds
         let middleX = screenBound.width / 2
         let middleY = screenBound.height / 2
+        let scrollViewHeight: CGFloat = pageControl.currentPage == 0 ? screenBound.height * 0.5 : screenBound.height
         
-        let bookSV = UIScrollView(frame: CGRect(x: middleX, y: middleY, width: screenBound.width, height: screenBound.height))
+        let bookSV = UIScrollView(frame: CGRect(x: middleX, y: middleY, width: screenBound.width, height: scrollViewHeight))
         bookSV.translatesAutoresizingMaskIntoConstraints = false
         bookSV.contentSize = CGSize(width: screenBound.width * 2, height: screenBound.height)
         bookSV.isPagingEnabled = true
@@ -166,46 +282,77 @@ class BookView: UIViewController, UIScrollViewDelegate {
         disableVerticalScroll(bookSV)
         bookSV.layer.cornerRadius = bookSV.frame.size.height / 45
         bookSV.delegate = self
-
         
-        //MARK: Creating Scroll View subviews
+        //MARK: - Add Button Config
+        
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+            config.cornerStyle = .capsule
+            config.contentInsets = NSDirectionalEdgeInsets(top: 7, leading: 5, bottom: 7, trailing: 5)
+            config.baseBackgroundColor = UIColor(resource: .brandPurple)
+            addButton.configuration = config
+            addButton.addTarget(self, action: #selector(tapped(button:)), for: .touchUpInside)
+        } else {
+            addButton.layer.cornerRadius = 20
+            addButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+            addButton.backgroundColor = UIColor(resource: .brandPurple)
+            addButton.tintColor = .black
+            addButton.addTarget(self, action: #selector(tapped(button:)), for: .touchUpInside)
+        }
+        
+        
+        //MARK: - Creating Scroll View subviews
         let descrView = UIView(frame: CGRect(x: 0, y: 0, width: screenBound.width, height: screenBound.height))
         descrView.translatesAutoresizingMaskIntoConstraints = false
-        descrView.backgroundColor = UIColor(named: "Accent9")
+        descrView.backgroundColor = UIColor(resource: .brandMint)
         descrView.layer.cornerRadius = descrView.frame.size.height / 45
         
         let moreByView = UIView(frame: CGRect(x: screenBound.width, y: 0, width: screenBound.width, height: screenBound.height))
         moreByView.translatesAutoresizingMaskIntoConstraints = false
-        moreByView.backgroundColor = UIColor(named: "Accent9")
+        moreByView.backgroundColor = UIColor(resource: .brandMint)
         moreByView.layer.cornerRadius = moreByView.frame.size.height / 45
         
-        //MARK: Page Control
+        //MARK: - Page Control
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.numberOfPages = numberOfPages
         pageControl.currentPage = 0
-        pageControl.currentPageIndicatorTintColor = UIColor(named: "Accent5")
-        pageControl.pageIndicatorTintColor = UIColor(named: "Accent6")
+        pageControl.isUserInteractionEnabled = false
+        pageControl.currentPageIndicatorTintColor = UIColor(.white)
+        pageControl.pageIndicatorTintColor = UIColor(resource: .brandGray)
         
         //MARK: Adding the elements to the view
         stackView.addArrangedSubview(topView)
         stackView.addArrangedSubview(bottomView)
-        ratingGroup.addArrangedSubview(rating)
-        ratingGroup.addArrangedSubview(rtgNumb)
+        
+        
+        bookStats.addArrangedSubview(bookDoneStack)
+        bookDoneStack.addArrangedSubview(bkDoneLbl)
+        bookDoneStack.addArrangedSubview(bkDoneImg)
+        bookDoneStack.addArrangedSubview(bkDone)
+        
+        bookStats.addArrangedSubview(bookReadingStack)
+        bookReadingStack.addArrangedSubview(bkReadingLbl)
+        bookReadingStack.addArrangedSubview(bkReadingImg)
+        bookReadingStack.addArrangedSubview(bkReading)
+        
+        bookStats.addArrangedSubview(bookToReadStack)
+        bookToReadStack.addArrangedSubview(bkToReadLbl)
+        bookToReadStack.addArrangedSubview(bkToReadImg)
+        bookToReadStack.addArrangedSubview(bkToRead)
         
         topView.addSubview(bookImg)
-        topView.addSubview(ratingGroup)
-        topView.addSubview(bookTitle)
-        topView.addSubview(bookAuthor)
-        topView.addSubview(btnStack)
-        
-        btnStack.addArrangedSubview(shelfyBtn)
-        btnStack.addArrangedSubview(readBtn)
-        btnStack.addArrangedSubview(buyBtn)
+        topView.addSubview(addButton)
+        container.addSubview(bookTitle)
+        container.addSubview(bookAuthor)
+        container.addSubview(rating)
         
         bottomView.addSubview(bookSV)
         bottomView.addSubview(pageControl)
         
         bookSV.addSubview(descrView)
+        descrView.addSubview(bookStats)
         descrView.addSubview(descrHeader)
         descrView.addSubview(descrContent)
         bookSV.addSubview(moreByView)
@@ -213,97 +360,204 @@ class BookView: UIViewController, UIScrollViewDelegate {
         moreByView.addSubview(moreCollection)
         
         view.addSubview(stackView)
+        view.addSubview(container)
+        view.bringSubviewToFront(container)
+        
+        topView.bringSubviewToFront(bookStats)
+        topView.bringSubviewToFront(addButton)
+        
         
         // Have the image size scale per device screen
-        let imageWidthPercentage: CGFloat = 0.32
-        let imageHeightPercentage: CGFloat = 0.22
+        let imageWidthPercentage: CGFloat = 0.5
+        let imageHeightPercentage: CGFloat = 0.4
+        
+        let screenSize = UIScreen.main.bounds
+        let safeArea = view.safeAreaLayoutGuide
         
         let imageWidthConstant = UIScreen.main.bounds.width * imageWidthPercentage
         let imageHeightConstant = UIScreen.main.bounds.height * imageHeightPercentage
         
         let maxWidth = UIScreen.main.bounds.width - 45
         
-        
-        //MARK: Top View Constraints
-        
-        bookImg.topAnchor.constraint(equalTo: topView.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        bookImg.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        bookImg.widthAnchor.constraint(equalToConstant: imageWidthConstant).isActive = true
-        bookImg.heightAnchor.constraint(equalToConstant: imageHeightConstant).isActive = true
-        
-        ratingGroup.topAnchor.constraint(equalTo: bookImg.bottomAnchor, constant: 8).isActive = true
-        ratingGroup.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        
-        bookTitle.topAnchor.constraint(equalTo: rating.bottomAnchor, constant: 8).isActive = true
-        bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 5).isActive = true
-        bookTitle.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        bookAuthor.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        bookTitle.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
-        bookAuthor.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
-        
-        
-        btnStack.topAnchor.constraint(equalTo: bookAuthor.bottomAnchor, constant: 15).isActive = true
-        btnStack.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-        btnStack.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -5).isActive = true
-        btnStack.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 5).isActive = true
-        
-        topView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
-        topView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        bottomView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
-        bottomView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        //MARK: Bottom View Constraints
-        
-        bookSV.topAnchor.constraint(equalTo: bottomView.topAnchor).isActive = true
-        bookSV.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 15).isActive = true
-        bookSV.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -15).isActive = true
-        bookSV.bottomAnchor.constraint(equalTo: pageControl.topAnchor, constant: 5).isActive = true
-        
-        //MARK: Description View Constraints
-        
-        descrView.topAnchor.constraint(equalTo: bookSV.topAnchor).isActive = true
-        descrView.leadingAnchor.constraint(equalTo: bookSV.leadingAnchor).isActive = true
-        descrView.trailingAnchor.constraint(equalTo: moreByView.leadingAnchor).isActive = true
-        descrView.widthAnchor.constraint(equalTo: bookSV.widthAnchor).isActive = true
-        descrView.bottomAnchor.constraint(equalTo: bookSV.bottomAnchor, constant: -8).isActive = true
-        
-        descrHeader.topAnchor.constraint(equalTo: descrView.topAnchor, constant: 15).isActive = true
-        descrHeader.leadingAnchor.constraint(equalTo: descrView.leadingAnchor, constant: 15).isActive = true
-        
-        descrContent.topAnchor.constraint(equalTo: descrHeader.bottomAnchor, constant: 8).isActive = true
-        descrContent.leadingAnchor.constraint(equalTo: descrView.leadingAnchor,constant: 15).isActive = true
-        descrContent.trailingAnchor.constraint(equalTo: descrView.trailingAnchor, constant: -15).isActive = true
-        descrContent.bottomAnchor.constraint(equalTo: descrView.bottomAnchor, constant: -15).isActive = true
-        
-        //MARK: More View Constraints
-        
-        moreByView.topAnchor.constraint(equalTo: bookSV.topAnchor).isActive = true
-        moreByView.leadingAnchor.constraint(equalTo: descrView.trailingAnchor).isActive = true
-        moreByView.widthAnchor.constraint(equalTo: bookSV.widthAnchor).isActive = true
-        moreByView.trailingAnchor.constraint(equalTo: bookSV.trailingAnchor).isActive = true
-        moreByView.heightAnchor.constraint(equalTo: moreCollection.heightAnchor, multiplier: 1.25).isActive = true
-        
-        moreByHeader.topAnchor.constraint(equalTo: moreByView.topAnchor, constant: 15).isActive = true
-        moreByHeader.leadingAnchor.constraint(equalTo: moreByView.leadingAnchor, constant: 15).isActive = true
-        
-        moreCollection.topAnchor.constraint(equalTo: moreByHeader.bottomAnchor, constant: 5).isActive = true
-        moreCollection.leadingAnchor.constraint(equalTo: moreByView.leadingAnchor, constant: 5).isActive = true
-        moreCollection.trailingAnchor.constraint(equalTo: moreByView.trailingAnchor, constant: -5).isActive = true
-        moreCollection.bottomAnchor.constraint(equalTo: moreByView.safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
-        
-        //MARK: Page Control Constraints
-        
-        pageControl.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor, constant: 4).isActive = true
-        pageControl.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            
+            //MARK: Top View Constraints
+            
+            //Book Image
+            bookImg.topAnchor.constraint(equalTo: topView.safeAreaLayoutGuide.topAnchor, constant: 12),
+            bookImg.centerXAnchor.constraint(equalTo: topView.centerXAnchor),
+            bookImg.widthAnchor.constraint(equalToConstant: imageWidthConstant),
+            bookImg.heightAnchor.constraint(equalToConstant: imageHeightConstant),
+            
+            //Add button
+            addButton.topAnchor.constraint(greaterThanOrEqualTo: bookImg.topAnchor, constant: 12),
+            addButton.trailingAnchor.constraint(equalTo: bookImg.trailingAnchor, constant: 48),
+            
+            //Container
+            container.bottomAnchor.constraint(equalTo: bookImg.bottomAnchor),
+            container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            container.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.1),
+            //Title
+            bookTitle.topAnchor.constraint(equalTo: container.topAnchor, constant: 8),
+            bookTitle.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            bookTitle.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth),
+            //Author
+            bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 5),
+            bookAuthor.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            bookAuthor.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth),
+            bookAuthor.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -8),
+            //Ratings
+            rating.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 8),
+            rating.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            //Stats
+            bookStats.topAnchor.constraint(equalTo: bookSV.topAnchor, constant: 10),
+            bookStats.leadingAnchor.constraint(equalTo: bookSV.leadingAnchor, constant: 16),
+            bookStats.trailingAnchor.constraint(equalTo: moreByView.leadingAnchor, constant: -16),
+            
+            topView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+            topView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            bottomView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+            bottomView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            //MARK: Bottom View Constraints
+            
+            bookSV.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 40),
+            bookSV.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 15),
+            bookSV.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -15),
+            bookSV.bottomAnchor.constraint(equalTo: pageControl.topAnchor, constant: 5),
+            
+            //MARK: Description View Constraints
+            
+            descrView.topAnchor.constraint(equalTo: bookSV.topAnchor),
+            descrView.leadingAnchor.constraint(equalTo: bookSV.leadingAnchor),
+            descrView.trailingAnchor.constraint(equalTo: moreByView.leadingAnchor),
+            descrView.widthAnchor.constraint(equalTo: bookSV.widthAnchor),
+            descrView.bottomAnchor.constraint(equalTo: bookSV.bottomAnchor, constant: -8),
+            
+            descrHeader.topAnchor.constraint(equalTo: bookStats.bottomAnchor, constant: 15),
+            descrHeader.centerXAnchor.constraint(equalTo: descrView.centerXAnchor),
+            
+            descrContent.topAnchor.constraint(equalTo: descrHeader.bottomAnchor, constant: 8),
+            descrContent.leadingAnchor.constraint(equalTo: descrView.leadingAnchor,constant: 15),
+            descrContent.trailingAnchor.constraint(equalTo: descrView.trailingAnchor, constant: -15),
+            descrContent.bottomAnchor.constraint(equalTo: descrView.bottomAnchor, constant: -15),
+            
+            //MARK: More View Constraints
+            
+            moreByView.topAnchor.constraint(equalTo: bookSV.topAnchor),
+            moreByView.leadingAnchor.constraint(equalTo: descrView.trailingAnchor),
+            moreByView.widthAnchor.constraint(equalTo: bookSV.widthAnchor),
+            moreByView.trailingAnchor.constraint(equalTo: bookSV.trailingAnchor),
+            moreByView.heightAnchor.constraint(equalTo: moreCollection.heightAnchor, multiplier: 1.25),
+            
+            moreByHeader.topAnchor.constraint(equalTo: moreByView.topAnchor, constant: 15),
+            moreByHeader.centerXAnchor.constraint(equalTo: moreByView.centerXAnchor),
+            
+            moreCollection.topAnchor.constraint(equalTo: moreByHeader.bottomAnchor, constant: 5),
+            moreCollection.leadingAnchor.constraint(equalTo: moreByView.leadingAnchor, constant: 5),
+            moreCollection.trailingAnchor.constraint(equalTo: moreByView.trailingAnchor, constant: -5),
+            moreCollection.bottomAnchor.constraint(equalTo: moreByView.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            
+            //MARK: Page Control Constraints
+            
+            pageControl.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor, constant: 4),
+            pageControl.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor),
+            
+        ])
     }
     
-    //MARK: - Helper functions
+    @objc func stackTapped() {
+        bkDoneLbl.isHidden = !bkDoneLbl.isHidden
+        bkToReadLbl.isHidden = !bkToReadLbl.isHidden
+        bkReadingLbl.isHidden = !bkReadingLbl.isHidden
+    }
+    
+    
+    //MARK: - Add Button functions
+    
+    func didSelectAction(_ action: UIAction) {
+        actionMappings[action.identifier]?(action)
+    }
+    
+    @objc private func tapped(button: UIButton) {
+        
+        let tappedPoint = CGPoint(x: addButton.center.x, y: addButton.frame.maxY + addButton.frame.height)
+        
+        let chidoriMenu = ChidoriMenu(menu: sampleMenu, summonPoint: tappedPoint)
+        chidoriMenu.delegate = self
+        present(chidoriMenu, animated: true, completion: nil)
+    }
+    
+    private lazy var sampleMenu: UIMenu = {
+        var postActions: [UIAction] = []
+        
+        let addToShelfyIdentifier = UIAction.Identifier("addShelfy")
+        actionMappings[addToShelfyIdentifier] = shelfy(action:)
+        let addToShelfyAction = UIAction(title: "Add To Shelfy", image: addToShelfyImg?.withRenderingMode(.alwaysTemplate), identifier: addToShelfyIdentifier, handler: read(action:))
+        postActions.append(addToShelfyAction)
+        
+        let addToReadIdentifier = UIAction.Identifier("haveRead")
+        actionMappings[addToReadIdentifier] = read(action:)
+        let addToReadAction = UIAction(title: "Already Read", image: addToReadImg?.withRenderingMode(.alwaysTemplate), identifier: addToReadIdentifier, handler: share(action:))
+        postActions.append(addToReadAction)
+        
+        let shareBtnIdentifier = UIAction.Identifier("wishlist")
+        actionMappings[shareBtnIdentifier] = share(action:)
+        let shareBtnAction = UIAction(title: "Share", image: shareBtn?.withRenderingMode(.alwaysTemplate), identifier: shareBtnIdentifier, handler: placeholder(action:))
+        postActions.append(shareBtnAction)
+        
+        let postMenu = UIMenu(title: "Test Test", image: nil, identifier: nil, options: [], children: postActions)
+        return postMenu
+    }()
+    
+    func placeholder(action: UIAction) {
+        print("Save called")
+    }
+    
+    func shelfy(action: UIAction) {
+        print("Shelfy called")
+    }
+    
+    func read(action: UIAction) {
+        print("Read called")
+    }
+    
+    func share(action: UIAction) {
+//        let url = NSURL(string:"https://openlibrary.org\(bookID!)")
+//        let textShare = [ url ]
+//        let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
+//        activityViewController.popoverPresentationController?.sourceView = self.view
+//        self.present(activityViewController, animated: true, completion: nil)
+        if let bookID = bookID {
+            let urlString = "https://openlibrary.org\(bookID)"
+            if let url = URL(string: urlString) {
+                let textShare = [url]
+                let activityViewController = UIActivityViewController(activityItems: textShare, applicationActivities: nil)
+                activityViewController.popoverPresentationController?.sourceView = self.view
+                self.present(activityViewController, animated: true, completion: nil)
+            } else {
+                print("Invalid URL")
+            }
+        } else {
+            print("Book ID is nil")
+        }
+        
+    }
     
     //MARK: Update Page Control
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageWidth = scrollView.bounds.width
         let currentPage = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
         pageControl.currentPage = currentPage
+        
+        if currentPage != previousPage {
+            let newXOffset = CGFloat(currentPage) * scrollView.bounds.width
+            UIView.animate(withDuration: 0.5) {
+                scrollView.contentOffset = CGPoint(x: newXOffset, y: 0)
+            }
+        }
     }
     
     //MARK: Disable Vertical Scroll in paginated Scroll View
@@ -323,14 +577,6 @@ class BookView: UIViewController, UIScrollViewDelegate {
 extension BookView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if recommendedBooks.count == 0 {
-            moreCollMsg.isHidden = false
-            moreCollMsg.text = EmptyTable.searchMsg.randomElement()!
-            moreCollection.isHidden = true
-        }else{
-            moreCollMsg.isHidden = true
-            moreCollection.isHidden = false
-        }
         return recommendedBooks.count
     }
     
@@ -338,21 +584,25 @@ extension BookView: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "testIdentifier", for: indexPath) as! MoreByCell
         // Customize the cell's content based on the data
-        cell.titleLabel?.text = recommendedBooks[indexPath.row].volumeInfo.title
+        cell.titleLabel?.text = recommendedBooks[indexPath.row].title
         
-        if let imageURLString = recommendedBooks[indexPath.row].volumeInfo.imageLinks?.thumbnail,
-           let imageURL = URL(string: imageURLString) {
-            DispatchQueue.global().async {
-                if let imageData = try? Data(contentsOf: imageURL),
-                   let image = UIImage(data: imageData) {
-                    DispatchQueue.main.async {
-                        cell.imageView.image = image
+        if let coverURL = recommendedBooks[indexPath.row].cover_i {
+            let imageURLString = "https://covers.openlibrary.org/b/id/\(coverURL)-M.jpg"
+            if let imageURL = URL(string: imageURLString) {
+                URLSession.shared.dataTask(with: imageURL) { data, response, error in
+                    if let data = data, let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            cell.imageView?.image = image
+                        }
+                    } else {
+                        // If the book has no photo or there was an error downloading the image, set a placeholder image
+                        DispatchQueue.main.async {
+                            cell.imageView?.image = UIImage(named: "placeholder")
+                        }
                     }
-                }
+                    
+                }.resume()
             }
-        } else {
-            // If the book has no photo, set a placeholder image
-            cell.imageView.image = UIImage(named: "placeholder")
         }
         
         return cell

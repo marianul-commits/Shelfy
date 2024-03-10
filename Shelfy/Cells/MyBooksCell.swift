@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class MyBooksCell: UITableViewCell {
 
@@ -16,17 +17,37 @@ class MyBooksCell: UITableViewCell {
     @IBOutlet weak var MBAuthor: UILabel!
     @IBOutlet weak var MBDescr: UILabel!
     
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        MBPhoto.showAnimatedSkeleton()
+        MBDescr.showAnimatedSkeleton()
+        MBTitle.showAnimatedSkeleton()
+        MBAuthor.showAnimatedSkeleton()
+        
+        MBTitle.linesCornerRadius = 10
+        MBAuthor.linesCornerRadius = 10
+        MBDescr.linesCornerRadius = 10
+        
+        MBTitle.skeletonPaddingInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
+        MBAuthor.skeletonPaddingInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
+        MBDescr.skeletonPaddingInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
+
+        MBTitle.skeletonTextNumberOfLines = 1
+        MBAuthor.skeletonTextNumberOfLines = 1
     
 //        MBPhoto.layer.cornerRadius = MBPhoto.frame.size.height / 25
         MBPhoto.contentMode = .scaleAspectFit
         MBView.layer.cornerRadius = MBView.frame.size.height / 25
-        MBTitle.font = SetFont.setFontStyle(.medium, 16)
-        MBAuthor.font = SetFont.setFontStyle(.medium, 16)
-        MBDescr.font = SetFont.setFontStyle(.regular, 13)
 
-        
+    }
+    
+    func hideAnimation() {
+        MBPhoto.hideSkeleton()
+        MBDescr.hideSkeleton()
+        MBTitle.hideSkeleton()
+        MBAuthor.hideSkeleton()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
