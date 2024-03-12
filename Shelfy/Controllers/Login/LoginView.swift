@@ -21,6 +21,7 @@ class LoginView: UIViewController {
     let loginBtn = makeButton(withTitle: "Login")
     let spacerView = makeSpacerView(height: 40)
     let registerBtn = makeButton2(withTitle: "Register")
+    let continueAsGuest = makeButton2(withTitle: "Continue as Guest!")
 //    let textStack = makeStackView(withOrientation: .horizontal, withSpacing: 0.5)
 
     
@@ -51,22 +52,34 @@ class LoginView: UIViewController {
         
         registerTxt.textColor = UIColor(resource: .brandLogo2)
         registerTxt.font = SetFont.setFontStyle(.regular, 17)
+        
         dashLbl.textColor = UIColor(resource: .brandLogo2)
         dashLbl.font = SetFont.setFontStyle(.bold, 15)
+        
         dashLbl2.textColor = UIColor(resource: .brandLogo2)
         dashLbl2.font = SetFont.setFontStyle(.bold, 15)
+        
         otherLbl.textColor = UIColor(resource: .brandLogo2)
         otherLbl.font = SetFont.setFontStyle(.regular, 15)
+        
         loginBtn.frame.size = CGSize(width: 200, height: 35)
         loginBtn.tintColor = UIColor(resource: .brandLogo)
+        
         registerBtn.backgroundColor = .clear
         registerBtn.tintColor = UIColor(resource: .brandLogo2)
         registerBtn.titleLabel?.numberOfLines = 1
+        
+        continueAsGuest.backgroundColor = .clear
+        continueAsGuest.tintColor = UIColor(resource: .brandLogo3)
+        continueAsGuest.titleLabel?.numberOfLines = 1
+        
         dashLbl.numberOfLines = 1
         otherLbl.numberOfLines = 1
         dashLbl2.numberOfLines = 1
+        
         loginBtn.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
         registerBtn.addTarget(self, action: #selector(registerPressed), for: .touchUpInside)
+        continueAsGuest.addTarget(self, action: #selector(continuePressed), for: .touchUpInside)
 
         
         view.addSubview(mainLbl)
@@ -81,45 +94,52 @@ class LoginView: UIViewController {
         view.addSubview(dashLbl)
         view.addSubview(otherLbl)
         view.addSubview(dashLbl2)
+        view.addSubview(continueAsGuest)
         
         let screenWidth = UIScreen.main.bounds.width
 
+        NSLayoutConstraint.activate([
+        
         // Main Lbl Constraints
-        mainLbl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        mainLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        mainLbl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+        mainLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         // Motto Constraints
-        mottoLbl.topAnchor.constraint(equalTo: mainLbl.bottomAnchor, constant: 5).isActive = true
-        mottoLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        mottoLbl.topAnchor.constraint(equalTo: mainLbl.bottomAnchor, constant: 5),
+        mottoLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         // Spacer View
-        spacerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1).isActive = true
-        spacerView.topAnchor.constraint(equalTo: mottoLbl.bottomAnchor).isActive = true
+        spacerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1),
+        spacerView.topAnchor.constraint(equalTo: mottoLbl.bottomAnchor),
         // Fields Constraints
-        emailField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        emailField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        emailField.topAnchor.constraint(equalTo: spacerView.bottomAnchor, constant: 40).isActive = true
-        pwdField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 20).isActive = true
-        pwdField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        pwdField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        emailField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+        emailField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        emailField.topAnchor.constraint(equalTo: spacerView.bottomAnchor, constant: 40),
+        pwdField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 20),
+        pwdField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+        pwdField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         // Login Btn Constraints
-        loginBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginBtn.topAnchor.constraint(equalTo: pwdField.bottomAnchor, constant: 30).isActive = true
+        loginBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        loginBtn.topAnchor.constraint(equalTo: pwdField.bottomAnchor, constant: 30),
         // Register Btn Constraints
-        registerBtn.topAnchor.constraint(equalTo: loginBtn.bottomAnchor, constant: 40).isActive = true
-        registerBtn.leadingAnchor.constraint(equalTo: registerTxt.trailingAnchor, constant: 4).isActive = true
-        registerBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.1).isActive = true
-        registerBtn.centerYAnchor.constraint(equalTo: registerTxt.centerYAnchor).isActive = true
+        registerBtn.topAnchor.constraint(equalTo: loginBtn.bottomAnchor, constant: 40),
+        registerBtn.leadingAnchor.constraint(equalTo: registerTxt.trailingAnchor, constant: 4),
+        registerBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.1),
+        registerBtn.centerYAnchor.constraint(equalTo: registerTxt.centerYAnchor),
         // Register Text Constraints
-        registerTxt.topAnchor.constraint(equalTo: registerBtn.topAnchor).isActive = true
-        registerTxt.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: screenWidth * 0.1).isActive = true
+        registerTxt.topAnchor.constraint(equalTo: registerBtn.topAnchor),
+        registerTxt.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: screenWidth * 0.1),
         // Login with Constraints
-        dashLbl.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20).isActive = true
-        dashLbl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: screenWidth * 0.15).isActive = true
-        dashLbl.trailingAnchor.constraint(equalTo: otherLbl.leadingAnchor, constant: -20).isActive = true
-        otherLbl.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20).isActive = true
-        otherLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        dashLbl2.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20).isActive = true
-        dashLbl2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.15).isActive = true
+        dashLbl.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20),
+        dashLbl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: screenWidth * 0.15),
+        dashLbl.trailingAnchor.constraint(equalTo: otherLbl.leadingAnchor, constant: -20),
+        otherLbl.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20),
+        otherLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        dashLbl2.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20),
+        dashLbl2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.15),
+        // Continue Constraints
+        continueAsGuest.topAnchor.constraint(equalTo: otherLbl.bottomAnchor, constant: 20),
+        continueAsGuest.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
+        ])
     }
     
     @objc func registerPressed() {
@@ -138,6 +158,10 @@ class LoginView: UIViewController {
                     }
                 }
         }
+    }
+    
+    @objc func continuePressed() {
+        self.performSegue(withIdentifier: K.guestModeIdentifier, sender: self)
     }
     
     private func emailConfig() {

@@ -9,6 +9,7 @@ target 'Shelfy' do
 pod 'SwipeCellKit'
 pod 'SwiftMessages'
 pod 'IQKeyboardManagerSwift'
-pod 'SkeletonView'
+pod 'SkeletonView' 
+pod 'NotificationBannerSwift'
 
 end

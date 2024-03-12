@@ -9,196 +9,93 @@ import UIKit
 import CoreData
 
 class TestView: UIViewController {
+
+    // Array to store categories fetched from Core Data
+    var categories = [BookCategory]()
     
-    var category = [BookCategory]()
-    
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-    var tableView = UITableView()
-    var addButton = UIButton()
-    let cellHeight: CGFloat = 160
-    let padding: CGFloat = 10
-    let cellInset: CGFloat = 12
-    
-    
+    // Core Data context
+    var managedObjectContext: NSManagedObjectContext!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadCategories()
-        
-        // Create UITableView
-        tableView = UITableView(frame: view.bounds, style: .plain)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
-        view.addSubview(tableView)
-        
-        // Create UIButton
-        addButton = UIButton(type: .custom)
-        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.filled()
-            config.cornerStyle = .capsule
-            config.contentInsets = NSDirectionalEdgeInsets(top: 7, leading: 5, bottom: 7, trailing: 5)
-            config.baseBackgroundColor = UIColor(resource: .brandPurple)
-            addButton.configuration = config
-            addButton.addTarget(self, action: #selector(addButtonTapped(_:)), for: .touchUpInside)
-        } else {
-            addButton.layer.cornerRadius = 20
-            addButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
-            addButton.backgroundColor = UIColor(resource: .brandPurple)
-            addButton.tintColor = .black
-            addButton.addTarget(self, action: #selector(addButtonTapped(_:)), for: .touchUpInside)
+        // Setup Core Data stack
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("AppDelegate not found")
         }
+        managedObjectContext = appDelegate.persistentContainer.viewContext
+        
+        // Fetch categories from Core Data
+        fetchCategories()
+        
+        // Create and setup UI
+        setupUI()
+    }
+    
+    func setupUI() {
+        let addButton = UIButton(type: .system)
+        addButton.setTitle("Add Item", for: .normal)
+        addButton.addTarget(self, action: #selector(addItemButtonTapped), for: .touchUpInside)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(addButton)
         
-        // Set UIButton constraints
-        addButton.translatesAutoresizingMaskIntoConstraints = false
+        // Constraints for the button
         addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
-        
-        // Set UITableView constraints
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -20).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        addButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
-    func saveCategories() {
+    @objc func addItemButtonTapped() {
+        if categories.isEmpty {
+            // If categories array is empty, display an error message
+            showAlert(message: "No categories available. Please add categories.")
+        } else {
+            // If categories exist, show the category selection menu
+            showCategorySelectionMenu()
+        }
+    }
+    
+    func showCategorySelectionMenu() {
+        let alertController = UIAlertController(title: "Select Category", message: nil, preferredStyle: .actionSheet)
+        
+        // Add actions for each category
+        for category in categories {
+            let action = UIAlertAction(title: category.name, style: .default) { _ in
+                // Handle selection of category
+                self.addToCategory(category)
+            }
+            alertController.addAction(action)
+        }
+        
+        // Add cancel action
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        // Present the alert controller
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func addToCategory(_ category: BookCategory) {
+        // Handle adding item to selected category
+        print("Item added to category: \(category.name)")
+    }
+    
+    func fetchCategories() {
+        let fetchRequest: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
         
         do {
-            try context.save()
+            categories = try managedObjectContext.fetch(fetchRequest)
         } catch {
-            print("error saving \(error)")
+            print("Error fetching categories: \(error.localizedDescription)")
         }
-        
-        tableView.reloadData()
-        
     }
     
-    func loadCategories() {
-        
-        let request: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
-        do {
-            category = try context.fetch(request)
-        } catch {
-            print("error loading: \(error)")
-        }
-        
+    func showAlert(message: String) {
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
-    
-    
-    @objc func addButtonTapped(_ sender: UIButton) {
-        
-        var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add a new Shelfy", message: "", preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-        
-            let newBookCategory = BookCategory(context: self.context)
-            newBookCategory.name = textField.text!
-            
-            self.category.append(newBookCategory)
-            
-            self.saveCategories()
-            
-        }
-        
-        alert.addAction(action)
-        
-        alert.addTextField { (field) in
-            textField = field
-            textField.placeholder = "Add a new Shelfy"
-            
-        }
-        
-        present(alert, animated: true, completion: nil)
-        
-
-    }
-    
 }
 
 
-extension TestView: UITableViewDataSource, UITableViewDelegate {
-    
-    // MARK: - UITableViewDataSource
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return category.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
-        cell.textLabel?.text = category[indexPath.row].name
-        //        let horizontalPadding: CGFloat = 20
-        //        let verticalPadding: CGFloat = 8
-        //        cell.contentView.layoutMargins = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
-        return cell
-    }
-    
-    // MARK: - UITableViewDelegate
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeight + padding
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Remove the item from the data array
-           
-            context.delete(category[indexPath.row])
-            category.remove(at: indexPath.row)
 
-            saveCategories()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Apply inset constraints
-        let verticalPadding: CGFloat = 8
-        
-        let maskLayer = CALayer()
-        maskLayer.cornerRadius = 10 // Optional: if you want round edges
-        maskLayer.backgroundColor = UIColor.white.cgColor // Set the desired background color
-        maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 4, dy: verticalPadding/2)
-        cell.layer.mask = maskLayer
-    }
-    
-}
-
-
-class CustomTableViewCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureCell()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        configureCell()
-    }
-    
-    private func configureCell() {
-        // Center align the text
-        textLabel?.textAlignment = .center
-        textLabel?.font = SetFont.setFontStyle(.regular, 16)
-        
-        // Set background color to pink
-        backgroundColor = UIColor(resource: .brandPink)
-        
-        // Set corner radius
-        layer.cornerRadius = 12
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        // Adjust the frame to match the desired height
-        var frame = contentView.frame
-        frame.size.height = 80
-        contentView.frame = frame
-    }
-}

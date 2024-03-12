@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="67y-yU-GLg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1iJ-RP-xyr">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <accessibilityOverrides isEnabled="YES"/>
     <dependencies>
@@ -25,6 +25,7 @@
                     <connections>
                         <segue destination="67y-yU-GLg" kind="show" identifier="loginSuccess" id="lTP-fN-Lmm"/>
                         <segue destination="Cx2-F4-Mmd" kind="show" identifier="registerPressed" id="hJm-9B-Qbs"/>
+                        <segue destination="67y-yU-GLg" kind="show" identifier="guestMode" id="MoJ-1d-Mrc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4fF-PU-n3J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -307,7 +308,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7Tl-Bm-1Je"/>
+        <segue reference="MoJ-1d-Mrc"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="books.vertical.fill" catalog="system" width="128" height="110"/>

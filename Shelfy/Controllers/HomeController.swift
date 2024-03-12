@@ -85,6 +85,10 @@ class HomeController: UIViewController {
         
         startLoading()
         errorLbl.alpha = 0.0
+        self.imageView.alpha = 0.0
+        self.bookTitle.alpha = 0.0
+        self.bookAuthor.alpha = 0.0
+        self.errorLbl.alpha = 0.0
         
     }
     

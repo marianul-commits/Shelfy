@@ -7,10 +7,19 @@
 
 import UIKit
 import Cosmos
+import CoreData
+import NotificationBannerSwift
 
 class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     
     //MARK: - Page Elements
+    
+    //Categories
+    var categories = [BookCategory]()
+    lazy var managedObjectContext: NSManagedObjectContext = {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }()
     
     //Main Elements
     let bookImg = makeImgView(withImage: "placeholder")
@@ -129,6 +138,9 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
                 }
             }
         }
+        
+        //Categories
+        fetchCategories()
         
         
         //MARK:  Collection View
@@ -475,6 +487,18 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     }
     
     
+    //MARK: - Categories function
+    
+    func fetchCategories() {
+        let fetchRequest: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
+        do {
+            categories = try managedObjectContext.fetch(fetchRequest)
+        } catch {
+            print("Error fetching categories: \(error.localizedDescription)")
+        }
+    }
+    
+    
     //MARK: - Add Button functions
     
     func didSelectAction(_ action: UIAction) {
@@ -509,6 +533,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         postActions.append(shareBtnAction)
         
         let postMenu = UIMenu(title: "Test Test", image: nil, identifier: nil, options: [], children: postActions)
+        
         return postMenu
     }()
     
@@ -517,35 +542,100 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     }
     
     func shelfy(action: UIAction) {
-        print("Shelfy called")
+        // Dismiss the currently presented view controller if any
+        dismiss(animated: true) {
+            // Once dismissed, present the UIAlertController
+            let alertController = UIAlertController(title: "Select the Shelfy you wish to add this to", message: "", preferredStyle: .actionSheet)
+            
+            // Add actions for each category
+            for category in self.categories {
+                let action = UIAlertAction(title: category.name ?? "Unknown Category", style: .default) { [weak self] _ in
+                    self?.addToShelfy(category: category)
+                }
+                alertController.addAction(action)
+            }
+            
+            // Add cancel action
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            
+            // Present the alert controller
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    func addToShelfy(category: BookCategory) {
+        print("Added to category: \(category.name ?? "Unknown Category")")
+        
+        let successBanner = FloatingNotificationBanner(
+            title: "Success",
+            subtitle: "Book added to \(category.name!)",
+            style: .success)
+        
+        successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+        
+        do {
+            try managedObjectContext.save()
+        } catch {
+            print("error saving \(error)")
+            let errorBanner = FloatingNotificationBanner(
+                title: "Error",
+                subtitle: "Could not add book to category, \(error)",
+                style: .success)
+            
+            successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+            
+        }
+        // Implement adding item to selected category
     }
     
     func read(action: UIAction) {
-        print("Read called")
+        // Dismiss the currently presented view controller if any
+        dismiss(animated: true) {
+            // Find the "Read" category
+            if let readCategory = self.categories.first(where: { $0.name == "Read Books" }) {
+                // Add the book item to the "Read" category
+                self.addToRead(category: readCategory)
+                let successBanner = FloatingNotificationBanner(
+                    title: "Success",
+                    subtitle: "Book added to read books",
+                    style: .success)
+                
+                successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+            } else {
+                let errorBanner = FloatingNotificationBanner(
+                    title: "Error",
+                    subtitle: "Could not add book to category, check if it exists",
+                    style: .warning)
+                
+                errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+            }
+        }
     }
     
-    func share(action: UIAction) {
-//        let url = NSURL(string:"https://openlibrary.org\(bookID!)")
-//        let textShare = [ url ]
-//        let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
-//        activityViewController.popoverPresentationController?.sourceView = self.view
-//        self.present(activityViewController, animated: true, completion: nil)
-        if let bookID = bookID {
-            let urlString = "https://openlibrary.org\(bookID)"
-            if let url = URL(string: urlString) {
-                let textShare = [url]
-                let activityViewController = UIActivityViewController(activityItems: textShare, applicationActivities: nil)
-                activityViewController.popoverPresentationController?.sourceView = self.view
-                self.present(activityViewController, animated: true, completion: nil)
-            } else {
-                print("Invalid URL")
-            }
-        } else {
-            print("Book ID is nil")
+    func addToRead(category: BookCategory) {
+        do {
+            try managedObjectContext.save()
+
+        } catch {
+            print("error saving \(error)")
+
+        }
+    }
+    
+    @objc func share(action: UIAction) {
+        guard let bookURL = URL(string: "https://openlibrary.org\(bookID!)") else {
+            // Handle invalid URL
+            return
         }
         
+        dismiss(animated: true) {
+            let activityViewController = UIActivityViewController(activityItems: [bookURL], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
-    
+
     //MARK: Update Page Control
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.bounds.width

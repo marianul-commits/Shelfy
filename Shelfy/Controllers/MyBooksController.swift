@@ -131,11 +131,15 @@ class MyBooksController: UIViewController {
             
         }
         
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
         alert.addAction(action)
+        alert.addAction(cancelAction)
+        
         
         alert.addTextField { (field) in
             textField = field
-            textField.placeholder = "Add a new Shelfy"
+            textField.placeholder = "Shelfy's name"
             
         }
         
@@ -203,15 +207,12 @@ extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let selectedCategory = category[indexPath.row]
         
         let categoryVC = MyBooksCentralView()
-        
-        
-        
+        categoryVC.selectedCategory = selectedCategory
+        tableView.deselectRow(at: indexPath, animated: true)
         present(categoryVC, animated: true, completion: nil)
-        
     }
     
 }
