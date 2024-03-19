@@ -29,23 +29,6 @@ The Search Page will allow users to search for books by title, author, or by the
 ### Book Detail View - ![Static Badge](https://img.shields.io/badge/status-working-progress?style=plastic&color=green)
 The Book Detail View will provide users with more in-depth information about a selected book, including ratings, description, more from that author, and the option to add the book to their virtual bookshelf.
 
-https://private-user-images.githubusercontent.com/80788036/314262617-cf4ed37d-b8eb-4ced-8a29-2113e495ffab.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA4OTE4OTIsIm5iZiI6MTcxMDg5MTU5MiwicGF0aCI6Ii84MDc4ODAzNi8zMTQyNjI2MTctY2Y0ZWQzN2QtYjhlYi00Y2VkLThhMjktMjExM2U0OTVmZmFiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDAzMTklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwMzE5VDIzMzk1MlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRlYjllNGRkNjM5NzljN2FiMzRkNGQyZWI0YWZjNmUxMWNmMzM0Zjg2ZGIzYTg5YWNkNTQ5Njg4NmM4NzNmMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.HhlkAExSfPE9kdZQE2XAZ3Zp1uEFbur-Eu6kFkk76p8
-
-### Pictures 
-<p float="left">
-<img src=“https://private-user-images.githubusercontent.com/80788036/314262617-cf4ed37d-b8eb-4ced-8a29-2113e495ffab.png” width="22%"/>
-<img src="https://user-images.githubusercontent.com/80788036/314262624-e900a933-dc85-4793-8e66-897a6d93a175.png" alt= “” width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314262628-9851cab1-470f-4eb9-a53b-25d9a3d3a006.png" alt= “” width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314262635-e8e4ba8b-356c-4ad6-b45b-6001cfeb3f79.png" alt= “” width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314262637-1c79a6c9-4951-4ade-8959-71b2e9013ddc.png" alt= "" width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314262644-2162aad2-dde1-4b4c-af9b-042ca279d8df.png" alt= "" width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314262646-214869d9-2d8d-4547-86ae-8c43248cca01.png" alt= "" width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314262649-e02594e8-35f9-4701-a8f1-eea647035ef5.png" alt= "" width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314262651-8ac4ee3f-4047-4766-9c7b-0803f371598c.png" alt= "" width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/314264619-29282abc-873b-4cdc-8c65-949317435611.gif" alt= "" width="22%" />
-</p>
-
-
 ## Dependencies
 
 Shelfy uses the following dependencies:
