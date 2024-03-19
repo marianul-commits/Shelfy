@@ -16,7 +16,6 @@ Shelfy allows users to browse through a vast collection of books retrieved from 
 
 ### Login and Register - ![Static Badge](https://img.shields.io/badge/status-working-progress?style=plastic&color=green)
 Users can create accounts on Shelfy by registering with their email and password.
-To Add: Guest Mode
 
 ### Settings Page - ![Static Badge](https://img.shields.io/badge/status-not_working-progress?style=plastic&color=red)
 The Settings Page will enable users to manage their goal preference(percentage or x/y), app color scheme preference.
@@ -29,15 +28,19 @@ The Search Page will allow users to search for books by title, author, or by the
 
 ### Book Detail View - ![Static Badge](https://img.shields.io/badge/status-working-progress?style=plastic&color=green)
 The Book Detail View will provide users with more in-depth information about a selected book, including ratings, description, more from that author, and the option to add the book to their virtual bookshelf.
-To Add: Functionality for the "Add to" button
 
 ### Pictures 
 <p float="left">
-<img src="https://user-images.githubusercontent.com/80788036/255537663-0b0d0b3f-be0c-4449-bbd3-24ddbb951f72.png" alt= “” width="22%"/>
-<img src="https://user-images.githubusercontent.com/80788036/255537672-d9be457f-1643-4fa7-a003-b81aa4007e3e.png" alt= “” width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/255537687-e215bd9c-109d-4b03-8e88-c5b3d1ec4829.png" alt= “” width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/255537692-bc86960e-e474-4c72-8c50-761df8331d58.png" alt= “” width="22%" />
-<img src="https://user-images.githubusercontent.com/80788036/260270970-56d7cff2-ad68-4a78-aaec-f1da3e5b46c9.gif" alt= "" width="22%" />
+<img src=“https://user-images.githubusercontent.com/80788036/314262617-cf4ed37d-b8eb-4ced-8a29-2113e495ffab.png” width="22%"/>
+<img src="https://user-images.githubusercontent.com/80788036/314262624-e900a933-dc85-4793-8e66-897a6d93a175.png" alt= “” width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314262628-9851cab1-470f-4eb9-a53b-25d9a3d3a006.png" alt= “” width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314262635-e8e4ba8b-356c-4ad6-b45b-6001cfeb3f79.png" alt= “” width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314262637-1c79a6c9-4951-4ade-8959-71b2e9013ddc.png" alt= "" width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314262644-2162aad2-dde1-4b4c-af9b-042ca279d8df.png" alt= "" width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314262646-214869d9-2d8d-4547-86ae-8c43248cca01.png" alt= "" width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314262649-e02594e8-35f9-4701-a8f1-eea647035ef5.png" alt= "" width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314262651-8ac4ee3f-4047-4766-9c7b-0803f371598c.png" alt= "" width="22%" />
+<img src="https://user-images.githubusercontent.com/80788036/314264619-29282abc-873b-4cdc-8c65-949317435611.gif" alt= "" width="22%" />
 </p>
 
 
