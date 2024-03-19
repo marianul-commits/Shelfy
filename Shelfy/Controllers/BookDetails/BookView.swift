@@ -15,11 +15,23 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     //MARK: - Page Elements
     
     //Categories
-    var categories = [BookCategory]()
-    lazy var managedObjectContext: NSManagedObjectContext = {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
-    }()
+    var itemArray = [BookItem]()
+    
+    var selectedCategory : BookCategory? {
+        didSet{
+            loadItems()
+        }
+    }
+    
+    var selectedCategories: [BookCategory] = [] {
+        didSet {
+            loadItems() // Assuming you want to load items for all categories
+        }
+    }
+
+    
+    let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
     
     //Main Elements
     let bookImg = makeImgView(withImage: "placeholder")
@@ -391,6 +403,8 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         
         let maxWidth = UIScreen.main.bounds.width - 45
         
+        let widthAnch = bookTitle.widthAnchor.constraint(equalToConstant: bookTitle.intrinsicContentSize.width)
+        
         NSLayoutConstraint.activate([
             
             //MARK: Top View Constraints
@@ -488,15 +502,17 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     
     
     //MARK: - Categories function
-    
+
     func fetchCategories() {
         let fetchRequest: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
         do {
-            categories = try managedObjectContext.fetch(fetchRequest)
+            let categories = try managedObjectContext.fetch(fetchRequest)
+            selectedCategories = categories // Update selectedCategories to be an array of BookCategory
         } catch {
             print("Error fetching categories: \(error.localizedDescription)")
         }
     }
+
     
     
     //MARK: - Add Button functions
@@ -547,8 +563,9 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             // Once dismissed, present the UIAlertController
             let alertController = UIAlertController(title: "Select the Shelfy you wish to add this to", message: "", preferredStyle: .actionSheet)
             
-            // Add actions for each category
-            for category in self.categories {
+            // Add actions for each category starting from the second one
+            for categoryIndex in 1..<self.selectedCategories.count {
+                let category = self.selectedCategories[categoryIndex]
                 let action = UIAlertAction(title: category.name ?? "Unknown Category", style: .default) { [weak self] _ in
                     self?.addToShelfy(category: category)
                 }
@@ -564,8 +581,8 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         }
     }
 
+    
     func addToShelfy(category: BookCategory) {
-        print("Added to category: \(category.name ?? "Unknown Category")")
         
         let successBanner = FloatingNotificationBanner(
             title: "Success",
@@ -575,6 +592,14 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
         
         do {
+            let newBook = BookItem(context: managedObjectContext)
+            newBook.bookTitle = bTitle
+            newBook.bookDescription = bDescr
+            newBook.bookAuthor = bAuthor
+            newBook.bookCover = "\(bImage!)"
+            newBook.bookKey = bookID
+            newBook.parentCategory = category
+            
             try managedObjectContext.save()
         } catch {
             print("error saving \(error)")
@@ -586,14 +611,13 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
             
         }
-        // Implement adding item to selected category
     }
-    
+
     func read(action: UIAction) {
         // Dismiss the currently presented view controller if any
         dismiss(animated: true) {
             // Find the "Read" category
-            if let readCategory = self.categories.first(where: { $0.name == "Read Books" }) {
+            if let readCategory = self.selectedCategories.first(where: { $0.name == "Read Books" }) {
                 // Add the book item to the "Read" category
                 self.addToRead(category: readCategory)
                 let successBanner = FloatingNotificationBanner(
@@ -605,7 +629,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             } else {
                 let errorBanner = FloatingNotificationBanner(
                     title: "Error",
-                    subtitle: "Could not add book to category, check if it exists",
+                    subtitle: "Could not find 'Read Books' category",
                     style: .warning)
                 
                 errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
@@ -657,6 +681,37 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         }
         if scrollView.contentOffset.y < 0 {
             scrollView.contentOffset.y = 0
+        }
+    }
+    
+    //MARK: CoreData
+    
+    func saveItems() {
+        do{
+            try managedObjectContext.save()
+        } catch {
+            print("error saving context \(error)")
+        }
+    }
+    
+    func loadItems(with request: NSFetchRequest<BookItem> = BookItem.fetchRequest(), predicate: NSPredicate? = nil) {
+        
+        guard let selectedCategory = selectedCategory else {
+            print("Error: selectedCategory is nil")
+            return
+        }
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        do{
+            itemArray = try managedObjectContext.fetch(request)
+        } catch {
+            print("error fetching \(error)")
         }
     }
     

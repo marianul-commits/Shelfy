@@ -125,9 +125,15 @@ class MyBooksController: UIViewController {
             let newBookCategory = BookCategory(context: self.context)
             newBookCategory.name = textField.text!
             
-            self.category.append(newBookCategory)
-            
-            self.saveCategories()
+            if textField.text != " "{
+                self.category.append(newBookCategory)
+                self.saveCategories()
+            } else {
+                let error = UIAlertController(title: "Error", message: "Cannot add empty category", preferredStyle: .alert)
+                let errorAction = UIAlertAction(title: "OK", style: .default)
+                error.addAction(errorAction)
+                self.present(error, animated: true, completion: nil)
+            }
             
         }
         
@@ -211,6 +217,8 @@ extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
         
         let categoryVC = MyBooksCentralView()
         categoryVC.selectedCategory = selectedCategory
+        categoryVC.modalPresentationStyle = .popover
+        categoryVC.view.backgroundColor = UIColor(resource: .background)
         tableView.deselectRow(at: indexPath, animated: true)
         present(categoryVC, animated: true, completion: nil)
     }
