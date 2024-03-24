@@ -7,95 +7,78 @@
 
 import UIKit
 import CoreData
+import NotificationBannerSwift
+import SkeletonView
+import Cosmos
+
 
 class TestView: UIViewController {
-
-    // Array to store categories fetched from Core Data
-    var categories = [BookCategory]()
     
-    // Core Data context
-    var managedObjectContext: NSManagedObjectContext!
+    lazy var imageView = UIImageView()
+    lazy var randomBook = ""
+    lazy var coverID = ""
+    var hotContainer = UIView()
+    lazy var bookTitle = UILabel()
+    lazy var header = UILabel()
+    lazy var bookAuthor = UILabel()
+    lazy var errorLbl = UILabel()
+//    var collectionView = UICollectionView()
+    var trendingNowLbl = makeLabel(withText: "Trending Now")
 
+
+    
+    let categories = ["Home", "Tech", "Science", "Health", "Sport", "Pastime", "Business"]
+
+    var selectedButtonIndex: Int = 0
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setup Core Data stack
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            fatalError("AppDelegate not found")
-        }
-        managedObjectContext = appDelegate.persistentContainer.viewContext
         
-        // Fetch categories from Core Data
-        fetchCategories()
+        /*
+         
+         create collection view (mosaic if possible) with book genres
+         default category = random int between 0..< X -> X = total book genres
+         make it update the search
+         
+         contrary
+         make it open BookView
+         
+         */
         
-        // Create and setup UI
-        setupUI()
-    }
-    
-    func setupUI() {
-        let addButton = UIButton(type: .system)
-        addButton.setTitle("Add Item", for: .normal)
-        addButton.addTarget(self, action: #selector(addItemButtonTapped), for: .touchUpInside)
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(addButton)
-        
-        // Constraints for the button
-        addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        addButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    }
-    
-    @objc func addItemButtonTapped() {
-        if categories.isEmpty {
-            // If categories array is empty, display an error message
-            showAlert(message: "No categories available. Please add categories.")
-        } else {
-            // If categories exist, show the category selection menu
-            showCategorySelectionMenu()
-        }
-    }
-    
-    func showCategorySelectionMenu() {
-        let alertController = UIAlertController(title: "Select Category", message: nil, preferredStyle: .actionSheet)
-        
-        // Add actions for each category
-        for category in categories {
-            let action = UIAlertAction(title: category.name, style: .default) { _ in
-                // Handle selection of category
-                self.addToCategory(category)
+        pickRandomBook(fromGenre: "\(selectedButtonIndex)") { title, coverID, authorName in
+            if let title = title, let coverID = coverID {
+                self.randomBook = title
+                self.coverID = coverID
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.bookTitle.text = title
+                    self.bookAuthor.text = "By \(authorName!)"
+                    downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.imageView, placeholderImage: UIImage(resource: .placeholder))
+                    UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
+                        self.imageView.alpha = 1.0
+                        self.bookTitle.alpha = 1.0
+                        self.header.alpha = 1.0
+                        self.bookAuthor.alpha = 1.0
+                    }, completion: nil)
+                }
+            } else {
+                print("Failed to fetch a random book")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
+                        self.errorLbl.alpha = 1.0
+                        self.header.alpha = 0.0
+                    }, completion: nil)
+                    if self.bookTitle.text == nil && self.bookAuthor.text == nil || ((self.bookAuthor.text?.isEmpty) != nil) {
+                        self.errorLbl.text = K.errorLbl
+                    }
+                }
             }
-            alertController.addAction(action)
-        }
-        
-        // Add cancel action
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        // Present the alert controller
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    func addToCategory(_ category: BookCategory) {
-        // Handle adding item to selected category
-        print("Item added to category: \(category.name)")
-    }
-    
-    func fetchCategories() {
-        let fetchRequest: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
-        
-        do {
-            categories = try managedObjectContext.fetch(fetchRequest)
-        } catch {
-            print("Error fetching categories: \(error.localizedDescription)")
         }
     }
-    
-    func showAlert(message: String) {
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
-    }
-}
 
+    
+    
+}
 
 

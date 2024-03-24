@@ -15,13 +15,12 @@ class LoginView: UIViewController {
     var mainLbl = makeLabel(withText: "Shelfy")
     var mottoLbl = makeLabel(withText: "Your personal bookshelf in your pocket")
     var registerTxt = makeLabel(withText: "Join the Bookworm Brigade!")
-    var dashLbl = makeLabel(withText: "––––––––––––")
-    var dashLbl2 = makeLabel(withText: "––––––––––––")
-    var otherLbl = makeLabel(withText: "OR")
+    var dashLbl = UIView()
     let loginBtn = makeButton(withTitle: "Login")
     let spacerView = makeSpacerView(height: 40)
     let registerBtn = makeButton2(withTitle: "Register")
     let continueAsGuest = makeButton2(withTitle: "Continue as Guest!")
+    var timer: Timer?
 //    let textStack = makeStackView(withOrientation: .horizontal, withSpacing: 0.5)
 
     
@@ -34,6 +33,8 @@ class LoginView: UIViewController {
     }
     
     private func setupLogin() {
+        
+        view.backgroundColor = UIColor(resource: .background)
         
         emailConfig()
         passConfig()
@@ -53,14 +54,8 @@ class LoginView: UIViewController {
         registerTxt.textColor = UIColor(resource: .brandLogo2)
         registerTxt.font = SetFont.setFontStyle(.regular, 17)
         
-        dashLbl.textColor = UIColor(resource: .brandLogo2)
-        dashLbl.font = SetFont.setFontStyle(.bold, 15)
-        
-        dashLbl2.textColor = UIColor(resource: .brandLogo2)
-        dashLbl2.font = SetFont.setFontStyle(.bold, 15)
-        
-        otherLbl.textColor = UIColor(resource: .brandLogo2)
-        otherLbl.font = SetFont.setFontStyle(.regular, 15)
+        dashLbl.translatesAutoresizingMaskIntoConstraints = false
+        dashLbl.backgroundColor = UIColor(resource: .brandGray)
         
         loginBtn.frame.size = CGSize(width: 200, height: 35)
         loginBtn.tintColor = UIColor(resource: .brandLogo)
@@ -72,11 +67,7 @@ class LoginView: UIViewController {
         continueAsGuest.backgroundColor = .clear
         continueAsGuest.tintColor = UIColor(resource: .brandLogo3)
         continueAsGuest.titleLabel?.numberOfLines = 1
-        
-        dashLbl.numberOfLines = 1
-        otherLbl.numberOfLines = 1
-        dashLbl2.numberOfLines = 1
-        
+                
         loginBtn.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
         registerBtn.addTarget(self, action: #selector(registerPressed), for: .touchUpInside)
         continueAsGuest.addTarget(self, action: #selector(continuePressed), for: .touchUpInside)
@@ -92,8 +83,6 @@ class LoginView: UIViewController {
         view.addSubview(spacerView)
         view.addSubview(registerBtn)
         view.addSubview(dashLbl)
-        view.addSubview(otherLbl)
-        view.addSubview(dashLbl2)
         view.addSubview(continueAsGuest)
         
         let screenWidth = UIScreen.main.bounds.width
@@ -129,14 +118,11 @@ class LoginView: UIViewController {
         registerTxt.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: screenWidth * 0.1),
         // Login with Constraints
         dashLbl.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20),
-        dashLbl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: screenWidth * 0.15),
-        dashLbl.trailingAnchor.constraint(equalTo: otherLbl.leadingAnchor, constant: -20),
-        otherLbl.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20),
-        otherLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        dashLbl2.topAnchor.constraint(equalTo: registerTxt.bottomAnchor, constant: 20),
-        dashLbl2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.15),
+        dashLbl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+        dashLbl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+        dashLbl.heightAnchor.constraint(equalToConstant: 1),
         // Continue Constraints
-        continueAsGuest.topAnchor.constraint(equalTo: otherLbl.bottomAnchor, constant: 20),
+        continueAsGuest.topAnchor.constraint(equalTo: dashLbl.bottomAnchor, constant: 20),
         continueAsGuest.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
         ])
@@ -153,7 +139,12 @@ class LoginView: UIViewController {
                 Auth.auth().signIn(withEmail: email, password: password) {authResult, error in
                     if let e = error {
                         print(e)
+                            self.addShakeAnimation(to: self.emailField)
+                            self.animateBorderColorChange(textField: self.emailField, to: .red)
+                            self.addShakeAnimation(to: self.pwdField)
+                            self.animateBorderColorChange(textField: self.pwdField, to: .red)
                     } else {
+                        
                         self.performSegue(withIdentifier: K.loginIdentifier, sender: self)
                     }
                 }
@@ -161,8 +152,22 @@ class LoginView: UIViewController {
     }
     
     @objc func continuePressed() {
-        self.performSegue(withIdentifier: K.guestModeIdentifier, sender: self)
+        let guestModeVC = TabBarViewController()
+        guestModeVC.selectedIndex = 0
+        guestModeVC.modalPresentationStyle = .fullScreen
+        present(guestModeVC, animated: true, completion: nil)
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+       
+       timer?.invalidate()
+       
+       timer = Timer.scheduledTimer(withTimeInterval: 1.25, repeats: false) { _ in
+           self.animateBorderColorChange(textField: self.pwdField, to: .clear)
+           self.animateBorderColorChange(textField: self.emailField, to: .clear)
+       }
+   }
+    
     
     private func emailConfig() {
         let color = UIColor(resource: .brandMint)
@@ -194,6 +199,19 @@ class LoginView: UIViewController {
         pwdField.leftView = view
     }
     
+    func addShakeAnimation(to textField: UITextField) {
+       let shakeAnimation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+       shakeAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
+       shakeAnimation.duration = 0.6
+       shakeAnimation.values = [-10, 10, -10, 10, -5, 5, -2, 2, 0]
+       textField.layer.add(shakeAnimation, forKey: "shakeAnimation")
+   }
+   
+    func animateBorderColorChange(textField: UITextField, to color: UIColor) {
+       UIView.animate(withDuration: 0.3) {
+           textField.layer.borderColor = color.cgColor
+       }
+   }
     
     
 }

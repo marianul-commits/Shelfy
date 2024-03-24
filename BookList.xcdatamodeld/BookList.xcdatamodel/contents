@@ -5,11 +5,15 @@
         <relationship name="books" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BookItem" inverseName="parentCategory" inverseEntity="BookItem"/>
     </entity>
     <entity name="BookItem" representedClassName=".BookItem" syncable="YES" codeGenerationType="class">
-        <attribute name="bookAuthor" attributeType="String"/>
+        <attribute name="bookAuthor" optional="YES" attributeType="String"/>
         <attribute name="bookCover" optional="YES" attributeType="String"/>
         <attribute name="bookDescription" optional="YES" attributeType="String"/>
-        <attribute name="bookKey" attributeType="String"/>
+        <attribute name="bookKey" optional="YES" attributeType="String"/>
+        <attribute name="bookLastAccessed" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="bookPages" optional="YES" attributeType="String"/>
         <attribute name="bookTitle" attributeType="String"/>
+        <attribute name="bookTotalPages" optional="YES" attributeType="String"/>
+        <attribute name="bookUUID" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BookCategory" inverseName="books" inverseEntity="BookCategory"/>
     </entity>
 </model>

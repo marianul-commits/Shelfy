@@ -13,10 +13,29 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    var window: UIWindow?
+        
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+
+        
+        print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
+        
+
+
+//        let userLoginStatus = UserDefaults.standard.bool(forKey: "isLoggedIn")
+//        
+//        if userLoginStatus{
+//            window?.rootViewController = HomeController()
+//            window?.makeKeyAndVisible()
+//        } else {
+//            window?.rootViewController = LoginView()
+//            window?.makeKeyAndVisible()
+//        }
+        
         
         let context = persistentContainer.viewContext
         let request: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
@@ -25,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if count == 0 {
             createDefaultBookCategory()
         }
+        
+        setBookPagesZero()
         
         return true
     }
@@ -77,6 +98,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
+    
+    func setBookPagesZero() {
+        let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "bookPages == nil || bookPages == %@", "")
+        
+        do {
+            let context = persistentContainer.viewContext
+            let books = try context.fetch(fetchRequest)
+            
+            for book in books {
+                if book.bookPages == nil || book.bookPages!.isEmpty {
+                    book.bookPages = "0"
+                }
+            }
+            
+            try context.save()
+            print("Book pages reset to zero for \(books.count) book(s).")
+        } catch {
+            print("Failed to reset book pages to zero: \(error)")
+        }
+    }
+    
+    
     
     
     // MARK: - Core Data Saving support

@@ -6,48 +6,63 @@
 //
 
 import UIKit
+import Firebase
 
-class AccountSettingsController: UIViewController, UITextFieldDelegate {
+class AccountSettingsController: UIViewController {
     
-    @IBOutlet weak var profileView: UIView!
-    @IBOutlet weak var profilePhoto: UIImageView!
-    @IBOutlet weak var editBtn: UIButton!
-    @IBOutlet weak var nameLbl: UILabel!
-    @IBOutlet weak var nameTxtF: UITextField!
-    
-    
+    let optionLbl = UILabel()
+    let darkMode = UISwitch()
+    let pageDisplay = UISwitch()
+    let signOutBtn = UIButton()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        profilePhoto.layer.cornerRadius = profilePhoto.frame.height/2
-        nameTxtF.delegate = self
-        nameTxtF.isHidden = true
-        nameLbl.font = SetFont.setFontStyle(.mono, 16)
+        optionLbl.translatesAutoresizingMaskIntoConstraints = false
+        darkMode.translatesAutoresizingMaskIntoConstraints = false
+        signOutBtn.translatesAutoresizingMaskIntoConstraints = false
         
-//        darkenView(profileView, withAlpha: 0.3)
-        profileView.layer.cornerRadius = profileView.frame.height / 25
-
+        optionLbl.font = SetFont.setFontStyle(.medium, 22)
+        optionLbl.textColor = UIColor(resource: .textBG)
+        optionLbl.text = "Options"
+        
+        darkMode.isOn = false
+        
+        pageDisplay.isOn = false
+        
+        signOutBtn.setTitle("Sign Out", for: .normal)
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+            config.cornerStyle = .capsule
+            config.contentInsets = NSDirectionalEdgeInsets(top: 7, leading: 5, bottom: 7, trailing: 5)
+            config.baseBackgroundColor = .red
+            signOutBtn.configuration = config
+            signOutBtn.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+        } else {
+            signOutBtn.layer.cornerRadius = 20
+            signOutBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+            signOutBtn.backgroundColor = .red
+            signOutBtn.tintColor = .black
+            signOutBtn.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+        }
+        
+        view.addSubview(optionLbl)
+        view.addSubview(darkMode)
+        view.addSubview(pageDisplay)
+        view.addSubview(signOutBtn)
+        
     }
     
-    
-    @IBAction func editPressed(_ sender: Any) {
-        nameLbl.isHidden = true
-        nameTxtF.isHidden = false
-        nameTxtF.text = nameLbl.text
+    @objc func signOut(sender: UIButton) {
+        UserDefaults.standard.set(false, forKey: "isLoggedIn")
+        UserDefaults.standard.synchronize()
+        
+        let loginVC = LoginView()
+        loginVC.view.backgroundColor = UIColor(resource: .background)
+        loginVC.modalPresentationStyle = .overFullScreen
+        present(loginVC, animated: true, completion: nil)
+        
+        
     }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        nameTxtF.resignFirstResponder()
-        nameTxtF.isHidden = true
-        nameLbl.isHidden = false
-        nameLbl.text = nameTxtF.text
-    }
-    
-    func darkenView(_ view: UIView, withAlpha alpha: CGFloat) {
-        let overlayView = UIView(frame: view.bounds)
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(alpha)
-        view.addSubview(overlayView)
-    }
-    
+        
 }

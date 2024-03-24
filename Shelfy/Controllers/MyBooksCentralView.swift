@@ -17,9 +17,13 @@ class MyBooksCentralView: UIViewController {
             loadItems()
         }
     }
+    let test = UIView()
     let listTable = UITableView()
 //    var searchController = UISearchController(searchResultsController: nil)
     var addButton = UIButton()
+    var backBtn = UIButton(type: .custom)
+    
+    let header = makeLabel(withText: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +35,11 @@ class MyBooksCentralView: UIViewController {
     func setupListView() {
             
         listTable.translatesAutoresizingMaskIntoConstraints = false
+        
+        test.translatesAutoresizingMaskIntoConstraints = false
+        
+        header.text = selectedCategory?.name
+        header.font = SetFont.setFontStyle(.medium, 22)
         
         listTable.backgroundColor = .clear
         listTable.delegate = self
@@ -46,11 +55,38 @@ class MyBooksCentralView: UIViewController {
 //        searchController.hidesNavigationBarDuringPresentation = false
 //        searchController.searchBar.tintColor = UIColor(resource: .brandMint)
         
+        backBtn.translatesAutoresizingMaskIntoConstraints = false
+        backBtn.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        backBtn.setTitle(" Back", for: .normal)
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+            config.cornerStyle = .capsule
+            config.contentInsets = NSDirectionalEdgeInsets(top: 7, leading: 5, bottom: 7, trailing: 5)
+            config.baseBackgroundColor = UIColor(resource: .brandLogo3)
+            backBtn.configuration = config
+            backBtn.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        } else {
+            backBtn.layer.cornerRadius = 20
+            backBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+            backBtn.backgroundColor = UIColor(resource: .brandLogo3)
+            backBtn.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        }
+        
+        
         view.addSubview(listTable)
+        view.addSubview(backBtn)
+        view.addSubview(header)
         
         NSLayoutConstraint.activate([
             
-            listTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            backBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            backBtn.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            
+            header.centerYAnchor.constraint(equalTo: backBtn.centerYAnchor),
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            listTable.topAnchor.constraint(equalTo: backBtn.bottomAnchor, constant: 12),
             listTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             listTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             listTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
@@ -79,15 +115,39 @@ class MyBooksCentralView: UIViewController {
         
     }
     
-    func loadItems() {
+    @objc func dismissView() {
+        // Dismiss the current view controller with a transition
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func saveItems() {
         
-        let request: NSFetchRequest<BookItem> = BookItem.fetchRequest()
         do {
-            bookItems = try context.fetch(request)
+            try context.save()
         } catch {
-            print("error loading: \(error)")
+            print("error saving \(error)")
         }
         
+        listTable.reloadData()
+        
+    }
+    
+    
+    func loadItems(with request: NSFetchRequest<BookItem> = BookItem.fetchRequest(), predicate: NSPredicate? = nil) {
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        do{
+            bookItems = try context.fetch(request)
+        } catch {
+            print("error fetching \(error)")
+        }
+        listTable.reloadData()
     }
     
 }
@@ -96,19 +156,12 @@ extension MyBooksCentralView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ searchTable: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard (bookItems.count != 0) else {
+            self.listTable.setEmptyMessage(EmptyTable.collectionMsg.randomElement()!)
             return 0
         }
+        self.listTable.restore()
         return bookItems.count
-        
         }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if bookItems.isEmpty {
-            scrollView.isScrollEnabled = false
-        } else {
-            scrollView.isScrollEnabled = true
-        }
-    }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Apply inset constraints
@@ -124,7 +177,7 @@ extension MyBooksCentralView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ searchTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTable.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MyBooksCell
     
-        if bookItems != nil {
+        if bookItems.count != 0 {
             
             cell.hideAnimation()
             
@@ -146,27 +199,12 @@ extension MyBooksCentralView: UITableViewDelegate, UITableViewDataSource {
             cell.MBDescr.font = SetFont.setFontStyle(.regular, 14)
             // Setting the cell image from the API
             if let coverID = bookz.bookCover {
-                let imageURLString = "https://covers.openlibrary.org/b/id/\(coverID)-M.jpg"
-                if let imageURL = URL(string: imageURLString) {
-                    URLSession.shared.dataTask(with: imageURL) { data, response, error in
-                        if let data = data, let image = UIImage(data: data) {
-                            DispatchQueue.main.async {
-                                cell.MBPhoto?.image = image
-                            }
-                        } else {
-                            // If the book has no photo or there was an error downloading the image, set a placeholder image
-                            DispatchQueue.main.async {
-                                cell.MBPhoto?.image = UIImage(named: "placeholder")
-                            }
-                        }
-                        
-                    }.resume()
-                }
-                
+                downloadCoverImage(coverImageID: "\(coverID)", targetImageView: cell.MBPhoto, placeholderImage: UIImage(resource: .placeholder))
             }
         }
         return cell
     }
+    
     
     func tableView(_ searchTable: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -175,33 +213,41 @@ extension MyBooksCentralView: UITableViewDelegate, UITableViewDataSource {
         var selectedBook = bookItems[indexPath.row]
 
         // Show the detail view controller
-        let detailVC = BookView()
+        let detailVC = MyBookView()
         
+        detailVC.bookTitle = selectedBook.bookTitle
+        detailVC.bookAuthor = selectedBook.bookAuthor
+        detailVC.bookImg = selectedBook.bookCover
+        detailVC.pagesRead = Int(selectedBook.bookPages ?? "0")
         detailVC.bookID = selectedBook.bookKey
-        detailVC.bTitle = selectedBook.bookTitle
-        detailVC.bAuthor = selectedBook.bookAuthor
-        detailVC.bImage = Int(selectedBook.bookCover!)
+        detailVC.view.backgroundColor = UIColor(resource: .background)
+        detailVC.modalPresentationStyle = .popover
         
-        
-        
-        if let coverID = selectedBook.bookCover {
-            let imageURLString = "https://covers.openlibrary.org/b/id/\(coverID)-M.jpg"
-            if let imageURL = URL(string: imageURLString) {
-                URLSession.shared.dataTask(with: imageURL) { data, response, error in
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            detailVC.bookImg.image = image
-                        }
-                    } else {
-                        // If the book has no photo, set a placeholder image
-                        detailVC.bookImg.image = UIImage(named: "placeholder")
-                    }
-                    
-                }.resume()
-                
-                present(detailVC, animated: true, completion: nil)
-            }
+        present(detailVC, animated: true, completion: nil)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+            // Handle the deletion
+            self.deleteCategory(at: indexPath)
+            completionHandler(true)
         }
+        
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        deleteAction.backgroundColor = .red
+        
+        // Return the actions configuration
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
+    }
+
+    func deleteCategory(at indexPath: IndexPath) {
+        // Perform deletion logic here
+        context.delete(bookItems[indexPath.row])
+        bookItems.remove(at: indexPath.row)
+        self.listTable.deleteRows(at: [indexPath], with: .fade)
+        saveItems()
     }
     
 }

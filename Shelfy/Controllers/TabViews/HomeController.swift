@@ -6,14 +6,20 @@
 //
 
 import UIKit
+import CoreData
 
 class HomeController: UIViewController {
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var bookPages: [String] = []
+    var bookTotalPages: [String] = []
     
     var progressBar = makeProgressBar()
     var container = makeView()
     var monthLbl = makeLabel(withText: "")
     var progressLbl = makeLabel(withText: "")
     var readingGoalLbl = makeLabel(withText: "Reading Goal")
+    var trendingNowLbl = makeLabel(withText: "Trending Now")
     var currentMonth: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM"
@@ -33,9 +39,6 @@ class HomeController: UIViewController {
     lazy var errorLbl = UILabel()
     let stackView = UIStackView()
     
-    let pagesRead = 150
-    let totalPages = 300
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -51,8 +54,7 @@ class HomeController: UIViewController {
                     self.stopLoading()
                     self.bookTitle.text = title
                     self.bookAuthor.text = "By \(authorName!)"
-                    let coverURLString = "https://covers.openlibrary.org/b/id/\(coverID)-M.jpg"
-                    self.downloadImageAndSetView(urlString: coverURLString)
+                    downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.imageView, placeholderImage: UIImage(resource: .placeholder))
                     UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
                         self.imageView.alpha = 1.0
                         self.bookTitle.alpha = 1.0
@@ -79,8 +81,24 @@ class HomeController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        while randomGenre == nil {
-            randomGenre = K.topGenres.randomElement()
+        getAllBookPages()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            
+            let intBooks = self.bookPages.map { Int($0) ?? 0 }
+            let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
+            
+            
+            let pagesRead = intBooks.reduce(0, +)
+            let totalPages = intTotalPages.reduce(0, +)
+            
+            
+            self.progressBar.setProgress(self.calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
+            var progressLblValue = self.calculateProgress(pagesRead: pagesRead, totalPages: totalPages) * 100
+            self.progressLbl.text = String(format: "%.0f%%", progressLblValue)
+
+            print("viewDidAppear pagesRead is: ", pagesRead, "viewDidAppear totalPages is: ", totalPages)
+            
         }
         
         startLoading()
@@ -94,6 +112,7 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getAllBookPages()
         setupView()
     }
     
@@ -112,6 +131,16 @@ class HomeController: UIViewController {
     }
     
     func setupView() {
+        
+        let intBooks = self.bookPages.map { Int($0) ?? 0 }
+        let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
+        
+        
+        let pagesRead = intBooks.reduce(0, +)
+        let totalPages = intTotalPages.reduce(0, +)
+        
+        print("pagesRead is: ", pagesRead, "totalPages is: ", totalPages)
+        
         
         let safeArea = view.safeAreaLayoutGuide
         
@@ -155,8 +184,7 @@ class HomeController: UIViewController {
         
         hotContainer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
-        setGradientBackground(view: hotContainer, colorTop: UIColor(resource: .brandPurple), colorBottom: UIColor(resource: .brandDarkPurple))
-        
+        K.setGradientBackground(view: hotContainer, colorTop: UIColor(resource: .brandPurple), colorBottom: UIColor(resource: .brandPink))
         imagePlaceholder.skeletonCornerRadius = 10
         
         hotContainer.layer.cornerRadius = 12
@@ -168,6 +196,7 @@ class HomeController: UIViewController {
         bookAuthor.font = SetFont.setFontStyle(.medium, 14)
         header.font = SetFont.setFontStyle(.medium, 16)
         errorLbl.font = SetFont.setFontStyle(.medium, 16)
+        trendingNowLbl.font = SetFont.setFontStyle(.medium, 22)
         
         stackView.alignment = .center
         
@@ -199,12 +228,11 @@ class HomeController: UIViewController {
         container.layer.cornerRadius = 12
         monthLbl.text = currentMonth
         monthLbl.font = SetFont.setFontStyle(.medium, 18)
-        readingGoalLbl.font = SetFont.setFontStyle(.medium, 24)
+        readingGoalLbl.font = SetFont.setFontStyle(.medium, 22)
         
         var progressValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages)
         var progressLblValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages) * 100
         print("Progress: \(progressValue)")
-        progressBar.progress = progressValue
         progressBar.setProgress(calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
         
         progressLbl.text = String(format: "%.0f%%", progressLblValue)
@@ -219,20 +247,22 @@ class HomeController: UIViewController {
         
         view.addSubview(container)
         view.addSubview(readingGoalLbl)
+        view.addSubview(trendingNowLbl)
         container.addSubview(monthLbl)
         container.addSubview(progressBar)
         container.addSubview(progressLbl)
         
         NSLayoutConstraint.activate([
-            readingGoalLbl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            readingGoalLbl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            readingGoalLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             readingGoalLbl.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -12),
-            container.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 48),
+            container.topAnchor.constraint(equalTo: readingGoalLbl.bottomAnchor, constant: 12),
             container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             container.widthAnchor.constraint(equalTo: safeArea.widthAnchor, constant: -30),
             container.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.2),
             monthLbl.topAnchor.constraint(equalTo: container.topAnchor, constant: 20),
-            monthLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 24),
+            monthLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
             progressBar.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
             progressBar.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
             progressBar.heightAnchor.constraint(equalToConstant: 4),
@@ -240,7 +270,10 @@ class HomeController: UIViewController {
             progressLbl.bottomAnchor.constraint(equalTo: progressBar.topAnchor, constant: -12),
             progressLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
             
-            hotContainer.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 30),
+            trendingNowLbl.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 36),
+            trendingNowLbl.leadingAnchor.constraint(equalTo: hotContainer.leadingAnchor),
+            
+            hotContainer.topAnchor.constraint(equalTo: trendingNowLbl.bottomAnchor, constant: 12),
             hotContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             hotContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             hotContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
@@ -289,6 +322,29 @@ class HomeController: UIViewController {
         
     }
     
+    func getAllBookPages() {
+        // Create a fetch request to fetch all BookItem objects
+        let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
+        
+        do {
+            // Execute the fetch request
+            let bookItems = try context.fetch(fetchRequest)
+            
+            // Iterate over the fetched BookItem objects
+            for bookItem in bookItems {
+                // Extract the bookPages and bookTotalPages attributes from each BookItem
+                if let bookPage = bookItem.bookPages {
+                    bookPages.append(bookPage)
+                }
+                if let bookTotalPage = bookItem.bookTotalPages {
+                    bookTotalPages.append(bookTotalPage)
+                }
+            }
+        } catch {
+            print("Error fetching book items: \(error)")
+        }
+    }
+    
     func calculateProgress(pagesRead: Int, totalPages: Int) -> Float {
         guard totalPages > 0 else {
             return 0.0 // If total pages is zero or negative, return 0 progress
@@ -323,54 +379,6 @@ class HomeController: UIViewController {
         
     }
     
-    func downloadImageAndSetView(urlString: String) {
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL")
-            return
-        }
-        
-        downloadImage(from: url) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.imageView.image = image
-            }
-        }
-    }
-    
-    func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil,
-                  let image = UIImage(data: data) else {
-                completion(nil)
-                return
-            }
-            DispatchQueue.main.async {
-                completion(image)
-            }
-        }.resume()
-    }
-    
-    func setGradientBackground(view: UIView, colorTop: UIColor, colorBottom: UIColor) {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [colorTop.cgColor, colorBottom.cgColor]
-        gradientLayer.startPoint = CGPoint(x:  0.0, y:  0.5)
-        gradientLayer.endPoint = CGPoint(x:  2.0, y:  0.5)
-        gradientLayer.locations = [0,  1]
-        gradientLayer.frame = view.bounds
-        
-        view.layer.insertSublayer(gradientLayer, at:  0)
-    }
-    
-}
-
-extension UIButton {
-    func applyGradient(colors: [UIColor]) {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = colors.map { $0.cgColor }
-        gradientLayer.startPoint = CGPoint(x:  0.0, y:  0.5)
-        gradientLayer.endPoint = CGPoint(x:  1.0, y:  0.5)
-        gradientLayer.frame = self.bounds
-        self.layer.insertSublayer(gradientLayer, at:  0)
-    }
 }
 
 

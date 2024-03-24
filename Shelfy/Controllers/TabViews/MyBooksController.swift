@@ -18,6 +18,7 @@ class MyBooksController: UIViewController {
     var header = UILabel()
     let cellHeight:CGFloat = 160
     let padding:CGFloat = 10
+    let backBtn = UIButton(type: .custom)
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +43,7 @@ class MyBooksController: UIViewController {
     func setupView() {
         
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.font = SetFont.setFontStyle(.medium, 24)
+        header.font = SetFont.setFontStyle(.medium, 22)
         header.text = "Your Shelfies"
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
@@ -72,19 +73,20 @@ class MyBooksController: UIViewController {
         view.addSubview(header)
         view.addSubview(addButton)
         view.addSubview(categoriesTable)
+        view.addSubview(backBtn)
         
         
         NSLayoutConstraint.activate([
-            
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            header.leadingAnchor.constraint(equalTo: categoriesTable.leadingAnchor),
             
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
             
             categoriesTable.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 12),
-            categoriesTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            categoriesTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            categoriesTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            categoriesTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             categoriesTable.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -12),
             
         ])
@@ -186,16 +188,30 @@ extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - UITableViewDelegate
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Remove the item from the data array
-           
-            context.delete(category[indexPath.row])
-            category.remove(at: indexPath.row)
-
-            saveCategories()
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+            // Handle the deletion
+            self.deleteCategory(at: indexPath)
+            completionHandler(true)
         }
+        
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        deleteAction.backgroundColor = .red
+        
+        // Return the actions configuration
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
     }
+
+    func deleteCategory(at indexPath: IndexPath) {
+        // Perform deletion logic here
+        context.delete(category[indexPath.row])
+        category.remove(at: indexPath.row)
+        self.categoriesTable.deleteRows(at: [indexPath], with: .fade)
+        saveCategories()
+    }
+
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return cellHeight + padding
@@ -217,7 +233,7 @@ extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
         
         let categoryVC = MyBooksCentralView()
         categoryVC.selectedCategory = selectedCategory
-        categoryVC.modalPresentationStyle = .popover
+        categoryVC.modalPresentationStyle = .overFullScreen
         categoryVC.view.backgroundColor = UIColor(resource: .background)
         tableView.deselectRow(at: indexPath, animated: true)
         present(categoryVC, animated: true, completion: nil)

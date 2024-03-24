@@ -21,6 +21,7 @@ class SearchView: UIViewController {
     var bookAuthor: String!
     var bookCover: Int?
     var bookKey: String?
+    var bookISBN: String?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -130,7 +131,7 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ searchTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTable.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MyBooksCell
-    
+            
         if books != nil {
             
             cell.hideAnimation()
@@ -156,23 +157,7 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
             cell.MBDescr.font = SetFont.setFontStyle(.regular, 14)
             // Setting the cell image from the API
             if let coverID = bookz.cover_i {
-                let imageURLString = "https://covers.openlibrary.org/b/id/\(coverID)-M.jpg"
-                if let imageURL = URL(string: imageURLString) {
-                    URLSession.shared.dataTask(with: imageURL) { data, response, error in
-                        if let data = data, let image = UIImage(data: data) {
-                            DispatchQueue.main.async {
-                                cell.MBPhoto?.image = image
-                            }
-                        } else {
-                            // If the book has no photo or there was an error downloading the image, set a placeholder image
-                            DispatchQueue.main.async {
-                                cell.MBPhoto?.image = UIImage(named: "placeholder")
-                            }
-                        }
-                        
-                    }.resume()
-                }
-                
+                downloadCoverImage(coverImageID: "\(coverID)", targetImageView: cell.MBPhoto, placeholderImage: UIImage(resource: .placeholder))
             }
         }
         return cell
@@ -181,8 +166,8 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ searchTable: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         searchTable.deselectRow(at: indexPath, animated: true)
-        
-        var selectedBook = books![indexPath.row]
+                
+        let selectedBook = books![indexPath.row]
         
         bookTitle = selectedBook.title
         bookAuthor = selectedBook.author_name?.first
@@ -200,23 +185,10 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
         
         
         if let coverID = selectedBook.cover_i {
-            let imageURLString = "https://covers.openlibrary.org/b/id/\(coverID)-M.jpg"
-            if let imageURL = URL(string: imageURLString) {
-                URLSession.shared.dataTask(with: imageURL) { data, response, error in
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            detailVC.bookImg.image = image
-                        }
-                    } else {
-                        // If the book has no photo, set a placeholder image
-                        detailVC.bookImg.image = UIImage(named: "placeholder")
-                    }
-                    
-                }.resume()
+            downloadCoverImage(coverImageID: "\(coverID)", targetImageView: detailVC.bookImg, placeholderImage: UIImage(resource: .placeholder))
                 
                 present(detailVC, animated: true, completion: nil)
             }
-        }
     }
 }
 

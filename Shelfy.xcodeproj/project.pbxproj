@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		56097D752A3CB2DB0053E1C2 /* BookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56097D742A3CB2DB0053E1C2 /* BookModel.swift */; };
+		563A8F622BADDA0600DA6FA5 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A8F612BADDA0600DA6FA5 /* TabBarViewController.swift */; };
 		5652A1862A7F27AC008F009C /* MoreByCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1852A7F27AC008F009C /* MoreByCell.swift */; };
 		5652A1882A7F318D008F009C /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1872A7F318D008F009C /* CustomFlowLayout.swift */; };
 		5652A18C2A8002A5008F009C /* Factories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A18B2A8002A5008F009C /* Factories.swift */; };
@@ -16,15 +16,15 @@
 		56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */; };
 		56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */; };
 		56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */; };
+		56694EBF2BA512FD009F537E /* MyBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56694EBE2BA512FD009F537E /* MyBookView.swift */; };
 		566BA4862A6B49420006899E /* AccountSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566BA4852A6B49420006899E /* AccountSettingsController.swift */; };
-		5671E74A2B06ADCA007BC52F /* NetworkManagerv2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5671E7492B06ADCA007BC52F /* NetworkManagerv2.swift */; };
+		5671E74A2B06ADCA007BC52F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5671E7492B06ADCA007BC52F /* NetworkManager.swift */; };
 		5680CA492A6DD37D00C13DD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5680CA482A6DD37D00C13DD6 /* Extensions.swift */; };
 		568A37932A5F335000E84667 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 568A37922A5F335000E84667 /* FirebaseAuth */; };
 		568A37952A5F335000E84667 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 568A37942A5F335000E84667 /* FirebaseFirestore */; };
 		568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568D36552A2E73E20028C51C /* MyBooksCell.swift */; };
 		568D36582A2E73E20028C51C /* MyBooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 568D36562A2E73E20028C51C /* MyBooksCell.xib */; };
 		56ADACB72B8FDDE4005AF590 /* BookList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56ADACB52B8FDDE4005AF590 /* BookList.xcdatamodeld */; };
-		56AF58F92A6DC2180045793E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF58F82A6DC2180045793E /* NetworkManager.swift */; };
 		56AFCD262A8EA1010091D774 /* TripSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD212A8EA1000091D774 /* TripSans-Medium.ttf */; };
 		56AFCD272A8EA1010091D774 /* TripSans-Ultra.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD222A8EA1000091D774 /* TripSans-Ultra.ttf */; };
 		56AFCD282A8EA1010091D774 /* TripSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56AFCD232A8EA1000091D774 /* TripSans-Regular.ttf */; };
@@ -51,15 +51,13 @@
 		56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47A2A5DDBA60021F5AF /* LoginView.swift */; };
 		56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */; };
 		56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7C47E2A5DEC210021F5AF /* TestView.swift */; };
-		56F7FB7F2B8CF12A00073E27 /* ExpandingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7FB7E2B8CF12A00073E27 /* ExpandingButton.swift */; };
-		56F8286C2A50EA8F00203481 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */; };
 		56F9A8282A61268F0071FA5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56F9A8272A61268F0071FA5F /* GoogleService-Info.plist */; };
 		8329D128F2E97F4648A824AB /* Pods_Shelfy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1635F92D7B1D0B09C0393B0E /* Pods-Shelfy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.debug.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.debug.xcconfig"; sourceTree = "<group>"; };
-		56097D742A3CB2DB0053E1C2 /* BookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookModel.swift; sourceTree = "<group>"; };
+		563A8F612BADDA0600DA6FA5 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		5652A1852A7F27AC008F009C /* MoreByCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreByCell.swift; sourceTree = "<group>"; };
 		5652A1872A7F318D008F009C /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
 		5652A18B2A8002A5008F009C /* Factories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factories.swift; sourceTree = "<group>"; };
@@ -68,13 +66,13 @@
 		56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriPresentationController.swift; sourceTree = "<group>"; };
 		56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriAnimationController.swift; sourceTree = "<group>"; };
 		56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenu.swift; sourceTree = "<group>"; };
+		56694EBE2BA512FD009F537E /* MyBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBookView.swift; sourceTree = "<group>"; };
 		566BA4852A6B49420006899E /* AccountSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsController.swift; sourceTree = "<group>"; };
-		5671E7492B06ADCA007BC52F /* NetworkManagerv2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerv2.swift; sourceTree = "<group>"; };
+		5671E7492B06ADCA007BC52F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5680CA482A6DD37D00C13DD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		568D36552A2E73E20028C51C /* MyBooksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBooksCell.swift; sourceTree = "<group>"; };
 		568D36562A2E73E20028C51C /* MyBooksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyBooksCell.xib; sourceTree = "<group>"; };
 		56ADACB62B8FDDE4005AF590 /* BookList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookList.xcdatamodel; sourceTree = "<group>"; };
-		56AF58F82A6DC2180045793E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		56AFCD212A8EA1000091D774 /* TripSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSans-Medium.ttf"; sourceTree = "<group>"; };
 		56AFCD222A8EA1000091D774 /* TripSans-Ultra.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSans-Ultra.ttf"; sourceTree = "<group>"; };
 		56AFCD232A8EA1000091D774 /* TripSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TripSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -102,8 +100,6 @@
 		56F7C47A2A5DDBA60021F5AF /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		56F7C47C2A5DE5E60021F5AF /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		56F7C47E2A5DEC210021F5AF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
-		56F7FB7E2B8CF12A00073E27 /* ExpandingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingButton.swift; sourceTree = "<group>"; };
-		56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		56F9A8272A61268F0071FA5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8EEB7E17AB36DD53128F3239 /* Pods_Shelfy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shelfy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7C5D5348FDA29D8FF298F12 /* Pods-Shelfy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.release.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.release.xcconfig"; sourceTree = "<group>"; };
@@ -147,9 +143,7 @@
 		56097D722A3CB25A0053E1C2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				56097D742A3CB2DB0053E1C2 /* BookModel.swift */,
-				56AF58F82A6DC2180045793E /* NetworkManager.swift */,
-				5671E7492B06ADCA007BC52F /* NetworkManagerv2.swift */,
+				5671E7492B06ADCA007BC52F /* NetworkManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -174,6 +168,26 @@
 				56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */,
 			);
 			path = ChidoriIntegration;
+			sourceTree = "<group>";
+		};
+		56694EBC2BA511A7009F537E /* BookDetails */ = {
+			isa = PBXGroup;
+			children = (
+				56BBA5902A360D78001C2779 /* BookView.swift */,
+				56694EBE2BA512FD009F537E /* MyBookView.swift */,
+			);
+			path = BookDetails;
+			sourceTree = "<group>";
+		};
+		56694EBD2BA511D0009F537E /* TabViews */ = {
+			isa = PBXGroup;
+			children = (
+				56B711B12A2D50EA0030DC6E /* MyBooksController.swift */,
+				56B711B32A2D50FA0030DC6E /* SearchView.swift */,
+				56B711B52A2D51010030DC6E /* MoreController.swift */,
+				56B711A12A2CA41C0030DC6E /* HomeController.swift */,
+			);
+			path = TabViews;
 			sourceTree = "<group>";
 		};
 		5681463F2A56023100E27D75 /* Fonts */ = {
@@ -241,15 +255,11 @@
 			isa = PBXGroup;
 			children = (
 				56EF4C492B9A686B007FCB07 /* Login */,
-				56B711A12A2CA41C0030DC6E /* HomeController.swift */,
+				56694EBD2BA511D0009F537E /* TabViews */,
+				56694EBC2BA511A7009F537E /* BookDetails */,
 				565D9F762A50DE3A0042A688 /* MyBooksCentralView.swift */,
-				56B711B12A2D50EA0030DC6E /* MyBooksController.swift */,
-				56F7FB7E2B8CF12A00073E27 /* ExpandingButton.swift */,
-				56BBA5902A360D78001C2779 /* BookView.swift */,
-				56B711B32A2D50FA0030DC6E /* SearchView.swift */,
-				56B711B52A2D51010030DC6E /* MoreController.swift */,
-				56F8286B2A50EA8F00203481 /* SwipeTableViewController.swift */,
 				566BA4852A6B49420006899E /* AccountSettingsController.swift */,
+				563A8F612BADDA0600DA6FA5 /* TabBarViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -429,32 +439,30 @@
 				56E0EAD42A86E52F0031C4EA /* BottomView.swift in Sources */,
 				56F7C47F2A5DEC210021F5AF /* TestView.swift in Sources */,
 				56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */,
+				56694EBF2BA512FD009F537E /* MyBookView.swift in Sources */,
 				56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */,
 				56B711BC2A2D53D70030DC6E /* SBCell.swift in Sources */,
 				56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */,
 				56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */,
 				56C08E302B8E60F800C9C92E /* HoldingCell.swift in Sources */,
-				56F8286C2A50EA8F00203481 /* SwipeTableViewController.swift in Sources */,
 				5652A1882A7F318D008F009C /* CustomFlowLayout.swift in Sources */,
 				565D9F772A50DE3A0042A688 /* MyBooksCentralView.swift in Sources */,
 				56E0EAD22A86E5110031C4EA /* TopView.swift in Sources */,
-				56AF58F92A6DC2180045793E /* NetworkManager.swift in Sources */,
 				56613CE22A50E4FA0063C141 /* ChidoriMenuTableViewCell.swift in Sources */,
 				56B711B42A2D50FA0030DC6E /* SearchView.swift in Sources */,
 				5652A1862A7F27AC008F009C /* MoreByCell.swift in Sources */,
 				56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */,
-				56F7FB7F2B8CF12A00073E27 /* ExpandingButton.swift in Sources */,
 				56ADACB72B8FDDE4005AF590 /* BookList.xcdatamodeld in Sources */,
 				56B7119E2A2CA41C0030DC6E /* AppDelegate.swift in Sources */,
 				56B711B22A2D50EB0030DC6E /* MyBooksController.swift in Sources */,
 				568D36572A2E73E20028C51C /* MyBooksCell.swift in Sources */,
-				56097D752A3CB2DB0053E1C2 /* BookModel.swift in Sources */,
 				56B711B92A2D538A0030DC6E /* Constants.swift in Sources */,
-				5671E74A2B06ADCA007BC52F /* NetworkManagerv2.swift in Sources */,
+				5671E74A2B06ADCA007BC52F /* NetworkManager.swift in Sources */,
 				56B711B62A2D51010030DC6E /* MoreController.swift in Sources */,
 				5680CA492A6DD37D00C13DD6 /* Extensions.swift in Sources */,
 				56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */,
 				56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */,
+				563A8F622BADDA0600DA6FA5 /* TabBarViewController.swift in Sources */,
 				56BBA5912A360D78001C2779 /* BookView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

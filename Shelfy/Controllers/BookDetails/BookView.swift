@@ -28,20 +28,20 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             loadItems() // Assuming you want to load items for all categories
         }
     }
-
+    
     
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
+    
     
     //Main Elements
     let bookImg = makeImgView(withImage: "placeholder")
     let bookTitle = makeLabel(withText: "Title")
     let bookAuthor = makeLabel(withText: "Author")
     let container = makeView()
-
+    
     //Ratings
     let rating = CosmosView()
-
+    
     //Book Stats
     let bookStats = makeStackView(withOrientation: .horizontal, withSpacing: 3)
     let bookDoneStack = makeStackView(withOrientation: .vertical, withSpacing: 1)
@@ -56,7 +56,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     var bkDoneLbl = makeLabel(withText: "")
     var bkToReadLbl = makeLabel(withText: "")
     var bkReadingLbl = makeLabel(withText: "")
-
+    
     //Description
     let descrHeader = makeLabel(withText: "Description")
     let descrContent = makeLabel(withText: "")
@@ -90,7 +90,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     var bImage: Int?
     var bDescr: String?
     var bookID: String?
-
+    
     
     var recommendedBooks = [OLBook]()
     
@@ -160,7 +160,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         moreCollection.delegate = self
         moreCollection.register(MoreByCell.self, forCellWithReuseIdentifier: "testIdentifier")
         
-
+        
         
         setupBookView()
         
@@ -176,27 +176,13 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         
         container.backgroundColor = UIColor(resource: .brandPurple)
         container.layer.cornerRadius = 16
-
+        
         //MARK: Book Image
         
         bookImg.contentMode = .scaleAspectFit
         
         if let coverImage = bImage {
-            let imageURLString = "https://covers.openlibrary.org/b/id/\(coverImage)-M.jpg"
-            if let imageURL = URL(string: imageURLString) {
-                URLSession.shared.dataTask(with: imageURL) { data, response, error in
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            self.bookImg.image = image
-                        }
-                    }else {
-                        // If the book has no photo, set a placeholder image
-                        DispatchQueue.main.async {
-                            self.bookImg.image = UIImage(named: "placeholder")
-                        }
-                    }
-                }.resume()
-            }
+            downloadCoverImage(coverImageID: "\(coverImage)", targetImageView: bookImg, placeholderImage: UIImage(resource: .placeholder))
         }
         
         //MARK: Book Title
@@ -286,10 +272,10 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         bkReadingImg.tintColor = UIColor(resource: .brandDarkPurple)
         
         //MARK: More By Author
-
+        
         moreByHeader.font = SetFont.setFontStyle(.medium, 16)
         moreByHeader.textColor = UIColor(resource: .textBG)
-
+        
         //MARK: - Book Scroll View
         let screenBound = UIScreen.main.bounds
         let middleX = screenBound.width / 2
@@ -502,7 +488,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     
     
     //MARK: - Categories function
-
+    
     func fetchCategories() {
         let fetchRequest: NSFetchRequest<BookCategory> = BookCategory.fetchRequest()
         do {
@@ -512,7 +498,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             print("Error fetching categories: \(error.localizedDescription)")
         }
     }
-
+    
     
     
     //MARK: - Add Button functions
@@ -580,39 +566,102 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             self.present(alertController, animated: true, completion: nil)
         }
     }
-
     
     func addToShelfy(category: BookCategory) {
-        
-        let successBanner = FloatingNotificationBanner(
-            title: "Success",
-            subtitle: "Book added to \(category.name!)",
-            style: .success)
-        
-        successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
-        
-        do {
-            let newBook = BookItem(context: managedObjectContext)
-            newBook.bookTitle = bTitle
-            newBook.bookDescription = bDescr
-            newBook.bookAuthor = bAuthor
-            newBook.bookCover = "\(bImage!)"
-            newBook.bookKey = bookID
-            newBook.parentCategory = category
+            guard let title = bTitle else {
+                print("Error: Book title is nil")
+                return
+            }
             
-            try managedObjectContext.save()
-        } catch {
-            print("error saving \(error)")
-            let errorBanner = FloatingNotificationBanner(
-                title: "Error",
-                subtitle: "Could not add book to category, \(error)",
+            // Check for duplicates in the selected category
+            let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "parentCategory == %@ AND bookTitle == %@", category, title)
+            
+            do {
+                let duplicateBooks = try managedObjectContext.fetch(fetchRequest)
+                if !duplicateBooks.isEmpty {
+                    // Duplicate book found, handle accordingly (e.g., show an alert)
+                    let errorBanner = FloatingNotificationBanner(
+                        title: "Oops!",
+                        subtitle: "Looks like this book is already on your shelf.",
+                        style: .warning)
+                    
+                    errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+                    print("Duplicate book found in category \(category.name ?? "Unknown")")
+                    return
+                }
+            } catch {
+                print("Error fetching duplicate books: \(error)")
+                return
+            }
+            
+            let successBanner = FloatingNotificationBanner(
+                title: "Success",
+                subtitle: "Book added to \(category.name!)",
                 style: .success)
             
             successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
             
+            do {
+                let newBook = BookItem(context: managedObjectContext)
+                newBook.bookUUID = UUID() // Generating and assigning UUID object
+                newBook.bookTitle = title
+                newBook.bookDescription = bDescr
+                newBook.bookAuthor = bAuthor
+                newBook.bookCover = "\(bImage!)"
+                newBook.bookKey = bookID
+                newBook.parentCategory = category
+                newBook.bookLastAccessed = Date() // Setting the lastAccessedDate to the current date and time
+                
+                try managedObjectContext.save()
+            } catch {
+                print("error saving \(error)")
+                let errorBanner = FloatingNotificationBanner(
+                    title: "Error",
+                    subtitle: "Could not add book to category, \(error)",
+                    style: .success)
+                
+                errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+                
+            }
         }
-    }
-
+    
+    
+//    func addToShelfy(category: BookCategory) {
+//        
+//        let successBanner = FloatingNotificationBanner(
+//            title: "Success",
+//            subtitle: "Book added to \(category.name!)",
+//            style: .success)
+//        
+//        successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+//        
+//        do {
+//            let newBook = BookItem(context: managedObjectContext)
+//            newBook.bookUUID = UUID()
+//            print("Book UUID: ", newBook.bookUUID)
+//            newBook.bookLastAccessed = Date()
+//            print("Book last accessed : ", newBook.bookLastAccessed)
+//            newBook.bookTitle = bTitle
+//            newBook.bookDescription = bDescr
+//            newBook.bookAuthor = bAuthor
+//            newBook.bookCover = "\(bImage!)"
+//            newBook.bookKey = bookID
+//            newBook.parentCategory = category
+//            
+//            try managedObjectContext.save()
+//        } catch {
+//            print("error saving \(error)")
+//            let errorBanner = FloatingNotificationBanner(
+//                title: "Error",
+//                subtitle: "Could not add book to category, \(error)",
+//                style: .success)
+//            
+//            errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+//            
+//        }
+//    }
+    
     func read(action: UIAction) {
         // Dismiss the currently presented view controller if any
         dismiss(animated: true) {
@@ -639,11 +688,24 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     
     func addToRead(category: BookCategory) {
         do {
+            let newBook = BookItem(context: managedObjectContext)
+            newBook.bookTitle = bTitle
+            newBook.bookDescription = bDescr
+            newBook.bookAuthor = bAuthor
+            newBook.bookCover = "\(bImage!)"
+            newBook.bookKey = bookID
+            newBook.parentCategory = category
+            
             try managedObjectContext.save()
-
         } catch {
             print("error saving \(error)")
-
+            let errorBanner = FloatingNotificationBanner(
+                title: "Error",
+                subtitle: "Could not add book to category, \(error)",
+                style: .success)
+            
+            errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+            
         }
     }
     
@@ -659,7 +721,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             self.present(activityViewController, animated: true, completion: nil)
         }
     }
-
+    
     //MARK: Update Page Control
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.bounds.width
@@ -732,22 +794,7 @@ extension BookView: UICollectionViewDataSource, UICollectionViewDelegate {
         cell.titleLabel?.text = recommendedBooks[indexPath.row].title
         
         if let coverURL = recommendedBooks[indexPath.row].cover_i {
-            let imageURLString = "https://covers.openlibrary.org/b/id/\(coverURL)-M.jpg"
-            if let imageURL = URL(string: imageURLString) {
-                URLSession.shared.dataTask(with: imageURL) { data, response, error in
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            cell.imageView?.image = image
-                        }
-                    } else {
-                        // If the book has no photo or there was an error downloading the image, set a placeholder image
-                        DispatchQueue.main.async {
-                            cell.imageView?.image = UIImage(named: "placeholder")
-                        }
-                    }
-                    
-                }.resume()
-            }
+            downloadCoverImage(coverImageID: "\(coverURL)", targetImageView: cell.imageView, placeholderImage: UIImage(resource: .placeholder))
         }
         
         return cell

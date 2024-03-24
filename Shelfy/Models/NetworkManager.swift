@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 func fetchBookz(completion: @escaping ([OLBook]?) -> Void) {
@@ -102,7 +103,8 @@ func pickRandomBook(fromGenre genre: String, retryCount: Int = 3, completion: @e
         return
     }
     
-    let searchURL = URL(string: "https://openlibrary.org/search.json?q=\(genre)&sort=random&limit=5&random=true&lang=en")!
+    let formattedGenre = genre.replacingOccurrences(of: " ", with: "+")
+    let searchURL = URL(string: "https://openlibrary.org/search.json?q=\(formattedGenre)&sort=random&limit=5&random=true&lang=en")!
     
     URLSession.shared.dataTask(with: searchURL) { data, response, error in
         guard let data = data, error == nil else {
@@ -145,15 +147,10 @@ func fetchBookDescription(forKey key: String, completion: @escaping (String?) ->
             return
         }
         
-        // Print received data
-//        print("Data received:", String(data: data, encoding: .utf8) ?? "Invalid data")
-        
         do {
             let decoder = JSONDecoder()
             let bookDetails = try decoder.decode(BookDescription.self, from: data)
             
-            // Print decoded book details
-//            print("Decoded book details:", bookDetails)
             
             completion(bookDetails.description)
         } catch {
@@ -222,33 +219,74 @@ func fetchBookShelves(forKey key: String, completion: @escaping (OLBookShelves?)
     task.resume()
 }
 
-func fetchBookDetails(forISBN isbn: String, completion: @escaping (Int?) -> Void) {
-    let urlString = "https://openlibrary.org/isbn/\(isbn).json"
+func downloadCoverImage(coverImageID: String, targetImageView: UIImageView, placeholderImage: UIImage? = nil) {
+    let imageURLString = "https://covers.openlibrary.org/b/id/\(coverImageID)-M.jpg"
+    
+    guard let imageURL = URL(string: imageURLString) else {
+        // Invalid URL
+        if let placeholderImage = placeholderImage {
+            targetImageView.image = placeholderImage
+        }
+        return
+    }
+    
+    URLSession.shared.dataTask(with: imageURL) { data, response, error in
+        if let data = data, let image = UIImage(data: data) {
+            DispatchQueue.main.async {
+                targetImageView.image = image
+            }
+        } else {
+            // If the book has no photo or there's an error, set the placeholder image if provided
+            if let placeholderImage = placeholderImage {
+                DispatchQueue.main.async {
+                    targetImageView.image = placeholderImage
+                }
+            }
+        }
+    }.resume()
+}
+
+
+func fetchNumberOfPages(forTitle title: String, completion: @escaping (Int?) -> Void) {
+    let formattedTitle = title.replacingOccurrences(of: " ", with: "+")
+    let urlString = "https://openlibrary.org/search.json?title=\(formattedTitle)"
+    
     guard let url = URL(string: urlString) else {
         print("Invalid URL")
         completion(nil)
         return
     }
-
+    
     let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
         guard let data = data else {
             print("No data received: \(error?.localizedDescription ?? "Unknown error")")
             completion(nil)
             return
         }
-
+        
         do {
             let decoder = JSONDecoder()
-            let bookDetails = try decoder.decode(BookDetails.self, from: data)
-            completion(bookDetails.number_of_pages)
+            let bookDetailsResponse = try decoder.decode(BookSearchResponse.self, from: data)
+            if let firstBookDetail = bookDetailsResponse.docs.first {
+                completion(firstBookDetail.numberOfPagesMedian)
+            } else {
+                completion(nil)
+            }
         } catch {
             print("Error decoding JSON: \(error)")
             completion(nil)
         }
     }
-
     task.resume()
 }
+
+
+
+
+
+
+
+//MARK: API Structures
 
 
 struct BookDescription: Codable {
@@ -288,9 +326,18 @@ struct Availability: Codable {
     let isbn: String?
 }
 
-struct BookDetails: Codable {
-    let number_of_pages: Int?
+struct BookSearchResponse: Decodable {
+    let docs: [BookDocument]
+
+    struct BookDocument: Decodable {
+        let numberOfPagesMedian: Int?
+
+        enum CodingKeys: String, CodingKey {
+            case numberOfPagesMedian = "number_of_pages_median"
+        }
+    }
 }
+
 
 struct OLBookRatings: Codable {
     let summary: RatingSummary?
