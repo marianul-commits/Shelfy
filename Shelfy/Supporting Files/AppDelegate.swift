@@ -22,10 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
 
         
-        print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
+//        print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
         
-
-
 //        let userLoginStatus = UserDefaults.standard.bool(forKey: "isLoggedIn")
 //        
 //        if userLoginStatus{
@@ -114,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             try context.save()
-            print("Book pages reset to zero for \(books.count) book(s).")
+//            print("Book pages reset to zero for \(books.count) book(s).")
         } catch {
             print("Failed to reset book pages to zero: \(error)")
         }

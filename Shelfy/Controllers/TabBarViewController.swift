@@ -9,15 +9,15 @@ import UIKit
 
 public class TabBarViewController: UITabBarController {
     
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
-    public override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
-    }
+//    public override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        navigationController?.setNavigationBarHidden(false, animated: false)
+//    }
+//    
+//    public override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        navigationController?.setNavigationBarHidden(true, animated: false)
+//    }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +30,8 @@ public class TabBarViewController: UITabBarController {
     func setupViewControllers() {
         
         view.backgroundColor = UIColor(resource: .background)
-//        tabBarController?.tabBar.unselectedItemTintColor = UIColor(resource: .disabled)
-////        tabBarController?.tabBar.selectedImageTintColor = UIColor(resource: .brandPurple)
-//        tabBarController?.tabBar.tintColor = UIColor(resource: .brandPurple)
+        
+        tabBar.tintColor = UIColor(resource: .brandDarkPurple)
         
         
         let firstVC = HomeController()
@@ -47,7 +46,7 @@ public class TabBarViewController: UITabBarController {
         
         let thirdVC = SearchView()
         thirdVC.hidesBottomBarWhenPushed = false
-        thirdVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "sparkle.magnifyingglass"), tag: 0)
+        thirdVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 0)
         thirdVC.tabBarItem.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0);
         
         
@@ -55,9 +54,11 @@ public class TabBarViewController: UITabBarController {
         forthVC.tabBarItem = UITabBarItem(title: "More", image: UIImage(systemName: "ellipsis"), tag: 0)
         forthVC.tabBarItem.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0);
         
+        let controllers = [firstVC, secondVC, thirdVC, forthVC]
         
-        viewControllers = [firstVC, secondVC, thirdVC, forthVC]
-        
+        tabBarController?.viewControllers = controllers.map {
+            UINavigationController(rootViewController: $0)
+        }
     }
     
     

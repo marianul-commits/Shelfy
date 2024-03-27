@@ -101,7 +101,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         //MARK: -  API Calls
         
         //More By Author
-        getRecommandationz( bAuthor! ) { (recommendedBooks) in
+        getRecommendations(author: bAuthor! ) { (recommendedBooks) in
             guard let similarBooks = recommendedBooks else {
                 print("Error fetching books")
                 return
@@ -626,42 +626,6 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             }
         }
     
-    
-//    func addToShelfy(category: BookCategory) {
-//        
-//        let successBanner = FloatingNotificationBanner(
-//            title: "Success",
-//            subtitle: "Book added to \(category.name!)",
-//            style: .success)
-//        
-//        successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
-//        
-//        do {
-//            let newBook = BookItem(context: managedObjectContext)
-//            newBook.bookUUID = UUID()
-//            print("Book UUID: ", newBook.bookUUID)
-//            newBook.bookLastAccessed = Date()
-//            print("Book last accessed : ", newBook.bookLastAccessed)
-//            newBook.bookTitle = bTitle
-//            newBook.bookDescription = bDescr
-//            newBook.bookAuthor = bAuthor
-//            newBook.bookCover = "\(bImage!)"
-//            newBook.bookKey = bookID
-//            newBook.parentCategory = category
-//            
-//            try managedObjectContext.save()
-//        } catch {
-//            print("error saving \(error)")
-//            let errorBanner = FloatingNotificationBanner(
-//                title: "Error",
-//                subtitle: "Could not add book to category, \(error)",
-//                style: .success)
-//            
-//            errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
-//            
-//        }
-//    }
-    
     func read(action: UIAction) {
         // Dismiss the currently presented view controller if any
         dismiss(animated: true) {
@@ -670,8 +634,8 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
                 // Add the book item to the "Read" category
                 self.addToRead(category: readCategory)
                 let successBanner = FloatingNotificationBanner(
-                    title: "Success",
-                    subtitle: "Book added to read books",
+                    title: "Another book joins the party",
+                    subtitle: "\(self.bTitle!) was added to \"Read Books\" category",
                     style: .success)
                 
                 successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
@@ -689,12 +653,15 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     func addToRead(category: BookCategory) {
         do {
             let newBook = BookItem(context: managedObjectContext)
+            
+            newBook.bookUUID = UUID() // Generating and assigning UUID object
             newBook.bookTitle = bTitle
             newBook.bookDescription = bDescr
             newBook.bookAuthor = bAuthor
             newBook.bookCover = "\(bImage!)"
             newBook.bookKey = bookID
             newBook.parentCategory = category
+            newBook.bookLastAccessed = Date()
             
             try managedObjectContext.save()
         } catch {
@@ -702,7 +669,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             let errorBanner = FloatingNotificationBanner(
                 title: "Error",
                 subtitle: "Could not add book to category, \(error)",
-                style: .success)
+                style: .warning)
             
             errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
             

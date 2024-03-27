@@ -53,7 +53,7 @@
          <EnvironmentVariable
             key = "SKELETON_DEBUG"
             value = ""
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>

@@ -21,33 +21,44 @@ class MyBooksCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        showAnimation()
+        
+        MBTitle.clipsToBounds = true
+        MBAuthor.clipsToBounds = true
+        MBDescr.clipsToBounds = true
+
+        MBTitle.linesCornerRadius = 5
+        MBAuthor.linesCornerRadius = 5
+        MBDescr.linesCornerRadius = 5
+
+        MBTitle.skeletonTextNumberOfLines = 1
+        MBAuthor.skeletonTextNumberOfLines = 1
+    
+        MBPhoto.clipsToBounds = true
+        MBPhoto.layer.cornerRadius = 6
+        MBView.layer.cornerRadius = 8
+
+    }
+    
+    func hideAnimation() {
+        MBPhoto.hideSkeleton(transition: .crossDissolve(0.25))
+        MBDescr.hideSkeleton(transition: .crossDissolve(0.25))
+        MBTitle.hideSkeleton(transition: .crossDissolve(0.25))
+        MBAuthor.hideSkeleton(transition: .crossDissolve(0.25))
+    }
+    
+    func showAnimation() {
         MBPhoto.showAnimatedSkeleton()
         MBDescr.showAnimatedSkeleton()
         MBTitle.showAnimatedSkeleton()
         MBAuthor.showAnimatedSkeleton()
         
-        MBTitle.linesCornerRadius = 10
-        MBAuthor.linesCornerRadius = 10
-        MBDescr.linesCornerRadius = 10
+        MBTitle.skeletonLineSpacing = 12
+        MBAuthor.skeletonLineSpacing = 12
         
-        MBTitle.skeletonPaddingInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
-        MBAuthor.skeletonPaddingInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
-        MBDescr.skeletonPaddingInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
-
-        MBTitle.skeletonTextNumberOfLines = 1
-        MBAuthor.skeletonTextNumberOfLines = 1
-    
-//        MBPhoto.layer.cornerRadius = MBPhoto.frame.size.height / 25
-        MBPhoto.contentMode = .scaleAspectFit
-        MBView.layer.cornerRadius = MBView.frame.size.height / 25
-
-    }
-    
-    func hideAnimation() {
-        MBPhoto.hideSkeleton()
-        MBDescr.hideSkeleton()
-        MBTitle.hideSkeleton()
-        MBAuthor.hideSkeleton()
+        MBTitle.skeletonPaddingInsets = .init(top: 2, left: 2, bottom: 2, right: 2)
+        MBAuthor.skeletonPaddingInsets = .init(top: 2, left: 2, bottom: 2, right: 2)
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

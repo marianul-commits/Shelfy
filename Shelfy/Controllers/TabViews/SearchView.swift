@@ -23,6 +23,10 @@ class SearchView: UIViewController {
     var bookKey: String?
     var bookISBN: String?
     
+    //Pagination
+    var isSearching = false
+    var currentPage = 1
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -38,7 +42,7 @@ class SearchView: UIViewController {
         
         setupSearchView()
         
-        fetchBookz { (books) in
+        fetchPagination(page: currentPage) { (books) in
             guard let books = books else {
                 print("Error fetching books")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3){
@@ -64,14 +68,6 @@ class SearchView: UIViewController {
         searchTable.translatesAutoresizingMaskIntoConstraints = false
         searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
         
-        //Table
-        
-        searchTable.backgroundColor = .clear
-        searchTable.delegate = self
-        searchTable.dataSource = self
-        searchTable.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
-        searchTable.isSkeletonable = true
-        
         //Search Controller
         searchController.delegate = self
         searchController.searchBar.delegate = self
@@ -79,6 +75,13 @@ class SearchView: UIViewController {
         navigationItem.searchController = searchController
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.tintColor = UIColor(resource: .brandMint)
+        
+        //Table
+        searchTable.backgroundColor = .clear
+        searchTable.delegate = self
+        searchTable.dataSource = self
+        searchTable.register(UINib(nibName: K.cellNibName2, bundle: nil), forCellReuseIdentifier: K.cellIdentifier2)
+        searchTable.isSkeletonable = true
         
         //Adding them to view
         
@@ -93,15 +96,67 @@ class SearchView: UIViewController {
             searchTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             searchTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12),
   
-            
         ])
         
     }
     
-    
 }
 
 //MARK: - TableView Extension
+
+extension SearchView: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        // Check if the last cell is being prefetched
+        if let lastIndexPath = indexPaths.last, lastIndexPath.row == books?.count ?? 0 - 1, !isSearching {
+            currentPage += 1
+            fetchNextPage()
+        }
+    }
+    
+    func fetchNextPage() {
+        // Fetch data for the next page using the current page number
+        isSearching = true
+        
+        let spinnerView = createSpinnerView()
+        searchTable.tableFooterView = spinnerView
+                
+        fetchPagination(page: currentPage) { [weak self] (searchBooks) in
+            guard let self = self else { return }
+
+            // Handle the fetched data
+            if let newBooks = searchBooks {
+                // Append the new data to the existing data source
+                self.books?.append(contentsOf: newBooks)
+                
+                // Reload the table view to display the new data
+                DispatchQueue.main.async {
+                    self.searchTable.reloadData()
+                }
+            }
+            DispatchQueue.main.async {
+                self.searchTable.tableFooterView = nil
+            }
+            self.isSearching = false
+        }
+    }
+    
+    private func createSpinnerView() -> UIView {
+        // Create a container view for the spinner
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: searchTable.bounds.width, height: 50))
+        
+        // Create and configure the spinner
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.startAnimating()
+        spinner.center = containerView.center
+        
+        // Add the spinner to the container view
+        containerView.addSubview(spinner)
+        
+        return containerView
+    }
+}
+
+
 extension SearchView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ searchTable: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -119,6 +174,12 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if indexPath.row == (books?.count ?? 19) - 1{
+            currentPage += 1
+            fetchNextPage()
+        }
+        
         // Apply inset constraints
         let verticalPadding: CGFloat = 8
         
@@ -132,32 +193,38 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ searchTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTable.dequeueReusableCell(withIdentifier: K.cellIdentifier2, for: indexPath) as! MyBooksCell
             
-        if books != nil {
+        if isSearching {
             
-            cell.hideAnimation()
-            
-            let bookz = books![indexPath.row]
-            
-            cell.MBTitle?.text = bookz.title
-            cell.MBTitle.font = SetFont.setFontStyle(.medium, 16)
-            // Setting the cell author label from the API
-            if let author = bookz.author_name?.first {
-                cell.MBAuthor?.text = author
-            }
-            cell.MBAuthor.font = SetFont.setFontStyle(.medium, 16)
-            fetchBookDescription(forKey: bookz.key) { description in
-                DispatchQueue.main.async {
-                    if let description = description {
-                        cell.MBDescr.text = description
-                    } else {
-                        cell.MBDescr.text = "Description not available"
+            cell.showAnimation()
+
+        } else {
+            if books != nil {
+                                
+                cell.hideAnimation()
+                
+                let bookz = books![indexPath.row]
+                
+                cell.MBTitle?.text = bookz.title
+                cell.MBTitle.font = SetFont.setFontStyle(.medium, 16)
+                // Setting the cell author label from the API
+                if let author = bookz.author_name?.first {
+                    cell.MBAuthor?.text = author
+                }
+                cell.MBAuthor.font = SetFont.setFontStyle(.medium, 16)
+                fetchBookDescription(forKey: bookz.key) { description in
+                    DispatchQueue.main.async {
+                        if let description = description {
+                            cell.MBDescr.text = description
+                        } else {
+                            cell.MBDescr.text = "Description not available"
+                        }
                     }
                 }
-            }
-            cell.MBDescr.font = SetFont.setFontStyle(.regular, 14)
-            // Setting the cell image from the API
-            if let coverID = bookz.cover_i {
-                downloadCoverImage(coverImageID: "\(coverID)", targetImageView: cell.MBPhoto, placeholderImage: UIImage(resource: .placeholder))
+                cell.MBDescr.font = SetFont.setFontStyle(.regular, 14)
+                // Setting the cell image from the API
+                if let coverID = bookz.cover_i {
+                    downloadCoverImage(coverImageID: "\(coverID)", targetImageView: cell.MBPhoto, placeholderImage: UIImage(resource: .placeholder))
+                }
             }
         }
         return cell
@@ -184,7 +251,7 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
         
         
         
-        if let coverID = selectedBook.cover_i {
+        if let coverID = selectedBook.cover_i{
             downloadCoverImage(coverImageID: "\(coverID)", targetImageView: detailVC.bookImg, placeholderImage: UIImage(resource: .placeholder))
                 
                 present(detailVC, animated: true, completion: nil)
@@ -194,23 +261,33 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: - Search Controller Extension
 extension SearchView: UISearchControllerDelegate, UISearchBarDelegate {
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Set isSearching flag to true
+        isSearching = true
+        
+        // Reload the table view to show loading indicator or empty state
+        searchTable.reloadData()
+                
+        // Fetch search results
         var searchTerm = ""
         searchTerm = searchController.searchBar.text!
         self.books = []
         
-        searchBookz("\(searchTerm)") { (searchBooks) in
-            guard let books = searchBooks else {
-                print("Error fetching books")
-                return
-            }
-            DispatchQueue.main.async {
-                self.books = books
+        searchBooks(search: "\(searchTerm)") { (searchBooks) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                // Update the data source with search results
+                self.books = searchBooks ?? []
+                
+                // Reload the table view to display search results
                 self.searchTable.reloadData()
+                
+                // Set isSearching flag to false
+                self.isSearching = false
             }
         }
         
+        // Resign first responder to dismiss keyboard
         searchController.searchBar.resignFirstResponder()
     }
     
@@ -222,6 +299,32 @@ extension SearchView: UISearchControllerDelegate, UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchController.searchBar.text = ""
         searchController.searchBar.placeholder = "Search Books, Authors, ISBN"
+        
+        isSearching = true
+        
+        searchTable.reloadData()
+
+        self.currentPage = 1
+        
+        fetchPagination(page: currentPage) { (books) in
+            guard let books = books else {
+                print("Error fetching books")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+                    UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
+                        self.cellNumbers = 0
+                        self.searchTable.reloadData()
+                        self.searchTable.setEmptyMessage(EmptyTable.searchMsg.randomElement()!)
+                    }, completion: nil)
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.isSearching = false
+                self.books = books
+                self.searchTable.reloadData()
+            }
+        }
     }
     
 }

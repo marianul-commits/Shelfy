@@ -46,10 +46,10 @@
             </objects>
             <point key="canvasLocation" x="-396" y="-961"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="bsy-HZ-EaT">
             <objects>
-                <tabBarController modalTransitionStyle="crossDissolve" id="67y-yU-GLg" sceneMemberID="viewController">
+                <tabBarController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="67y-yU-GLg" customClass="TabBarViewController" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Rxk-Qn-9QR"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pjR-8N-CcF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -72,7 +72,7 @@
         <!--Home-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="HomeController" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="HomeController" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -154,7 +154,7 @@
         <!--My Books-->
         <scene sceneID="90z-YB-8FF">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="u9S-4C-H3f" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="u9S-4C-H3f" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="My Books" image="books.vertical.fill" catalog="system" id="cij-tp-bIm">
                         <color key="badgeColor" name="Background"/>
                     </tabBarItem>
@@ -175,7 +175,7 @@
         <!--Navigation Controller-->
         <scene sceneID="WO6-qg-Kbu">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ada-nk-9kS" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="Ada-nk-9kS" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="search" id="TyX-OR-ddU">
                         <color key="badgeColor" name="Background"/>
                     </tabBarItem>
@@ -197,7 +197,7 @@
         <!--Search View-->
         <scene sceneID="4Dv-Zw-otv">
             <objects>
-                <viewController id="fGq-ly-UzI" customClass="SearchView" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="fGq-ly-UzI" customClass="SearchView" customModule="Shelfy" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CEa-N4-bTS">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -208,7 +208,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YGV-2l-9uH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="496.94656488549617" y="507.74647887323948"/>
+            <point key="canvasLocation" x="497" y="508"/>
         </scene>
         <!--Test View-->
         <scene sceneID="OH5-lx-dKR">

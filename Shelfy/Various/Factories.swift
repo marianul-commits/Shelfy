@@ -36,16 +36,6 @@ func makeView(color: UIColor = .red) -> UIView {
     return view
 }
 
-
-func makeScrollView(withX x: CGFloat, withY y: CGFloat, withWidth width: CGFloat, withHeight height: CGFloat) -> UIScrollView {
-    let scrollView = UIScrollView(frame: CGRect(x: x, y: y, width: width, height: height))
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    scrollView.contentSize = CGSize(width: width, height: height)
-    scrollView.isPagingEnabled = true
-    
-    return scrollView
-}
-
 public func makeSpacerView(height: CGFloat? = nil) -> UIView {
     let spacerView = UIView(frame: .zero)
 
@@ -162,15 +152,6 @@ func makeButton2(withTitle title: String) -> UIButton {
     return button
 }
 
-func makeButton3(withTitle title: String) -> UIButton {
-    let button = UIButton(type: .system)
-    
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle(title, for: .normal)
-    button.contentHorizontalAlignment = .center
-    return button
-}
-
 func makeImgButton(withImg img: String) -> UIButton {
     let btn = UIButton()
     let image = UIImage(systemName: img)?.withRenderingMode(.alwaysTemplate)
@@ -191,28 +172,6 @@ func makeStackView(withOrientation axis: NSLayoutConstraint.Axis, withSpacing sp
     stackView.alignment = .fill
 
     return stackView
-}
-
-func makeTableView() -> UITableView {
-    
-    let tableView = UITableView()
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.separatorStyle = .none
-    
-    return tableView
-    
-}
-
-func makeSearchBar(withPlaceholder placeholder: String) -> UISearchBar {
-    
-    let searchBar = UISearchBar()
-    searchBar.translatesAutoresizingMaskIntoConstraints = false
-    searchBar.placeholder = placeholder
-    searchBar.searchBarStyle = .minimal
-    searchBar.tintColor = UIColor(named: "Accent")
-    
-    return searchBar
-    
 }
 
 func makeProgressBar() -> UIProgressView {

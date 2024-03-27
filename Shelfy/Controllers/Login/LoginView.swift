@@ -21,8 +21,6 @@ class LoginView: UIViewController {
     let registerBtn = makeButton2(withTitle: "Register")
     let continueAsGuest = makeButton2(withTitle: "Continue as Guest!")
     var timer: Timer?
-//    let textStack = makeStackView(withOrientation: .horizontal, withSpacing: 0.5)
-
     
     
     override func viewDidLoad() {
@@ -60,11 +58,9 @@ class LoginView: UIViewController {
         loginBtn.frame.size = CGSize(width: 200, height: 35)
         loginBtn.tintColor = UIColor(resource: .brandLogo)
         
-        registerBtn.backgroundColor = .clear
         registerBtn.tintColor = UIColor(resource: .brandLogo2)
         registerBtn.titleLabel?.numberOfLines = 1
         
-        continueAsGuest.backgroundColor = .clear
         continueAsGuest.tintColor = UIColor(resource: .brandLogo3)
         continueAsGuest.titleLabel?.numberOfLines = 1
                 
@@ -128,12 +124,12 @@ class LoginView: UIViewController {
         ])
     }
     
-    @objc func registerPressed() {
+    @objc private func registerPressed() {
         performSegue(withIdentifier: "registerPressed", sender: nil)
     }
     
     
-    @objc func loginPressed() {
+    @objc private func loginPressed() {
         if let email = emailField.text, let password = pwdField.text{
         
                 Auth.auth().signIn(withEmail: email, password: password) {authResult, error in
@@ -144,21 +140,26 @@ class LoginView: UIViewController {
                             self.addShakeAnimation(to: self.pwdField)
                             self.animateBorderColorChange(textField: self.pwdField, to: .red)
                     } else {
+                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                        UserDefaults.standard.synchronize()
                         
-                        self.performSegue(withIdentifier: K.loginIdentifier, sender: self)
+                        let loginVC = TabBarViewController()
+                        loginVC.selectedIndex = 0
+                        loginVC.modalPresentationStyle = .fullScreen
+                        self.present(loginVC, animated: true, completion: nil)
                     }
                 }
         }
     }
     
-    @objc func continuePressed() {
+    @objc private func continuePressed() {
         let guestModeVC = TabBarViewController()
         guestModeVC.selectedIndex = 0
         guestModeVC.modalPresentationStyle = .fullScreen
         present(guestModeVC, animated: true, completion: nil)
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    private func textFieldDidEndEditing(_ textField: UITextField) {
        
        timer?.invalidate()
        
@@ -199,7 +200,7 @@ class LoginView: UIViewController {
         pwdField.leftView = view
     }
     
-    func addShakeAnimation(to textField: UITextField) {
+    private func addShakeAnimation(to textField: UITextField) {
        let shakeAnimation = CAKeyframeAnimation(keyPath: "transform.translation.x")
        shakeAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
        shakeAnimation.duration = 0.6
@@ -207,7 +208,7 @@ class LoginView: UIViewController {
        textField.layer.add(shakeAnimation, forKey: "shakeAnimation")
    }
    
-    func animateBorderColorChange(textField: UITextField, to color: UIColor) {
+    private func animateBorderColorChange(textField: UITextField, to color: UIColor) {
        UIView.animate(withDuration: 0.3) {
            textField.layer.borderColor = color.cgColor
        }

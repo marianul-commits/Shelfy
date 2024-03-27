@@ -150,105 +150,6 @@ class MyBookView: UIViewController {
             }
         }
 
-        
-        
-//        // Check Core Data for the number of pages first
-//        if let bookItem = fetchBookItem(forTitle: bTitle.text!) {
-//            if let totalPagesString = bookItem.bookTotalPages, !totalPagesString.isEmpty {
-//                if let totalPagesInt = Int(totalPagesString), totalPagesInt != 0 {
-//                    // Update UI with fetched total pages
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                        self.progressBar.layer.sublayers?.forEach({ $0.removeAllAnimations() })
-//                        self.progressBar.progress = 0
-//                        self.progressLbl.hideSkeleton(transition: .crossDissolve(0.25))
-//                        self.progressLbl.text = "\(self.pagesRead!) / \(totalPagesString) pages"
-//                        UIView.animate(withDuration: 1.5, delay: 0, options: [.curveEaseInOut], animations: {
-//                            let prgrs = self.calculateProgress(pagesRead: self.pagesRead!, totalPages: totalPagesInt)
-//                            self.progressBar.setProgress(prgrs, animated: true)
-//                        })
-//                    }
-//                } else {
-//                    // Total pages is 0 or invalid, fetch from API or prompt user
-//                    fetchNumberOfPages(forTitle: bTitle.text!) { numberOfPages in
-//                        if let numberOfPages = numberOfPages {
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                                // Update UI with fetched total pages
-//                                self.progressBar.layer.sublayers?.forEach({ $0.removeAllAnimations() })
-//                                self.progressLbl.hideSkeleton(transition: .crossDissolve(0.25))
-//                                self.totalPages = numberOfPages
-//                                self.progressLbl.text = "\(self.pagesRead!) / \(numberOfPages) pages"
-//                                UIView.animate(withDuration: 1.5, delay: 0, options: [.curveEaseInOut], animations: {
-//                                    let prgrs = self.calculateProgress(pagesRead: self.pagesRead!, totalPages: numberOfPages)
-//                                    self.progressBar.setProgress(prgrs, animated: true)
-//                                })
-//
-//                                // Update bookTotalPages in Core Data
-//                                if let bookItem = self.fetchBookItem(forTitle: self.bTitle.text!) {
-//                                    bookItem.bookTotalPages = "\(numberOfPages)"
-//                                    do {
-//                                        try self.context.save()
-//                                    } catch {
-//                                        print("Error saving bookTotalPages: \(error)")
-//                                    }
-//                                } else {
-//                                    print("Book item not found.")
-//                                }
-//
-//                                print("Number of pages: \(numberOfPages)")
-//                            }
-//                        } else {
-//                            DispatchQueue.main.async {
-//                                print("Failed to fetch number of pages")
-//                                // Prompt the user to input the total number of pages
-//                                let alertController = UIAlertController(title: "Enter Total Pages", message: "Please enter the total number of pages for the book:", preferredStyle: .alert)
-//                                alertController.addTextField { textField in
-//                                    textField.placeholder = "Total Pages"
-//                                    textField.keyboardType = .numberPad
-//                                }
-//                                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//                                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-//                                    // Retrieve the input from the text field
-//                                    if let textField = alertController.textFields?.first, let text = textField.text, let total = Int(text) {
-//                                        // Update the total pages with the user input
-//                                        self.totalPages = total
-//                                        if let bookItem = self.fetchBookItem(forTitle: self.bTitle.text!) {
-//                                            bookItem.bookTotalPages = "\(total)"
-//                                            do {
-//                                                try self.context.save()
-//                                            } catch {
-//                                                print("Error saving bookTotalPages: \(error)")
-//                                            }
-//                                        } else {
-//                                            print("Book item not found.")
-//                                        }
-//                                    }
-//                                }
-//                                alertController.addAction(cancelAction)
-//                                alertController.addAction(okAction)
-//                                // Present the alert controller
-//                                self.present(alertController, animated: true, completion: nil)
-//                            }
-//
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                                self.progressLbl.hideSkeleton(transition: .crossDissolve(0.25))
-//                                self.progressLbl.text = "\(self.pagesRead!) / \(totalPagesString) pages"
-//                                UIView.animate(withDuration: 1.5, delay: 0, options: [.curveEaseInOut], animations: {
-//                                    let prgrs = self.calculateProgress(pagesRead: self.pagesRead!, totalPages: self.totalPages)
-//                                    self.progressBar.setProgress(prgrs, animated: true)
-//                                })
-//                            }
-//                        }
-//                    }
-//                }
-//            } else {
-//                // Total pages string is nil or empty, fetch from API or prompt user
-//                // Add your logic here
-//                print("Total pages string is nil or empty")
-//            }
-//        }
-
-        
-        
         //Book Ratings API Call
         fetchBookRatings(forKey: bookID!) { ratings in
             DispatchQueue.main.async {
@@ -274,8 +175,8 @@ class MyBookView: UIViewController {
         bookRating.isUserInteractionEnabled = false
         
         //Progress Bar Setup
-        var progressValue = calculateProgress(pagesRead: pagesRead!, totalPages: totalPages)
-        var progressLblValue = calculateProgress(pagesRead: pagesRead!, totalPages: totalPages) * 100
+        let progressValue = calculateProgress(pagesRead: pagesRead!, totalPages: totalPages)
+        let progressLblValue = calculateProgress(pagesRead: pagesRead!, totalPages: totalPages) * 100
         progressBar.progress = progressValue
         progressBar.setProgress(calculateProgress(pagesRead: pagesRead!, totalPages: totalPages), animated: true)
         
@@ -439,7 +340,7 @@ class MyBookView: UIViewController {
                 // Check if pages read exceed total pages
                 if newPagesRead > self.totalPages {
                     // Display error message if pages read exceed total pages
-                    let errorController = UIAlertController(title: "Error", message: "Oops! Looks like you're trying to read more pages than this book even has! It's like asking for seconds when the plate's empty. 📚🤔 Let's stick to what's available between the covers!", preferredStyle: .alert)
+                    let errorController = UIAlertController(title: "Error", message: K.addPagesError, preferredStyle: .alert)
                     errorController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(errorController, animated: true, completion: nil)
                 } else {

@@ -42,30 +42,6 @@ extension UITableView {
     }
 }
 
-extension UILabel {
-    func setDynamicFontColor() {
-        if #available(iOS 13.0, *) {
-            // Use traitCollection.userInterfaceStyle to check the current user interface style.
-            if self.traitCollection.userInterfaceStyle == .dark {
-                // Set the font color for dark mode.
-                self.textColor = UIColor(named: "Color")
-            } else {
-                // Set the font color for light mode.
-                self.textColor = UIColor.black
-            }
-        } else {
-            // Fallback for earlier iOS versions where dark mode is not supported.
-            self.textColor = UIColor(named: "Color1")
-        }
-    }
-    
-    // Override traitCollectionDidChange to call setDynamicFontColor when the trait collection changes.
-    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        setDynamicFontColor()
-    }
-}
-
 extension UserDefaults {
     
     func setIsLoggedIn(value: Bool) {

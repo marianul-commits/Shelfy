@@ -25,6 +25,52 @@ class HoldingCell: UIViewController {
  
  }
  
+ //MARK: - User Level
+ 
+ func determineLevel(pagesRead: Int) -> String {
+     switch pagesRead {
+     case 0..<5000:
+         return "Novice Reader 📖"
+     case 5000..<10500:
+         return "Page Turner 📚"
+     case 10500..<16000:
+         return "Bookworm 🐛"
+     case 16000..<21500:
+         return "Bibliophile 📜"
+     case 21500..<27000:
+         return "Literary Connoisseur 🎩"
+     case 27000..<32500:
+         return "Word Wizard 🧙‍♂️"
+     case 32500..<38000:
+         return "Story Enthusiast 📝"
+     case 38000..<43500:
+         return "Chapter Champion 🏆"
+     case 43500..<49000:
+         return "Literature Lover ❤️‍🔥"
+     case 49000..<54500:
+         return "Reading Maestro 🎓"
+     case 54500..<60000:
+         return "Genre Guru ☸️"
+     case 60000..<65500:
+         return "Page-turning Dragon 🐉"
+     case 65500..<71000:
+         return "Tome Titan 🔱"
+     case 71000..<76500:
+         return "Reading Royalty 💎"
+     case 76500..<80000:
+         return "God Emperor of Books 👑"
+     default:
+         return "Novice Reader 📖"
+     }
+ }
+
+ // Example usage:
+ let pages = 20000
+ let level = determineLevel(pagesRead: pages)
+ print("You are currently at \(level).")
+
+ 
+ 
  //MARK: - Move books between categories
  
  func moveItem(from sourceCategory: BookCategory, atIndex sourceIndex: Int, to destinationCategory: BookCategory) {

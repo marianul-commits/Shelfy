@@ -10,109 +10,128 @@ import CoreData
 
 class HomeController: UIViewController {
     
+    //Core Data
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var bookPages: [String] = []
     var bookTotalPages: [String] = []
     
-    var progressBar = makeProgressBar()
-    var container = makeView()
+    //Reading Goal View
+    
+    var readingGoalPB = makeProgressBar()
+    var readingGoalView = makeView()
     var monthLbl = makeLabel(withText: "")
-    var progressLbl = makeLabel(withText: "")
+    var readingGoalPBLabel = makeLabel(withText: "")
     var readingGoalLbl = makeLabel(withText: "Reading Goal")
-    var trendingNowLbl = makeLabel(withText: "Trending Now")
     var currentMonth: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM"
         return dateFormatter.string(from: Date())
     }
+    //Trending Now View
     
-    lazy var imageView = UIImageView()
-    var imagePlaceholder = UIView()
-    var bookTitlePlaceholder = UILabel()
+    var trendingNowLbl = makeLabel(withText: "Trending Now")
+    lazy var trendingBookCover = UIImageView()
+    var trendingBCPlaceholder = UIView()
+    var trendingBTPlaceholder = UILabel()
     lazy var randomBook = ""
     lazy var coverID = ""
-    var hotContainer = UIView()
-    lazy var bookTitle = UILabel()
+    lazy var bookID = ""
+    var trendingView = UIView()
+    lazy var trendingBookTitle = UILabel()
     lazy var header = UILabel()
-    lazy var bookAuthor = UILabel()
+    lazy var trendingBookAuthor = UILabel()
+    lazy var bookAuthor = ""
     var randomGenre = K.topGenres.randomElement()
     lazy var errorLbl = UILabel()
     let stackView = UIStackView()
     
+    //Continue Tracking View
+
+    var continueReadingContainer = UIView()
+    var continueHeader = makeLabel(withText: "Continue tracking")
+    var continueSubtitle = makeLabel(withText: "Ready to dive back in?")
+    var continueProgressBar = UIProgressView()
+    var continueProgressLbl = UILabel()
+    var continueBookPhoto = UIImageView()
+    lazy var continueTotalPgs = 0
+    lazy var continueReadPgs = 0
+    
+    //MARK: View Will Appear
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        //Selecting Random Genre
         while randomGenre == nil {
             randomGenre = K.topGenres.randomElement()
         }
-        
-        pickRandomBook(fromGenre: "\(randomGenre!)") { title, coverID, authorName in
-            if let title = title, let coverID = coverID {
+        //API Call
+        pickRandomBook(fromGenre: "\(randomGenre!)") { title, coverID, authorName, bookKey in
+            if let title = title, let coverID = coverID, let bookKey = bookKey {
                 self.randomBook = title
                 self.coverID = coverID
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.bookID = bookKey
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Book
                     self.stopLoading()
-                    self.bookTitle.text = title
-                    self.bookAuthor.text = "By \(authorName!)"
-                    downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.imageView, placeholderImage: UIImage(resource: .placeholder))
+                    self.trendingBookTitle.text = title
+                    self.trendingBookAuthor.text = "By \(authorName!)"
+                    self.bookAuthor = "\(authorName!)"
+                    downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.trendingBookCover, placeholderImage: UIImage(resource: .placeholder))
                     UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
-                        self.imageView.alpha = 1.0
-                        self.bookTitle.alpha = 1.0
+                        self.trendingBookCover.alpha = 1.0
+                        self.trendingBookTitle.alpha = 1.0
                         self.header.alpha = 1.0
-                        self.bookAuthor.alpha = 1.0
+                        self.trendingBookAuthor.alpha = 1.0
                     }, completion: nil)
                     self.stopLoading()
                 }
             } else {
                 print("Failed to fetch a random book")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Error
                     self.stopLoading()
                     UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
                         self.errorLbl.alpha = 1.0
                         self.header.alpha = 0.0
                     }, completion: nil)
-                    if self.bookTitle.text == nil && self.bookAuthor.text == nil || ((self.bookAuthor.text?.isEmpty) != nil) {
+                    if self.trendingBookTitle.text == nil && self.trendingBookAuthor.text == nil || ((self.trendingBookAuthor.text?.isEmpty) != nil) {
                         self.errorLbl.text = K.errorLbl
                     }
-                }
-            }
-        }
-    }
+                }//End DQ
+            }//End else
+        } //End API Call
+    } //End viewWillAppear
+    
+    //MARK: View Did Appear
     
     override func viewDidAppear(_ animated: Bool) {
         
-        getAllBookPages()
+        getAllBookPages() //Core Data Call for bookPages & bookTotalPages values
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             
             let intBooks = self.bookPages.map { Int($0) ?? 0 }
             let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
-            
-            
             let pagesRead = intBooks.reduce(0, +)
             let totalPages = intTotalPages.reduce(0, +)
-            
-            
-            self.progressBar.setProgress(self.calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
+            self.readingGoalPB.setProgress(self.calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
             var progressLblValue = self.calculateProgress(pagesRead: pagesRead, totalPages: totalPages) * 100
-            self.progressLbl.text = String(format: "%.0f%%", progressLblValue)
-
-            print("viewDidAppear pagesRead is: ", pagesRead, "viewDidAppear totalPages is: ", totalPages)
+            self.readingGoalPBLabel.text = String(format: "%.0f%%", progressLblValue)
             
-        }
+        } // Setting the values for ProgressBar.progress
         
-        startLoading()
+        startLoading() // Display Skeleton View
         errorLbl.alpha = 0.0
-        self.imageView.alpha = 0.0
-        self.bookTitle.alpha = 0.0
-        self.bookAuthor.alpha = 0.0
+        self.trendingBookCover.alpha = 0.0
+        self.trendingBookTitle.alpha = 0.0
+        self.trendingBookAuthor.alpha = 0.0
         self.errorLbl.alpha = 0.0
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getAllBookPages()
+        getAllBookPages() //Core Data Call for bookPages & bookTotalPages values
         setupView()
     }
     
@@ -120,11 +139,11 @@ class HomeController: UIViewController {
         super.viewWillDisappear(animated)
         
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { //Hiding the current values to better display new ones upon coming back
             
-            self.imageView.alpha = 0.0
-            self.bookTitle.alpha = 0.0
-            self.bookAuthor.alpha = 0.0
+            self.trendingBookCover.alpha = 0.0
+            self.trendingBookTitle.alpha = 0.0
+            self.trendingBookAuthor.alpha = 0.0
             self.errorLbl.alpha = 0.0
             
         }
@@ -138,77 +157,119 @@ class HomeController: UIViewController {
         
         let pagesRead = intBooks.reduce(0, +)
         let totalPages = intTotalPages.reduce(0, +)
-        
-        print("pagesRead is: ", pagesRead, "totalPages is: ", totalPages)
-        
-        
+                
         let safeArea = view.safeAreaLayoutGuide
         
-        imageView.alpha = 0.0
-        bookTitle.alpha = 0.0
-        bookAuthor.alpha = 0.0
+        trendingBookCover.alpha = 0.0
+        trendingBookTitle.alpha = 0.0
+        trendingBookAuthor.alpha = 0.0
         errorLbl.alpha = 0.0
         
         header.text = "Hot in \(randomGenre!)"
         
-        bookTitlePlaceholder.text = K.placeholder
+        trendingBTPlaceholder.text = K.placeholder
         
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        bookTitlePlaceholder.textAlignment = .center
-        bookTitlePlaceholder.numberOfLines = 2
+        trendingBTPlaceholder.textAlignment = .center
+        trendingBTPlaceholder.numberOfLines = 2
         
-        hotContainer.translatesAutoresizingMaskIntoConstraints = false
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        bookTitle.translatesAutoresizingMaskIntoConstraints = false
-        imagePlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        bookTitlePlaceholder.translatesAutoresizingMaskIntoConstraints = false
+        trendingView.translatesAutoresizingMaskIntoConstraints = false
+        trendingBookCover.translatesAutoresizingMaskIntoConstraints = false
+        trendingBookTitle.translatesAutoresizingMaskIntoConstraints = false
+        trendingBCPlaceholder.translatesAutoresizingMaskIntoConstraints = false
+        trendingBTPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         header.translatesAutoresizingMaskIntoConstraints = false
-        bookAuthor.translatesAutoresizingMaskIntoConstraints = false
+        trendingBookAuthor.translatesAutoresizingMaskIntoConstraints = false
         errorLbl.translatesAutoresizingMaskIntoConstraints = false
-        bookTitle.numberOfLines = 0
-        bookTitle.lineBreakMode = .byWordWrapping
-        bookTitle.textAlignment = .center
-        bookAuthor.numberOfLines = 0
-        bookAuthor.lineBreakMode = .byWordWrapping
-        bookAuthor.textAlignment = .center
-        bookTitlePlaceholder.linesCornerRadius = 5
+        trendingBookTitle.numberOfLines = 0
+        trendingBookTitle.lineBreakMode = .byWordWrapping
+        trendingBookTitle.textAlignment = .center
+        trendingBookAuthor.numberOfLines = 0
+        trendingBookAuthor.lineBreakMode = .byWordWrapping
+        trendingBookAuthor.textAlignment = .center
+        trendingBTPlaceholder.linesCornerRadius = 5
         
         errorLbl.numberOfLines = 0
         errorLbl.lineBreakMode = .byWordWrapping
         errorLbl.textAlignment = .center
         
         
-        hotContainer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        trendingView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
-        K.setGradientBackground(view: hotContainer, colorTop: UIColor(resource: .brandPurple), colorBottom: UIColor(resource: .brandPink))
-        imagePlaceholder.skeletonCornerRadius = 10
+        K.setGradientBackground(view: trendingView, colorTop: UIColor(resource: .brandPurple), colorBottom: UIColor(resource: .brandPink))
+        trendingBCPlaceholder.skeletonCornerRadius = 10
         
-        hotContainer.layer.cornerRadius = 12
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true
-        hotContainer.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
-        bookTitle.font = SetFont.setFontStyle(.medium, 14)
-        bookAuthor.font = SetFont.setFontStyle(.medium, 14)
+        let seeBook = UITapGestureRecognizer(target: self, action: #selector(bookTapped))
+        trendingView.addGestureRecognizer(seeBook)
+        
+        trendingView.layer.cornerRadius = 12
+        trendingBookCover.layer.cornerRadius = 10
+        trendingBookCover.clipsToBounds = true
+        trendingView.clipsToBounds = true
+        trendingBookCover.contentMode = .scaleAspectFit
+        trendingBookTitle.font = SetFont.setFontStyle(.medium, 14)
+        trendingBookAuthor.font = SetFont.setFontStyle(.medium, 14)
         header.font = SetFont.setFontStyle(.medium, 16)
         errorLbl.font = SetFont.setFontStyle(.medium, 16)
         trendingNowLbl.font = SetFont.setFontStyle(.medium, 22)
         
         stackView.alignment = .center
         
-        view.addSubview(hotContainer)
-        hotContainer.addSubview(imageView)
-        hotContainer.addSubview(imagePlaceholder)
-        hotContainer.addSubview(bookTitle)
-        hotContainer.addSubview(header)
-        hotContainer.addSubview(bookAuthor)
-        hotContainer.addSubview(errorLbl)
-        hotContainer.addSubview(stackView)
-        stackView.addArrangedSubview(bookTitlePlaceholder)
+        
+        continueBookPhoto.image = UIImage(resource: .placeholder)
+        
+        fetchLastAccessedBook() //Core Data call to last accessed book using bookLastAccesed
+        
+        continueReadingContainer.translatesAutoresizingMaskIntoConstraints = false
+        continueHeader.translatesAutoresizingMaskIntoConstraints = false
+        continueSubtitle.translatesAutoresizingMaskIntoConstraints = false
+        continueProgressBar.translatesAutoresizingMaskIntoConstraints = false
+        continueProgressLbl.translatesAutoresizingMaskIntoConstraints = false
+        continueBookPhoto.translatesAutoresizingMaskIntoConstraints = false
+        
+        continueProgressBar.progress = 0
+        continueProgressBar.tintColor = UIColor(resource: .brandPink)
+        continueProgressBar.trackTintColor = UIColor(resource: .brandDarkPurple)
+        continueProgressBar.progressViewStyle = .bar
+        continueProgressBar.layer.cornerRadius = 2
+        continueProgressBar.clipsToBounds = true
+                
+        continueProgressLbl.text = "Page XX of YYY"
+        
+        continueHeader.font = SetFont.setFontStyle(.medium, 16)
+        continueSubtitle.font = SetFont.setFontStyle(.regular, 14)
+        continueProgressLbl.font = SetFont.setFontStyle(.regular, 14)
+
+        
+        continueReadingContainer.clipsToBounds = true
+        continueReadingContainer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        continueReadingContainer.layer.cornerRadius = 12
+        K.setGradientBackground(view: continueReadingContainer, colorTop: UIColor(resource: .brandYellow), colorBottom: UIColor(resource: .brandMint))
+
+        
+        continueBookPhoto.clipsToBounds = true
+        continueBookPhoto.layer.cornerRadius = 16
+        
+        
+        view.addSubview(trendingView)
+        trendingView.addSubview(trendingBookCover)
+        trendingView.addSubview(trendingBCPlaceholder)
+        trendingView.addSubview(trendingBookTitle)
+        trendingView.addSubview(header)
+        trendingView.addSubview(trendingBookAuthor)
+        trendingView.addSubview(errorLbl)
+        trendingView.addSubview(stackView)
+        stackView.addArrangedSubview(trendingBTPlaceholder)
+        view.addSubview(continueReadingContainer)
+        continueReadingContainer.addSubview(continueHeader)
+        continueReadingContainer.addSubview(continueSubtitle)
+        continueReadingContainer.addSubview(continueProgressLbl)
+        continueReadingContainer.addSubview(continueProgressBar)
+        continueReadingContainer.addSubview(continueBookPhoto)
         
         let imageWidthPercentage: CGFloat = 0.32
         let imageHeightPercentage: CGFloat = 0.42
@@ -217,105 +278,136 @@ class HomeController: UIViewController {
         let imageWidthConstant = UIScreen.main.bounds.width * imageWidthPercentage
         let imageHeightConstant = UIScreen.main.bounds.height * imageHeightPercentage
         
-        let placeholderWidthConstant = hotContainer.bounds.width * imageWidthPercentage
-        let placeholderHeightConstant = hotContainer.bounds.height * placeholderPercentage
+        let placeholderWidthConstant = trendingView.bounds.width * imageWidthPercentage
+        let placeholderHeightConstant = trendingView.bounds.height * placeholderPercentage
         
-        let placehoderHeight = imagePlaceholder.heightAnchor.constraint(equalToConstant: placeholderHeightConstant / 1.25)
+        let placehoderHeight = trendingBCPlaceholder.heightAnchor.constraint(equalToConstant: placeholderHeightConstant / 1.25)
         placehoderHeight.isActive = true
         placehoderHeight.priority = UILayoutPriority(rawValue: 995)
         
-        container.backgroundColor = UIColor(resource: .brandMint)
-        container.layer.cornerRadius = 12
+        let continueImgWidthPercent: CGFloat = 0.16
+        let continueImgHeightPercent: CGFloat = 0.21
+        
+        let continueImgWidthConstant = UIScreen.main.bounds.width * continueImgWidthPercent
+        let continueImgHeightConstant = UIScreen.main.bounds.height * continueImgHeightPercent
+        
+        readingGoalView.backgroundColor = UIColor(resource: .brandMint)
+        readingGoalView.layer.cornerRadius = 12
         monthLbl.text = currentMonth
         monthLbl.font = SetFont.setFontStyle(.medium, 18)
         readingGoalLbl.font = SetFont.setFontStyle(.medium, 22)
         
         var progressValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages)
         var progressLblValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages) * 100
-        print("Progress: \(progressValue)")
-        progressBar.setProgress(calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
+        readingGoalPB.setProgress(calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
         
-        progressLbl.text = String(format: "%.0f%%", progressLblValue)
-        progressBar.tintColor = UIColor(resource: .brandPurple)
-        progressBar.trackTintColor = UIColor(resource: .brandDarkPurple)
-        progressBar.progressViewStyle = .bar
-        progressBar.layer.cornerRadius = 2
-        progressBar.clipsToBounds = true
+        readingGoalPBLabel.text = String(format: "%.0f%%", progressLblValue)
+        readingGoalPB.tintColor = UIColor(resource: .brandPurple)
+        readingGoalPB.trackTintColor = UIColor(resource: .brandDarkPurple)
+        readingGoalPB.progressViewStyle = .bar
+        readingGoalPB.layer.cornerRadius = 2
+        readingGoalPB.clipsToBounds = true
         
-        bookTitlePlaceholder.isSkeletonable = true
-        imagePlaceholder.isSkeletonable = true
+        trendingBTPlaceholder.isSkeletonable = true
+        trendingBCPlaceholder.isSkeletonable = true
         
-        view.addSubview(container)
+        view.addSubview(readingGoalView)
         view.addSubview(readingGoalLbl)
         view.addSubview(trendingNowLbl)
-        container.addSubview(monthLbl)
-        container.addSubview(progressBar)
-        container.addSubview(progressLbl)
+        readingGoalView.addSubview(monthLbl)
+        readingGoalView.addSubview(readingGoalPB)
+        readingGoalView.addSubview(readingGoalPBLabel)
         
         NSLayoutConstraint.activate([
             readingGoalLbl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            readingGoalLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            readingGoalLbl.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -12),
-            container.topAnchor.constraint(equalTo: readingGoalLbl.bottomAnchor, constant: 12),
-            container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            container.widthAnchor.constraint(equalTo: safeArea.widthAnchor, constant: -30),
-            container.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.2),
-            monthLbl.topAnchor.constraint(equalTo: container.topAnchor, constant: 20),
-            monthLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
-            progressBar.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
-            progressBar.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
-            progressBar.heightAnchor.constraint(equalToConstant: 4),
-            progressBar.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -30),
-            progressLbl.bottomAnchor.constraint(equalTo: progressBar.topAnchor, constant: -12),
-            progressLbl.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            readingGoalLbl.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor),
+            readingGoalView.topAnchor.constraint(equalTo: readingGoalLbl.bottomAnchor, constant: 12),
+            readingGoalView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+//            readingGoalView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            readingGoalView.widthAnchor.constraint(equalTo: safeArea.widthAnchor, constant: -30),
+            readingGoalView.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.15),
+            monthLbl.topAnchor.constraint(equalTo: readingGoalView.topAnchor, constant: 20),
+            monthLbl.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor, constant: 20),
+            readingGoalPB.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor, constant: 20),
+            readingGoalPB.trailingAnchor.constraint(equalTo: readingGoalView.trailingAnchor, constant: -20),
+            readingGoalPB.heightAnchor.constraint(equalToConstant: 4),
+            readingGoalPB.bottomAnchor.constraint(equalTo: readingGoalView.bottomAnchor, constant: -15),
+            readingGoalPBLabel.bottomAnchor.constraint(equalTo: readingGoalPB.topAnchor, constant: -6),
+            readingGoalPBLabel.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor, constant: 20),
             
-            trendingNowLbl.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 36),
-            trendingNowLbl.leadingAnchor.constraint(equalTo: hotContainer.leadingAnchor),
+            trendingNowLbl.topAnchor.constraint(equalTo: readingGoalView.bottomAnchor, constant: 24),
+            trendingNowLbl.leadingAnchor.constraint(equalTo: trendingView.leadingAnchor),
             
-            hotContainer.topAnchor.constraint(equalTo: trendingNowLbl.bottomAnchor, constant: 12),
-            hotContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            hotContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            hotContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
+            trendingView.topAnchor.constraint(equalTo: trendingNowLbl.bottomAnchor, constant: 12),
+            trendingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            trendingView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            trendingView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
             
-            imageView.leadingAnchor.constraint(equalTo: hotContainer.leadingAnchor, constant: 10),
-            imageView.trailingAnchor.constraint(lessThanOrEqualTo: bookTitle.leadingAnchor, constant: -8),
-            imageView.bottomAnchor.constraint(equalTo: hotContainer.bottomAnchor, constant: -16),
-            imageView.widthAnchor.constraint(equalToConstant: imageWidthConstant),
-            imageView.heightAnchor.constraint(lessThanOrEqualToConstant: imageHeightConstant),
+            trendingBookCover.leadingAnchor.constraint(equalTo: trendingView.leadingAnchor, constant: 10),
+            trendingBookCover.trailingAnchor.constraint(lessThanOrEqualTo: trendingBookTitle.leadingAnchor, constant: -8),
+            trendingBookCover.bottomAnchor.constraint(equalTo: trendingView.bottomAnchor, constant: -16),
+            trendingBookCover.widthAnchor.constraint(equalToConstant: imageWidthConstant),
+            trendingBookCover.heightAnchor.constraint(lessThanOrEqualToConstant: imageHeightConstant),
             
-            imagePlaceholder.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            imagePlaceholder.trailingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -8),
-            imagePlaceholder.widthAnchor.constraint(lessThanOrEqualToConstant: placeholderWidthConstant),
-            imagePlaceholder.topAnchor.constraint(equalTo: header.bottomAnchor),
+            trendingBCPlaceholder.leadingAnchor.constraint(equalTo: trendingBookCover.leadingAnchor),
+            trendingBCPlaceholder.trailingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -8),
+            trendingBCPlaceholder.widthAnchor.constraint(lessThanOrEqualToConstant: placeholderWidthConstant),
+            trendingBCPlaceholder.topAnchor.constraint(equalTo: header.bottomAnchor),
             
-            bookTitle.centerYAnchor.constraint(equalTo: hotContainer.centerYAnchor),
-            bookTitle.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
-            bookTitle.trailingAnchor.constraint(equalTo: hotContainer.trailingAnchor, constant: -16),
+            trendingBookTitle.centerYAnchor.constraint(equalTo: trendingView.centerYAnchor),
+            trendingBookTitle.leadingAnchor.constraint(equalTo: trendingBookCover.trailingAnchor, constant: 16),
+            trendingBookTitle.trailingAnchor.constraint(equalTo: trendingView.trailingAnchor, constant: -16),
             
-            bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 8),
-            bookAuthor.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
-            bookAuthor.trailingAnchor.constraint(equalTo: hotContainer.trailingAnchor, constant: -16),
+            trendingBookAuthor.topAnchor.constraint(equalTo: trendingBookTitle.bottomAnchor, constant: 8),
+            trendingBookAuthor.leadingAnchor.constraint(equalTo: trendingBookCover.trailingAnchor, constant: 16),
+            trendingBookAuthor.trailingAnchor.constraint(equalTo: trendingView.trailingAnchor, constant: -16),
             
-            stackView.widthAnchor.constraint(equalTo: hotContainer.widthAnchor, multiplier: 0.55),
-            stackView.topAnchor.constraint(equalTo: hotContainer.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: hotContainer.bottomAnchor),
-            stackView.trailingAnchor.constraint(equalTo: hotContainer.trailingAnchor, constant: -16),
+            stackView.widthAnchor.constraint(equalTo: trendingView.widthAnchor, multiplier: 0.55),
+            stackView.topAnchor.constraint(equalTo: trendingView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: trendingView.bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trendingView.trailingAnchor, constant: -16),
             
-            bookTitlePlaceholder.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            bookTitlePlaceholder.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -0.25),
-            bookTitlePlaceholder.heightAnchor.constraint(lessThanOrEqualToConstant: 20),
+            trendingBTPlaceholder.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            trendingBTPlaceholder.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -0.25),
             
-            header.centerXAnchor.constraint(equalTo: hotContainer.centerXAnchor),
-            header.topAnchor.constraint(equalTo: hotContainer.topAnchor, constant: 8),
-            header.bottomAnchor.constraint(lessThanOrEqualTo: imageView.topAnchor, constant: -16),
+            header.centerXAnchor.constraint(equalTo: trendingView.centerXAnchor),
+            header.topAnchor.constraint(equalTo: trendingView.topAnchor, constant: 8),
+            header.bottomAnchor.constraint(lessThanOrEqualTo: trendingBookCover.topAnchor, constant: -16),
             header.heightAnchor.constraint(equalToConstant: 20),
             
-            errorLbl.centerXAnchor.constraint(equalTo: hotContainer.centerXAnchor),
-            errorLbl.leadingAnchor.constraint(equalTo: hotContainer.leadingAnchor, constant: 16),
-            errorLbl.trailingAnchor.constraint(equalTo: hotContainer.trailingAnchor, constant: -16),
-            errorLbl.topAnchor.constraint(equalTo: hotContainer.topAnchor, constant: 16),
-            errorLbl.bottomAnchor.constraint(equalTo: hotContainer.bottomAnchor, constant: -16),
+            errorLbl.centerXAnchor.constraint(equalTo: trendingView.centerXAnchor),
+            errorLbl.leadingAnchor.constraint(equalTo: trendingView.leadingAnchor, constant: 16),
+            errorLbl.trailingAnchor.constraint(equalTo: trendingView.trailingAnchor, constant: -16),
+            errorLbl.topAnchor.constraint(equalTo: trendingView.topAnchor, constant: 16),
+            errorLbl.bottomAnchor.constraint(equalTo: trendingView.bottomAnchor, constant: -16),
+            
+            continueReadingContainer.topAnchor.constraint(equalTo: trendingView.bottomAnchor, constant: 24),
+            continueReadingContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            continueReadingContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            continueReadingContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
+            
+            continueBookPhoto.topAnchor.constraint(equalTo: continueReadingContainer.topAnchor, constant: 4),
+            continueBookPhoto.trailingAnchor.constraint(equalTo: continueReadingContainer.trailingAnchor, constant: -4),
+            continueBookPhoto.bottomAnchor.constraint(equalTo: continueReadingContainer.bottomAnchor, constant: -4),
+            continueBookPhoto.widthAnchor.constraint(equalToConstant: continueImgWidthConstant),
+            continueBookPhoto.heightAnchor.constraint(lessThanOrEqualToConstant: continueImgHeightConstant),
+            
+            continueHeader.topAnchor.constraint(equalTo: continueReadingContainer.topAnchor, constant: 12),
+            continueHeader.leadingAnchor.constraint(equalTo: continueReadingContainer.leadingAnchor, constant: 12),
+            continueHeader.trailingAnchor.constraint(equalTo: continueBookPhoto.leadingAnchor, constant: 12),
+            
+            continueSubtitle.topAnchor.constraint(equalTo: continueHeader.bottomAnchor, constant: 8),
+            continueSubtitle.leadingAnchor.constraint(equalTo: continueReadingContainer.leadingAnchor, constant: 12),
+            continueSubtitle.trailingAnchor.constraint(equalTo: continueBookPhoto.leadingAnchor, constant: 24),
+            
+            continueProgressLbl.leadingAnchor.constraint(equalTo: continueReadingContainer.leadingAnchor, constant: 12),
+            continueProgressLbl.trailingAnchor.constraint(equalTo: continueBookPhoto.leadingAnchor, constant: 12),
+            continueProgressLbl.topAnchor.constraint(equalTo: continueProgressBar.topAnchor, constant: -24),
+            
+            continueProgressBar.leadingAnchor.constraint(equalTo: continueReadingContainer.leadingAnchor, constant: 12),
+            continueProgressBar.trailingAnchor.constraint(equalTo: continueBookPhoto.leadingAnchor, constant: -12),
+            continueProgressBar.bottomAnchor.constraint(equalTo: continueReadingContainer.bottomAnchor, constant: -12),
+            
         ])
         
         startLoading()
@@ -357,27 +449,84 @@ class HomeController: UIViewController {
     
     func startLoading() {
         
-        bookTitlePlaceholder.showAnimatedSkeleton()
-        bookTitlePlaceholder.skeletonTextNumberOfLines = 2
-        imagePlaceholder.showAnimatedSkeleton()
-        imagePlaceholder.isHiddenWhenSkeletonIsActive = true
-        bookTitlePlaceholder.isHiddenWhenSkeletonIsActive = true
-        bookTitlePlaceholder.isHidden = false
-        imagePlaceholder.isHidden = false
+        trendingBTPlaceholder.showAnimatedSkeleton()
+        trendingBTPlaceholder.skeletonTextNumberOfLines = 2
+        trendingBCPlaceholder.showAnimatedSkeleton()
+        trendingBCPlaceholder.isHiddenWhenSkeletonIsActive = true
+        trendingBTPlaceholder.isHiddenWhenSkeletonIsActive = true
+        trendingBTPlaceholder.isHidden = false
+        trendingBCPlaceholder.isHidden = false
         self.header.alpha = 1.0
-        
         
     }
     
     func stopLoading() {
-        bookTitlePlaceholder.hideSkeleton(transition: .crossDissolve(0.25))
-        imagePlaceholder.hideSkeleton(transition: .crossDissolve(0.25))
-        bookTitlePlaceholder.isHidden = true
-        imagePlaceholder.isHidden = true
-        hotContainer.layer.cornerRadius = 12
-        hotContainer.clipsToBounds = true
+        
+        trendingBTPlaceholder.hideSkeleton(transition: .crossDissolve(0.25))
+        trendingBCPlaceholder.hideSkeleton(transition: .crossDissolve(0.25))
+        trendingBTPlaceholder.isHidden = true
+        trendingBCPlaceholder.isHidden = true
+        trendingView.layer.cornerRadius = 12
+        trendingView.clipsToBounds = true
         
     }
+    
+    func fetchLastAccessedBook() {
+        let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
+        
+        // Sort the fetch request by lastAccessedDate in descending order
+        let sortDescriptor = NSSortDescriptor(key: "bookLastAccessed", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        // Limit the fetch request to return only the last item
+        fetchRequest.fetchLimit = 1
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            
+            for item in result {
+                DispatchQueue.main.async {
+                    // Update UI elements with information from the fetched items
+                    let coverID = item.bookCover
+                    
+                    let totalPgsString = item.bookTotalPages
+                    let totalPgsInt = Int(totalPgsString ?? "0")
+                    
+                    let readPgsString = item.bookPages
+                    let readPgsInt = Int(readPgsString ?? "0")
+                    
+                    // Assuming these properties are part of your view controller
+                    self.continueTotalPgs = totalPgsInt ?? 0
+                    self.continueReadPgs = readPgsInt ?? 0
+
+                    self.continueProgressBar.progress = self.calculateProgress(pagesRead: self.continueReadPgs, totalPages: self.continueTotalPgs)
+                    
+                    downloadCoverImage(coverImageID: "\(coverID!)", targetImageView: self.continueBookPhoto, placeholderImage: UIImage(resource: .placeholder))
+                    self.continueProgressLbl.text = "Page \(self.continueReadPgs) of \(self.continueTotalPgs)"
+                    
+                }
+            }
+            
+        } catch {
+            print("Error fetching last two accessed items: \(error)")
+        }
+    }
+    
+    @objc func bookTapped() {
+        // Instantiate and present the second view controller
+        let detailVC = BookView()
+        
+        detailVC.bookID = bookID
+        detailVC.bTitle = trendingBookTitle.text
+        detailVC.bAuthor = bookAuthor
+        detailVC.bImage = Int(coverID)
+        
+        
+        let coverID = self.coverID
+            downloadCoverImage(coverImageID: "\(coverID)", targetImageView: detailVC.bookImg, placeholderImage: UIImage(resource: .placeholder))
+                
+                present(detailVC, animated: true, completion: nil)
+        }
     
 }
 

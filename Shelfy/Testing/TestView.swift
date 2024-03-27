@@ -11,74 +11,107 @@ import NotificationBannerSwift
 import SkeletonView
 import Cosmos
 
+import UIKit
 
 class TestView: UIViewController {
     
-    lazy var imageView = UIImageView()
-    lazy var randomBook = ""
-    lazy var coverID = ""
-    var hotContainer = UIView()
-    lazy var bookTitle = UILabel()
-    lazy var header = UILabel()
-    lazy var bookAuthor = UILabel()
-    lazy var errorLbl = UILabel()
-//    var collectionView = UICollectionView()
-    var trendingNowLbl = makeLabel(withText: "Trending Now")
-
-
+//    let viewModel = TestVM()
     
-    let categories = ["Home", "Tech", "Science", "Health", "Sport", "Pastime", "Business"]
-
-    var selectedButtonIndex: Int = 0
-
+    var books: [OLBook]?
+    var bookz: [OLBook]?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        /*
-         
-         create collection view (mosaic if possible) with book genres
-         default category = random int between 0..< X -> X = total book genres
-         make it update the search
-         
-         contrary
-         make it open BookView
-         
-         */
-        
-        pickRandomBook(fromGenre: "\(selectedButtonIndex)") { title, coverID, authorName in
-            if let title = title, let coverID = coverID {
-                self.randomBook = title
-                self.coverID = coverID
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.bookTitle.text = title
-                    self.bookAuthor.text = "By \(authorName!)"
-                    downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.imageView, placeholderImage: UIImage(resource: .placeholder))
-                    UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
-                        self.imageView.alpha = 1.0
-                        self.bookTitle.alpha = 1.0
-                        self.header.alpha = 1.0
-                        self.bookAuthor.alpha = 1.0
-                    }, completion: nil)
-                }
-            } else {
-                print("Failed to fetch a random book")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
-                        self.errorLbl.alpha = 1.0
-                        self.header.alpha = 0.0
-                    }, completion: nil)
-                    if self.bookTitle.text == nil && self.bookAuthor.text == nil || ((self.bookAuthor.text?.isEmpty) != nil) {
-                        self.errorLbl.text = K.errorLbl
-                    }
-                }
+        for _ in 1...5 {
+//            
+//            fetchBookz { (books) in
+//            }
+            
+            fetchBooksAsync { (books) in
             }
+            
         }
+        
     }
-
-    
-    
 }
 
 
+//class TestView: UIViewController {
+//    
+//
+//    let spacer = UIView()
+//    
+//    // Define UICollectionView
+//    lazy var collectionView = makeCollectionView()
+//    
+//    // Data source
+//    let data = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10"]
+//
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        spacer.translatesAutoresizingMaskIntoConstraints = false
+////        spacer.backgroundColor = .systemPink
+//        
+//        collectionView.dataSource = self
+//        collectionView.delegate = self
+//        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+//        
+//        
+//        // Add UICollectionView to the view
+//        view.addSubview(collectionView)
+//        view.addSubview(spacer)
+//        
+//        
+//        // Set constraints for the collection view
+//        NSLayoutConstraint.activate([
+//            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+//            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+//            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+//            collectionView.bottomAnchor.constraint(equalTo: spacer.topAnchor),
+////            collectionView.heightAnchor.constraint(equalToConstant: 60),
+//            
+//            spacer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            spacer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            spacer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            spacer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+//        ])
+//        
+//    }
+//    
+//}
+//
+//extension TestView: UICollectionViewDelegate {
+//    
+//}
+//
+//
+//extension TestView: UICollectionViewDataSource{
+//    // MARK: - UICollectionViewDataSource Methods
+//    
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return data.count
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+//        cell.backgroundColor = .clear
+//        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 40))
+//        label.textAlignment = .center
+//        label.textColor = UIColor.white
+//        label.backgroundColor = UIColor.asbestos
+//        label.layer.cornerRadius = 6
+//        label.text = data[indexPath.item]
+//        cell.contentView.addSubview(label)
+//        return cell
+//    }
+//    
+//    // MARK: - UICollectionViewDelegate
+//    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        print("Selected item: \(data[indexPath.item])")
+//    }
+//}

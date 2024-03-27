@@ -16,8 +16,7 @@ class MoreController: UIViewController {
     let signOutBtn = UIButton()
     let darkModeLbl = UILabel()
     let pageDisplayLbl = UILabel()
-    
-    let myBookViewInstance = MyBookView() // Assuming myBookViewInstance is accessible here
+    let userLoginStatus = UserDefaults.standard.bool(forKey: "isLoggedIn")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,20 +42,36 @@ class MoreController: UIViewController {
         pageDisplay.isOn = false
         
         
-        signOutBtn.setTitle("Sign Out", for: .normal)
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.filled()
-            config.cornerStyle = .capsule
-            config.contentInsets = NSDirectionalEdgeInsets(top: 7, leading: 5, bottom: 7, trailing: 5)
-            config.baseBackgroundColor = .red
-            signOutBtn.configuration = config
+        if userLoginStatus {
+            signOutBtn.setTitle("Sign Out", for: .normal)
+            if #available(iOS 15.0, *) {
+                var config = UIButton.Configuration.filled()
+                config.cornerStyle = .capsule
+                config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10)
+                config.baseBackgroundColor = .red
+                signOutBtn.configuration = config
+            } else {
+                signOutBtn.layer.cornerRadius = 20
+                signOutBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+                signOutBtn.backgroundColor = .red
+                signOutBtn.tintColor = .black
+            }
             signOutBtn.addTarget(self, action: #selector(signOut), for: .touchUpInside)
         } else {
-            signOutBtn.layer.cornerRadius = 20
-            signOutBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
-            signOutBtn.backgroundColor = .red
-            signOutBtn.tintColor = .black
-            signOutBtn.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+            signOutBtn.setTitle("Log In", for: .normal)
+            if #available(iOS 15.0, *) {
+                var config = UIButton.Configuration.filled()
+                config.cornerStyle = .capsule
+                config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10)
+                config.baseBackgroundColor = UIColor(resource: .brandLogo)
+                signOutBtn.configuration = config
+            } else {
+                signOutBtn.layer.cornerRadius = 20
+                signOutBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+                signOutBtn.backgroundColor = UIColor(resource: .brandLogo)
+                signOutBtn.tintColor = .black
+            }
+            signOutBtn.addTarget(self, action: #selector(logIn), for: .touchUpInside)
         }
         
         view.addSubview(optionLbl)
@@ -102,6 +117,12 @@ class MoreController: UIViewController {
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
+    }
+    
+    @objc func logIn(sender: UIButton) {
+        let loginVC = LoginView()
+        loginVC.modalPresentationStyle = .fullScreen
+        present(loginVC, animated: true, completion: nil)
     }
     
     @objc func darkModeToggle(sender: UISwitch) {
