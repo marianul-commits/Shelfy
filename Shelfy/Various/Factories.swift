@@ -73,6 +73,17 @@ func makeCollectionView() -> UICollectionView {
     return collectionView
 }
 
+func makeCollectionView2(_ data: [String]) -> UICollectionView {
+    let layout = CategoriesHorizontalFlow()
+    layout.data = data
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    
+    collectionView.translatesAutoresizingMaskIntoConstraints = false
+    collectionView.backgroundColor = .clear
+    collectionView.showsVerticalScrollIndicator = false
+    return collectionView
+}
+
 func makeButton(withTitle title: String) -> UIButton {
     let button = UIButton(type: .system)
     let buttonHeight: CGFloat = 40

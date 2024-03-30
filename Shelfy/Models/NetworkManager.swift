@@ -8,38 +8,6 @@
 import Foundation
 import UIKit
 
-func fetchBooksAsync(completion: @escaping ([OLBook]?) -> Void) {
-    let urlString = "https://openlibrary.org/trending/weekly.json?limit=100"
-    guard let url = URL(string: urlString) else {
-        completion(nil)
-        return
-    }
-
-    // Start the timer
-    let startTime = DispatchTime.now()
-
-    Task {
-        do {
-            let (data, response) = try await URLSession.shared.data(from: url)
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                completion(nil)
-                return
-            }
-            let decoder = JSONDecoder()
-            let booksResponse = try decoder.decode(BooksResponse.self, from: data)
-            let endTime = DispatchTime.now()
-            let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-            let milliseconds = Double(nanoseconds) / 1_000_000
-            let seconds = milliseconds / 1000
-            print("Async Fetch Book took \(seconds) seconds")
-            completion(booksResponse.books)
-        } catch {
-            print("Error fetching books: \(error)")
-            completion(nil)
-        }
-    }
-}
-
 func fetchPagination(page: Int, completion: @escaping ([OLBook]?) -> Void) {
     let urlString = "https://openlibrary.org/trending/weekly.json?limit=20&page=\(page)&offset=1"
     guard let url = URL(string: urlString) else {
@@ -61,7 +29,7 @@ func fetchPagination(page: Int, completion: @escaping ([OLBook]?) -> Void) {
 }
 
 func getRecommendations(author: String, completion: @escaping ([OLBook]?) -> Void) {
-    let baseUrl = "https://openlibrary.org/search.json"
+    let baseUrl = "https://openlibrary.org/search.json?limit=10"
     let query = "author=\(author)"
     let urlString = "\(baseUrl)?\(query)"
     
@@ -83,9 +51,9 @@ func getRecommendations(author: String, completion: @escaping ([OLBook]?) -> Voi
     }
 }
 
-func searchBooks(search: String, completion: @escaping ([OLBook]?) -> Void) {
+func searchBooks(search: String, page: Int, completion: @escaping ([OLBook]?) -> Void) {
     let formattedSearch = search.replacingOccurrences(of: " ", with: "+")
-    let urlString = "https://openlibrary.org/search.json?q=\(formattedSearch)"
+    let urlString = "https://openlibrary.org/search.json?q=\(formattedSearch)&limit=20&page=\(page)&offset=1"
     
     guard let url = URL(string: urlString) else {
         completion(nil)
@@ -290,12 +258,12 @@ func pickRandomBook(fromGenre genre: String, retryCount: Int = 3, completion: @e
             } else {
                 print("Error: No books found in the response or failed to extract data, retrying...")
                 // Retry with decremented retry count
-                await pickRandomBook(fromGenre: genre, retryCount: retryCount - 1, completion: completion)
+                pickRandomBook(fromGenre: genre, retryCount: retryCount - 1, completion: completion)
             }
         } catch {
             print("Error fetching random book: \(error)")
             // Retry with decremented retry count
-            await pickRandomBook(fromGenre: genre, retryCount: retryCount - 1, completion: completion)
+             pickRandomBook(fromGenre: genre, retryCount: retryCount - 1, completion: completion)
         }
     }
 }

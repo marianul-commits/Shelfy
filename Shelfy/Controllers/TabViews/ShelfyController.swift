@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class MyBooksController: UIViewController {
+class ShelfyController: UIViewController {
     
     var category = [BookCategory]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -67,7 +67,7 @@ class MyBooksController: UIViewController {
         categoriesTable.delegate = self
         categoriesTable.translatesAutoresizingMaskIntoConstraints = false
         categoriesTable.backgroundColor = .clear
-        categoriesTable.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
+        categoriesTable.register(CategoryCell.self, forCellReuseIdentifier: "cell")
         
         
         view.addSubview(header)
@@ -157,7 +157,7 @@ class MyBooksController: UIViewController {
     
 }
 
-extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
+extension ShelfyController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - UITableViewDataSource
     
@@ -181,7 +181,7 @@ extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryCell
         cell.textLabel?.text = category[indexPath.row].name
         return cell
     }
@@ -231,7 +231,7 @@ extension MyBooksController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCategory = category[indexPath.row]
         
-        let categoryVC = MyBooksCentralView()
+        let categoryVC = ShelfyItemsView()
         categoryVC.selectedCategory = selectedCategory
         categoryVC.modalPresentationStyle = .overFullScreen
         categoryVC.view.backgroundColor = UIColor(resource: .background)

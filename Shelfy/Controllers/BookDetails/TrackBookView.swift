@@ -12,7 +12,7 @@ import SkeletonView
 import Cosmos
 
 
-class MyBookView: UIViewController {
+class TrackBookView: UIViewController {
     
     //Segue Values
     var bookID: String?

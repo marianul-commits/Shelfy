@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class MyBooksCentralView: UIViewController {
+class ShelfyItemsView: UIViewController {
     
     var bookItems = [BookItem]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -152,7 +152,7 @@ class MyBooksCentralView: UIViewController {
     
 }
 
-extension MyBooksCentralView: UITableViewDelegate, UITableViewDataSource {
+extension ShelfyItemsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ searchTable: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard (bookItems.count != 0) else {
@@ -213,7 +213,7 @@ extension MyBooksCentralView: UITableViewDelegate, UITableViewDataSource {
         var selectedBook = bookItems[indexPath.row]
 
         // Show the detail view controller
-        let detailVC = MyBookView()
+        let detailVC = TrackBookView()
         
         detailVC.bookTitle = selectedBook.bookTitle
         detailVC.bookAuthor = selectedBook.bookAuthor

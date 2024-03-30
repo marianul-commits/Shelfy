@@ -125,7 +125,12 @@ class LoginView: UIViewController {
     }
     
     @objc private func registerPressed() {
-        performSegue(withIdentifier: "registerPressed", sender: nil)
+
+        let registerVC = RegisterView()
+        registerVC.view.backgroundColor = UIColor(resource: .background)
+        registerVC.modalPresentationStyle = .fullScreen
+        self.present(registerVC, animated: true, completion: nil)
+        
     }
     
     
@@ -142,8 +147,10 @@ class LoginView: UIViewController {
                     } else {
                         UserDefaults.standard.set(true, forKey: "isLoggedIn")
                         UserDefaults.standard.synchronize()
-                        
+
                         let loginVC = TabBarViewController()
+                        
+                        loginVC.view.backgroundColor = UIColor(resource: .background)
                         loginVC.selectedIndex = 0
                         loginVC.modalPresentationStyle = .fullScreen
                         self.present(loginVC, animated: true, completion: nil)
