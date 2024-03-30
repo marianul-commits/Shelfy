@@ -25,9 +25,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        print("Documents Directory: ", FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last ?? "Not Found!")
         
 //        let userLoginStatus = UserDefaults.standard.bool(forKey: "isLoggedIn")
-//        
+        
+        let userName = UserDefaults.standard.string(forKey: "username")
+        
+        if userName != nil {
+            print(userName)
+        } else {
+            UserDefaults.standard.set("username", forKey: "username")
+            UserDefaults.standard.synchronize()
+        }
+        
 //        if userLoginStatus{
-//            window?.rootViewController = HomeController()
+//            window?.rootViewController = TabBarViewController().viewControllers?.first
 //            window?.makeKeyAndVisible()
 //        } else {
 //            window?.rootViewController = LoginView()

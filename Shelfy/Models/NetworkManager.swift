@@ -14,10 +14,6 @@ func fetchBooksAsync(completion: @escaping ([OLBook]?) -> Void) {
         completion(nil)
         return
     }
-
-    // Start the timer
-    let startTime = DispatchTime.now()
-
     Task {
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
@@ -27,11 +23,6 @@ func fetchBooksAsync(completion: @escaping ([OLBook]?) -> Void) {
             }
             let decoder = JSONDecoder()
             let booksResponse = try decoder.decode(BooksResponse.self, from: data)
-            let endTime = DispatchTime.now()
-            let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-            let milliseconds = Double(nanoseconds) / 1_000_000
-            let seconds = milliseconds / 1000
-            print("Async Fetch Book took \(seconds) seconds")
             completion(booksResponse.books)
         } catch {
             print("Error fetching books: \(error)")

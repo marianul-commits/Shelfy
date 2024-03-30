@@ -7,11 +7,10 @@
 
 import UIKit
 import FirebaseAuth
-//import FirebaseCore
-//import Firebase
 
 class RegisterView: UIViewController, UITextFieldDelegate{
     
+    var userField = makeTextField(withPlaceholder: "Username")
     var emailField = makeTextField(withPlaceholder: "E-Mail")
     var passField = makeTextField(withPlaceholder: "Password")
     var passField2 = makeTextField(withPlaceholder: "Confirm Password")
@@ -30,7 +29,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     
     private func setupLogin() {
         
-        
+        userField.delegate = self
         emailField.delegate = self
         passField.delegate = self
         passField2.delegate = self
@@ -38,9 +37,11 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         passField.isSecureTextEntry = true
         passField2.isSecureTextEntry = true
         
+        userField.frame.size.height = 35
         emailField.frame.size.height = 35
         passField.frame.size.height = 35
         passField2.frame.size.height = 35
+        userField.tintColor = UIColor(resource: .brandDarkMint)
         emailField.tintColor = UIColor(resource: .brandDarkMint)
         passField.tintColor = UIColor(resource: .brandDarkMint)
         passField2.tintColor = UIColor(resource: .brandDarkMint)
@@ -48,6 +49,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         passField.enablePasswordToggle()
         passField2.enablePasswordToggle()
         
+        userConfig()
         emailConfig()
         passConfig()
         passConfig2()
@@ -62,6 +64,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         
         view.addSubview(backBtn)
         view.addSubview(registerMotto)
+        view.addSubview(userField)
         view.addSubview(emailField)
         view.addSubview(passField)
         view.addSubview(passField2)
@@ -69,33 +72,40 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         view.addSubview(spacerView)
         
         let screenWidth = UIScreen.main.bounds.width
-
-        // Register Lbl Constraints
-        registerMotto.topAnchor.constraint(equalTo: backBtn.bottomAnchor, constant: 20).isActive = true
-        registerMotto.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        // Spacer View
-        spacerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1).isActive = true
-        spacerView.topAnchor.constraint(equalTo: registerMotto.bottomAnchor).isActive = true
-        // Fields Constraints
-        emailField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        emailField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        emailField.topAnchor.constraint(equalTo: spacerView.bottomAnchor, constant: 40).isActive = true
-        passField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 20).isActive = true
-        passField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        passField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        passField2.topAnchor.constraint(equalTo: passField.bottomAnchor, constant: 20).isActive = true
-        passField2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        passField2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        // Create Account Btn Constraints
-        createAccBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        createAccBtn.topAnchor.constraint(equalTo: passField2.bottomAnchor, constant: 30).isActive = true
-        // Back Btn Constraints
-        backBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        backBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.1).isActive = true
+        
+        NSLayoutConstraint.activate([
+            
+            // Register Lbl Constraints
+            registerMotto.topAnchor.constraint(equalTo: backBtn.bottomAnchor, constant: 20),
+            registerMotto.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            // Spacer View
+            spacerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1),
+            spacerView.topAnchor.constraint(equalTo: registerMotto.bottomAnchor),
+            // Fields Constraints
+            userField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            userField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            userField.topAnchor.constraint(equalTo: spacerView.bottomAnchor, constant: 40),
+            emailField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            emailField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            emailField.topAnchor.constraint(equalTo: userField.bottomAnchor, constant: 20),
+            passField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 20),
+            passField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            passField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            passField2.topAnchor.constraint(equalTo: passField.bottomAnchor, constant: 20),
+            passField2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            passField2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            // Create Account Btn Constraints
+            createAccBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            createAccBtn.topAnchor.constraint(equalTo: passField2.bottomAnchor, constant: 30),
+            // Back Btn Constraints
+            backBtn.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            backBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -screenWidth * 0.1),
+            
+        ])
     }
     
     @objc func backPressed() {
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
     
@@ -108,6 +118,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
                         print(e.localizedDescription)
                         print(e)
                     } else {
+                        self.saveUsernameFromTextField()
                         self.showAlertWithSegue()
                     }
                 }
@@ -115,7 +126,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-     func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         validateTextFields()
         validateMailField()
         
@@ -128,11 +139,16 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-     func showAlertWithSegue() {
+    func showAlertWithSegue() {
         let alertController = UIAlertController(title: "Success", message: "Account created successfully!", preferredStyle: .alert)
         
         let dismissAction = UIAlertAction(title: "OK", style: .default) { _ in
-            self.performSegue(withIdentifier: K.registerIdentifier, sender: self)
+            UserDefaults.standard.set(true, forKey: "isLoggedIn")
+            UserDefaults.standard.synchronize()
+            
+            let homeVC = TabBarViewController()
+            homeVC.modalPresentationStyle = .fullScreen
+            self.present(homeVC, animated: true, completion: nil)
         }
         
         alertController.addAction(dismissAction)
@@ -141,7 +157,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
     }
     
     
-     func validateMailField(){
+    func validateMailField(){
         
         let emailText = emailField.text ?? ""
         
@@ -153,6 +169,34 @@ class RegisterView: UIViewController, UITextFieldDelegate{
             animateBorderColorChange(textField: emailField, to: .red)
         }
         
+    }
+    
+    func saveUsernameToUserDefaults(username: String) {
+        UserDefaults.standard.set(username, forKey: "username")
+        UserDefaults.standard.synchronize()
+    }
+
+    func saveUsernameFromTextField() {
+        if let username = userField.text, !username.isEmpty {
+            saveUsernameToUserDefaults(username: username)
+        } else {
+            print("Username is empty")
+        }
+    }
+    
+    private func userConfig() {
+        let color = UIColor(resource: .brandMint)
+        let imageView = UIImageView(frame: CGRect(x: 3, y: 2.5, width: 25, height: 25))
+        imageView.tintColor = color
+        let image = UIImage(systemName: "person.fill")
+        image?.withTintColor(color)
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFit
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 25, height: 30))
+        view.addSubview(imageView)
+        view.backgroundColor = .clear
+        userField.leftViewMode = UITextField.ViewMode.always
+        userField.leftView = view
     }
     
     private func emailConfig() {
@@ -224,7 +268,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         }
     }
     
-     func addShakeAnimation(to textField: UITextField) {
+    func addShakeAnimation(to textField: UITextField) {
         let shakeAnimation = CAKeyframeAnimation(keyPath: "transform.translation.x")
         shakeAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
         shakeAnimation.duration = 0.6
@@ -232,7 +276,7 @@ class RegisterView: UIViewController, UITextFieldDelegate{
         textField.layer.add(shakeAnimation, forKey: "shakeAnimation")
     }
     
-     func animateBorderColorChange(textField: UITextField, to color: UIColor) {
+    func animateBorderColorChange(textField: UITextField, to color: UIColor) {
         UIView.animate(withDuration: 0.3) {
             textField.layer.borderColor = color.cgColor
         }

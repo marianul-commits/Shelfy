@@ -16,21 +16,19 @@ class HomeController: UIViewController {
     var bookPages: [String] = []
     var bookTotalPages: [String] = []
     
-    //Reading Goal View
+    //Level Progress
     
-    var readingGoalPB = makeProgressBar()
-    var readingGoalView = makeView()
-    var monthLbl = makeLabel(withText: "")
-    var readingGoalPBLabel = makeLabel(withText: "")
-    var readingGoalLbl = makeLabel(withText: "Reading Goal")
-    var currentMonth: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM"
-        return dateFormatter.string(from: Date())
-    }
+    var levelProgressBar = makeProgressBar()
+    let user: String = UserDefaults.standard.string(forKey: "username") ?? "User"
+    var greetingUser = makeLabel(withText: "")
+    var userLevel = makeLabel(withText: "")
+    var levelPBLabel = makeLabel(withText: "")
+    
     //Trending Now View
-    
-    var trendingNowLbl = makeLabel(withText: "Trending Now")
+    var selectedIndexPath = IndexPath()
+    let bookCategories = K.bookCategories
+    lazy var collectionView = makeCollectionView2(bookCategories)
+    var trendingNowLbl = UILabel()
     lazy var trendingBookCover = UIImageView()
     var trendingBCPlaceholder = UIView()
     var trendingBTPlaceholder = UILabel()
@@ -39,7 +37,6 @@ class HomeController: UIViewController {
     lazy var bookID = ""
     var trendingView = UIView()
     lazy var trendingBookTitle = UILabel()
-    lazy var header = UILabel()
     lazy var trendingBookAuthor = UILabel()
     lazy var bookAuthor = ""
     var randomGenre = K.topGenres.randomElement()
@@ -61,13 +58,14 @@ class HomeController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         //Selecting Random Genre
-        while randomGenre == nil {
-            randomGenre = K.topGenres.randomElement()
-        }
+        let randomCateg = bookCategories.randomElement()!.components(separatedBy: " ").dropFirst().joined(separator: " ")
+        
+        fetchLastAccessedBook()
+        
         //API Call
-        pickRandomBook(fromGenre: "\(randomGenre!)") { title, coverID, authorName, bookKey in
+        pickRandomBook(fromGenre: randomCateg) { title, coverID, authorName, bookKey in
             if let title = title, let coverID = coverID, let bookKey = bookKey {
                 self.randomBook = title
                 self.coverID = coverID
@@ -81,7 +79,7 @@ class HomeController: UIViewController {
                     UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
                         self.trendingBookCover.alpha = 1.0
                         self.trendingBookTitle.alpha = 1.0
-                        self.header.alpha = 1.0
+                        self.trendingNowLbl.alpha = 1.0
                         self.trendingBookAuthor.alpha = 1.0
                     }, completion: nil)
                     self.stopLoading()
@@ -92,7 +90,7 @@ class HomeController: UIViewController {
                     self.stopLoading()
                     UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
                         self.errorLbl.alpha = 1.0
-                        self.header.alpha = 0.0
+                        self.trendingNowLbl.text = "Trending Now"
                     }, completion: nil)
                     if self.trendingBookTitle.text == nil && self.trendingBookAuthor.text == nil || ((self.trendingBookAuthor.text?.isEmpty) != nil) {
                         self.errorLbl.text = K.errorLbl
@@ -105,7 +103,7 @@ class HomeController: UIViewController {
     //MARK: View Did Appear
     
     override func viewDidAppear(_ animated: Bool) {
-        
+                
         getAllBookPages() //Core Data Call for bookPages & bookTotalPages values
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -114,9 +112,10 @@ class HomeController: UIViewController {
             let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
             let pagesRead = intBooks.reduce(0, +)
             let totalPages = intTotalPages.reduce(0, +)
-            self.readingGoalPB.setProgress(self.calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
-            var progressLblValue = self.calculateProgress(pagesRead: pagesRead, totalPages: totalPages) * 100
-            self.readingGoalPBLabel.text = String(format: "%.0f%%", progressLblValue)
+            var toNextLevel = K.pagesToNextLevel(pagesRead: pagesRead)!
+            self.levelProgressBar.setProgress(self.calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel), animated: true)
+            var progressLblValue = self.calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel) * 100
+            self.levelPBLabel.text = String(format: "%.0f%%", progressLblValue)
             
         } // Setting the values for ProgressBar.progress
         
@@ -138,6 +137,7 @@ class HomeController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         
         DispatchQueue.main.async { //Hiding the current values to better display new ones upon coming back
             
@@ -150,6 +150,10 @@ class HomeController: UIViewController {
     }
     
     func setupView() {
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         
         let intBooks = self.bookPages.map { Int($0) ?? 0 }
         let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
@@ -165,7 +169,9 @@ class HomeController: UIViewController {
         trendingBookAuthor.alpha = 0.0
         errorLbl.alpha = 0.0
         
-        header.text = "Hot in \(randomGenre!)"
+        let randomCateg = bookCategories.randomElement()!.components(separatedBy: " ").dropFirst().joined(separator: " ")
+        
+        trendingNowLbl.text = "Trending in \(randomCateg)"
         
         trendingBTPlaceholder.text = K.placeholder
         
@@ -182,7 +188,7 @@ class HomeController: UIViewController {
         trendingBookTitle.translatesAutoresizingMaskIntoConstraints = false
         trendingBCPlaceholder.translatesAutoresizingMaskIntoConstraints = false
         trendingBTPlaceholder.translatesAutoresizingMaskIntoConstraints = false
-        header.translatesAutoresizingMaskIntoConstraints = false
+        trendingNowLbl.translatesAutoresizingMaskIntoConstraints = false
         trendingBookAuthor.translatesAutoresizingMaskIntoConstraints = false
         errorLbl.translatesAutoresizingMaskIntoConstraints = false
         trendingBookTitle.numberOfLines = 0
@@ -200,7 +206,7 @@ class HomeController: UIViewController {
         
         trendingView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
-        K.setGradientBackground(view: trendingView, colorTop: UIColor(resource: .brandPurple), colorBottom: UIColor(resource: .brandPink))
+        K.setGradientBackground(view: trendingView, colorTop: UIColor(resource: .brandPurple), colorBottom: UIColor(resource: .brandDarkPurple))
         trendingBCPlaceholder.skeletonCornerRadius = 10
         
         let seeBook = UITapGestureRecognizer(target: self, action: #selector(bookTapped))
@@ -213,13 +219,10 @@ class HomeController: UIViewController {
         trendingBookCover.contentMode = .scaleAspectFit
         trendingBookTitle.font = SetFont.setFontStyle(.medium, 14)
         trendingBookAuthor.font = SetFont.setFontStyle(.medium, 14)
-        header.font = SetFont.setFontStyle(.medium, 16)
+//        header.font = SetFont.setFontStyle(.medium, 16)
         errorLbl.font = SetFont.setFontStyle(.medium, 16)
         trendingNowLbl.font = SetFont.setFontStyle(.medium, 22)
-        
-        stackView.alignment = .center
-        
-        
+                
         continueBookPhoto.image = UIImage(resource: .placeholder)
         
         fetchLastAccessedBook() //Core Data call to last accessed book using bookLastAccesed
@@ -232,8 +235,8 @@ class HomeController: UIViewController {
         continueBookPhoto.translatesAutoresizingMaskIntoConstraints = false
         
         continueProgressBar.progress = 0
-        continueProgressBar.tintColor = UIColor(resource: .brandPink)
-        continueProgressBar.trackTintColor = UIColor(resource: .brandDarkPurple)
+        continueProgressBar.tintColor = UIColor(resource: .brandDarkPurple)
+        continueProgressBar.trackTintColor = UIColor(resource: .brandPurple)
         continueProgressBar.progressViewStyle = .bar
         continueProgressBar.layer.cornerRadius = 2
         continueProgressBar.clipsToBounds = true
@@ -248,7 +251,7 @@ class HomeController: UIViewController {
         continueReadingContainer.clipsToBounds = true
         continueReadingContainer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         continueReadingContainer.layer.cornerRadius = 12
-        K.setGradientBackground(view: continueReadingContainer, colorTop: UIColor(resource: .brandYellow), colorBottom: UIColor(resource: .brandMint))
+        K.setGradientBackground(view: continueReadingContainer, colorTop: UIColor(resource: .brandDarkMint), colorBottom: UIColor(resource: .brandMint))
 
         
         continueBookPhoto.clipsToBounds = true
@@ -256,10 +259,11 @@ class HomeController: UIViewController {
         
         
         view.addSubview(trendingView)
+        view.addSubview(collectionView)
+//        trendingView.addSubview(header)
         trendingView.addSubview(trendingBookCover)
         trendingView.addSubview(trendingBCPlaceholder)
         trendingView.addSubview(trendingBookTitle)
-        trendingView.addSubview(header)
         trendingView.addSubview(trendingBookAuthor)
         trendingView.addSubview(errorLbl)
         trendingView.addSubview(stackView)
@@ -270,89 +274,67 @@ class HomeController: UIViewController {
         continueReadingContainer.addSubview(continueProgressLbl)
         continueReadingContainer.addSubview(continueProgressBar)
         continueReadingContainer.addSubview(continueBookPhoto)
+
+        greetingUser.text = K.greetUser(user: user)
+        greetingUser.font = SetFont.setFontStyle(.medium, 22)
+        userLevel.text = K.determineLevel(pagesRead: pagesRead)
+        userLevel.font = SetFont.setFontStyle(.medium, 18)
         
-        let imageWidthPercentage: CGFloat = 0.32
-        let imageHeightPercentage: CGFloat = 0.42
-        let placeholderPercentage: CGFloat = 0.32
+        var toNextLevel = K.pagesToNextLevel(pagesRead: pagesRead)!
         
-        let imageWidthConstant = UIScreen.main.bounds.width * imageWidthPercentage
-        let imageHeightConstant = UIScreen.main.bounds.height * imageHeightPercentage
+        var progressLblValue = calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel) * 100
+        levelProgressBar.setProgress(calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel), animated: true)
         
-        let placeholderWidthConstant = trendingView.bounds.width * imageWidthPercentage
-        let placeholderHeightConstant = trendingView.bounds.height * placeholderPercentage
-        
-        let placehoderHeight = trendingBCPlaceholder.heightAnchor.constraint(equalToConstant: placeholderHeightConstant / 1.25)
-        placehoderHeight.isActive = true
-        placehoderHeight.priority = UILayoutPriority(rawValue: 995)
-        
-        let continueImgWidthPercent: CGFloat = 0.16
-        let continueImgHeightPercent: CGFloat = 0.21
-        
-        let continueImgWidthConstant = UIScreen.main.bounds.width * continueImgWidthPercent
-        let continueImgHeightConstant = UIScreen.main.bounds.height * continueImgHeightPercent
-        
-        readingGoalView.backgroundColor = UIColor(resource: .brandMint)
-        readingGoalView.layer.cornerRadius = 12
-        monthLbl.text = currentMonth
-        monthLbl.font = SetFont.setFontStyle(.medium, 18)
-        readingGoalLbl.font = SetFont.setFontStyle(.medium, 22)
-        
-        var progressValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages)
-        var progressLblValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages) * 100
-        readingGoalPB.setProgress(calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
-        
-        readingGoalPBLabel.text = String(format: "%.0f%%", progressLblValue)
-        readingGoalPB.tintColor = UIColor(resource: .brandPurple)
-        readingGoalPB.trackTintColor = UIColor(resource: .brandDarkPurple)
-        readingGoalPB.progressViewStyle = .bar
-        readingGoalPB.layer.cornerRadius = 2
-        readingGoalPB.clipsToBounds = true
+        levelPBLabel.text = String(format: "%.0f%%", progressLblValue)
+        levelProgressBar.tintColor = UIColor(resource: .brandPurple)
+        levelProgressBar.trackTintColor = UIColor(resource: .brandDarkPurple)
+        levelProgressBar.progressViewStyle = .bar
+        levelProgressBar.layer.cornerRadius = 2
+        levelProgressBar.clipsToBounds = true
         
         trendingBTPlaceholder.isSkeletonable = true
         trendingBCPlaceholder.isSkeletonable = true
         
-        view.addSubview(readingGoalView)
-        view.addSubview(readingGoalLbl)
+        view.addSubview(greetingUser)
+        view.addSubview(userLevel)
+        view.addSubview(levelProgressBar)
+        view.addSubview(levelPBLabel)
         view.addSubview(trendingNowLbl)
-        readingGoalView.addSubview(monthLbl)
-        readingGoalView.addSubview(readingGoalPB)
-        readingGoalView.addSubview(readingGoalPBLabel)
         
         NSLayoutConstraint.activate([
-            readingGoalLbl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            readingGoalLbl.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor),
-            readingGoalView.topAnchor.constraint(equalTo: readingGoalLbl.bottomAnchor, constant: 12),
-            readingGoalView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            readingGoalView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            readingGoalView.widthAnchor.constraint(equalTo: safeArea.widthAnchor, constant: -30),
-            readingGoalView.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.15),
-            monthLbl.topAnchor.constraint(equalTo: readingGoalView.topAnchor, constant: 20),
-            monthLbl.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor, constant: 20),
-            readingGoalPB.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor, constant: 20),
-            readingGoalPB.trailingAnchor.constraint(equalTo: readingGoalView.trailingAnchor, constant: -20),
-            readingGoalPB.heightAnchor.constraint(equalToConstant: 4),
-            readingGoalPB.bottomAnchor.constraint(equalTo: readingGoalView.bottomAnchor, constant: -15),
-            readingGoalPBLabel.bottomAnchor.constraint(equalTo: readingGoalPB.topAnchor, constant: -6),
-            readingGoalPBLabel.leadingAnchor.constraint(equalTo: readingGoalView.leadingAnchor, constant: 20),
+            greetingUser.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            greetingUser.leadingAnchor.constraint(equalTo: userLevel.leadingAnchor),
+            userLevel.topAnchor.constraint(equalTo: greetingUser.bottomAnchor, constant: 12),
+            userLevel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            userLevel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+
+            levelProgressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            levelProgressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            levelProgressBar.heightAnchor.constraint(equalToConstant: 2),
+            levelProgressBar.topAnchor.constraint(equalTo: userLevel.bottomAnchor, constant: 12),
+            levelPBLabel.topAnchor.constraint(equalTo: levelProgressBar.bottomAnchor, constant: 8),
+            levelPBLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            trendingNowLbl.topAnchor.constraint(equalTo: readingGoalView.bottomAnchor, constant: 24),
+            trendingNowLbl.topAnchor.constraint(equalTo: levelPBLabel.bottomAnchor, constant: 24),
             trendingNowLbl.leadingAnchor.constraint(equalTo: trendingView.leadingAnchor),
             
-            trendingView.topAnchor.constraint(equalTo: trendingNowLbl.bottomAnchor, constant: 12),
+            trendingView.topAnchor.constraint(equalTo: trendingNowLbl.bottomAnchor, constant: 84),
             trendingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             trendingView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            trendingView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
+            trendingView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.27),
             
             trendingBookCover.leadingAnchor.constraint(equalTo: trendingView.leadingAnchor, constant: 10),
             trendingBookCover.trailingAnchor.constraint(lessThanOrEqualTo: trendingBookTitle.leadingAnchor, constant: -8),
-            trendingBookCover.bottomAnchor.constraint(equalTo: trendingView.bottomAnchor, constant: -16),
-            trendingBookCover.widthAnchor.constraint(equalToConstant: imageWidthConstant),
-            trendingBookCover.heightAnchor.constraint(lessThanOrEqualToConstant: imageHeightConstant),
+            trendingBookCover.centerYAnchor.constraint(equalTo: trendingView.centerYAnchor),
+            trendingBookCover.widthAnchor.constraint(equalTo: trendingView.widthAnchor, multiplier: 0.32),
+            trendingBookCover.heightAnchor.constraint(equalTo: trendingView.heightAnchor, constant: -16),
+
             
             trendingBCPlaceholder.leadingAnchor.constraint(equalTo: trendingBookCover.leadingAnchor),
             trendingBCPlaceholder.trailingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -8),
-            trendingBCPlaceholder.widthAnchor.constraint(lessThanOrEqualToConstant: placeholderWidthConstant),
-            trendingBCPlaceholder.topAnchor.constraint(equalTo: header.bottomAnchor),
+            trendingBCPlaceholder.widthAnchor.constraint(equalTo: trendingView.widthAnchor, multiplier: 0.32),
+            trendingBCPlaceholder.centerYAnchor.constraint(equalTo: trendingView.centerYAnchor),
+            trendingBCPlaceholder.heightAnchor.constraint(equalTo: trendingView.heightAnchor, constant: -16),
             
             trendingBookTitle.centerYAnchor.constraint(equalTo: trendingView.centerYAnchor),
             trendingBookTitle.leadingAnchor.constraint(equalTo: trendingBookCover.trailingAnchor, constant: 16),
@@ -370,10 +352,11 @@ class HomeController: UIViewController {
             trendingBTPlaceholder.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             trendingBTPlaceholder.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -0.25),
             
-            header.centerXAnchor.constraint(equalTo: trendingView.centerXAnchor),
-            header.topAnchor.constraint(equalTo: trendingView.topAnchor, constant: 8),
-            header.bottomAnchor.constraint(lessThanOrEqualTo: trendingBookCover.topAnchor, constant: -16),
-            header.heightAnchor.constraint(equalToConstant: 20),
+            collectionView.topAnchor.constraint(equalTo: trendingNowLbl.bottomAnchor, constant: 12),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            collectionView.bottomAnchor.constraint(equalTo: trendingView.topAnchor,constant: -24),
+            collectionView.heightAnchor.constraint(equalToConstant: 60),
             
             errorLbl.centerXAnchor.constraint(equalTo: trendingView.centerXAnchor),
             errorLbl.leadingAnchor.constraint(equalTo: trendingView.leadingAnchor, constant: 16),
@@ -389,8 +372,8 @@ class HomeController: UIViewController {
             continueBookPhoto.topAnchor.constraint(equalTo: continueReadingContainer.topAnchor, constant: 4),
             continueBookPhoto.trailingAnchor.constraint(equalTo: continueReadingContainer.trailingAnchor, constant: -4),
             continueBookPhoto.bottomAnchor.constraint(equalTo: continueReadingContainer.bottomAnchor, constant: -4),
-            continueBookPhoto.widthAnchor.constraint(equalToConstant: continueImgWidthConstant),
-            continueBookPhoto.heightAnchor.constraint(lessThanOrEqualToConstant: continueImgHeightConstant),
+            continueBookPhoto.widthAnchor.constraint(equalTo: continueReadingContainer.widthAnchor, multiplier: 0.16),
+            continueBookPhoto.heightAnchor.constraint(equalTo: continueReadingContainer.heightAnchor, constant: -8),
             
             continueHeader.topAnchor.constraint(equalTo: continueReadingContainer.topAnchor, constant: 12),
             continueHeader.leadingAnchor.constraint(equalTo: continueReadingContainer.leadingAnchor, constant: 12),
@@ -456,7 +439,7 @@ class HomeController: UIViewController {
         trendingBTPlaceholder.isHiddenWhenSkeletonIsActive = true
         trendingBTPlaceholder.isHidden = false
         trendingBCPlaceholder.isHidden = false
-        self.header.alpha = 1.0
+        self.trendingNowLbl.alpha = 1.0
         
     }
     
@@ -475,7 +458,7 @@ class HomeController: UIViewController {
         let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
         
         // Sort the fetch request by lastAccessedDate in descending order
-        let sortDescriptor = NSSortDescriptor(key: "bookLastAccessed", ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: "bookLastAccessed", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         // Limit the fetch request to return only the last item
@@ -531,3 +514,103 @@ class HomeController: UIViewController {
 }
 
 
+extension HomeController: UICollectionViewDelegate {
+    
+}
+
+extension HomeController: UICollectionViewDataSource{
+    // MARK: - UICollectionViewDataSource Methods
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return bookCategories.count
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let category = bookCategories[indexPath.item].components(separatedBy: " ").dropFirst().joined(separator: " ")
+                               
+        selectedIndexPath = indexPath
+        
+        DispatchQueue.main.async {
+            self.startLoading()
+            self.trendingBookCover.alpha = 0
+            self.trendingBookTitle.alpha = 0
+            self.trendingBookAuthor.alpha = 0
+            self.errorLbl.alpha = 0
+            self.trendingNowLbl.text = "Trending in \(category)"
+            self.collectionView.reloadData()
+        }
+        
+            //API Call
+            pickRandomBook(fromGenre: category) { title, coverID, authorName, bookKey in
+                if let title = title, let coverID = coverID, let bookKey = bookKey {
+                    self.randomBook = title
+                    self.coverID = coverID
+                    self.bookID = bookKey
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Book
+                        self.stopLoading()
+                        self.trendingBookTitle.text = title
+                        self.trendingBookAuthor.text = "By \(authorName!)"
+                        self.bookAuthor = "\(authorName!)"
+                        self.errorLbl.alpha = 0.0
+                        self.trendingNowLbl.text = "Trending in \(category)"
+                        downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.trendingBookCover, placeholderImage: UIImage(resource: .placeholder))
+                        UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
+                            self.trendingBookCover.alpha = 1.0
+                            self.trendingBookTitle.alpha = 1.0
+                            self.trendingNowLbl.alpha = 1.0
+                            self.trendingBookAuthor.alpha = 1.0
+                        }, completion: nil)
+                        self.stopLoading()
+                    }
+                } else {
+                    print("Failed to fetch a random book")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Error
+                        self.stopLoading()
+                        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
+                            self.errorLbl.alpha = 1.0
+                            self.trendingNowLbl.text = "Trending Now"
+                            self.trendingBookAuthor.alpha = 0.0
+                            self.trendingBookTitle.alpha = 0.0
+                            self.trendingBookCover.alpha = 0.0
+                        }, completion: nil)
+                        if self.trendingBookTitle.text == nil && self.trendingBookAuthor.text == nil || ((self.trendingBookAuthor.text?.isEmpty) != nil) {
+                            self.errorLbl.text = K.errorLbl
+                        }
+                    }//End DQ
+                }//End else
+            } //End API Call
+        }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        cell.backgroundColor = .clear
+        
+        var borderColor = UIColor.clear.cgColor
+        var borderWidth: CGFloat = 2
+
+        if indexPath == selectedIndexPath{
+            borderColor = UIColor(resource: .brandPurple).cgColor
+        }else{
+            borderColor = UIColor.greenSea.cgColor
+        }
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
+        label.textAlignment = .center
+        label.clipsToBounds = true
+        label.textColor = UIColor(resource: .textBG)
+        label.backgroundColor = UIColor(resource: .background)
+        label.layer.borderWidth = borderWidth
+        label.layer.borderColor = borderColor
+//        label.layer.borderColor = UIColor.greenSea.cgColor
+        label.layer.cornerRadius = 15
+        label.text = bookCategories[indexPath.item]
+        cell.contentView.addSubview(label)
+        cell.clipsToBounds = true
+        
+        return cell
+    }
+    
+}

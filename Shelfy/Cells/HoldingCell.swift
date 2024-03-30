@@ -9,67 +9,7 @@ import UIKit
 
 class HoldingCell: UIViewController {
 
-/*
- 
- 
- func addButton() {
- 
- let context = (UIApplication.shared.delegate as! AppDelegate).presistentContainer.viewContext
- 
- let newBook = BookItem(context: context)
- 
- newBook.title = bTitle
- newBook.author = bAuthor
- newBook.status = ...ceva gen bStatus (read/not read)
- newBook.pages = bPages
- 
- }
- 
- //MARK: - User Level
- 
- func determineLevel(pagesRead: Int) -> String {
-     switch pagesRead {
-     case 0..<5000:
-         return "Novice Reader 📖"
-     case 5000..<10500:
-         return "Page Turner 📚"
-     case 10500..<16000:
-         return "Bookworm 🐛"
-     case 16000..<21500:
-         return "Bibliophile 📜"
-     case 21500..<27000:
-         return "Literary Connoisseur 🎩"
-     case 27000..<32500:
-         return "Word Wizard 🧙‍♂️"
-     case 32500..<38000:
-         return "Story Enthusiast 📝"
-     case 38000..<43500:
-         return "Chapter Champion 🏆"
-     case 43500..<49000:
-         return "Literature Lover ❤️‍🔥"
-     case 49000..<54500:
-         return "Reading Maestro 🎓"
-     case 54500..<60000:
-         return "Genre Guru ☸️"
-     case 60000..<65500:
-         return "Page-turning Dragon 🐉"
-     case 65500..<71000:
-         return "Tome Titan 🔱"
-     case 71000..<76500:
-         return "Reading Royalty 💎"
-     case 76500..<80000:
-         return "God Emperor of Books 👑"
-     default:
-         return "Novice Reader 📖"
-     }
- }
-
- // Example usage:
- let pages = 20000
- let level = determineLevel(pagesRead: pages)
- print("You are currently at \(level).")
-
- 
+ /*
  
  //MARK: - Move books between categories
  
@@ -138,34 +78,6 @@ class HoldingCell: UIViewController {
      isPercentageDisplay.toggle()
      updateProgressLabel() // Update the progress label text
  }
- 
- 
- import CoreData
-
- // Assuming BookItem is your Core Data entity class
- func getAllBookPages() -> [String] {
-     var bookPages: [String] = []
-
-     // Create a fetch request to fetch all BookItem objects
-     let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
-
-     do {
-         // Execute the fetch request
-         let bookItems = try context.fetch(fetchRequest)
-
-         // Iterate over the fetched BookItem objects
-         for bookItem in bookItems {
-             // Extract the bookPages attribute from each BookItem and add it to the array
-             if let bookPage = bookItem.bookPages {
-                 bookPages.append(bookPage)
-             }
-         }
-     } catch {
-         print("Error fetching book items: \(error)")
-     }
-
-     return bookPages
- }
 
  
  */
@@ -174,7 +86,7 @@ class HoldingCell: UIViewController {
 }
 
 
-class CustomTableViewCell: UITableViewCell {
+class CategoryCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureCell()

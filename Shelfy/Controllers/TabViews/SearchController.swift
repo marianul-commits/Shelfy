@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchView: UIViewController {
+class SearchController: UIViewController {
     
     //MARK: Creating values
     
@@ -71,7 +71,7 @@ class SearchView: UIViewController {
         //Search Controller
         searchController.delegate = self
         searchController.searchBar.delegate = self
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationItem.searchController = searchController
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.tintColor = UIColor(resource: .brandMint)
@@ -104,7 +104,7 @@ class SearchView: UIViewController {
 
 //MARK: - TableView Extension
 
-extension SearchView: UITableViewDataSourcePrefetching {
+extension SearchController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         // Check if the last cell is being prefetched
         if let lastIndexPath = indexPaths.last, lastIndexPath.row == books?.count ?? 0 - 1, !isSearching {
@@ -157,7 +157,7 @@ extension SearchView: UITableViewDataSourcePrefetching {
 }
 
 
-extension SearchView: UITableViewDelegate, UITableViewDataSource {
+extension SearchController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ searchTable: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -260,7 +260,7 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
 }
 
 //MARK: - Search Controller Extension
-extension SearchView: UISearchControllerDelegate, UISearchBarDelegate {
+extension SearchController: UISearchControllerDelegate, UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Set isSearching flag to true
