@@ -22,6 +22,17 @@ The Search Page will allow users to search for books by title, author, or by the
 ### Book Detail View 
 The Book Detail View will provide users with more in-depth information about a selected book, including ratings, description, more from that author, and the option to add the book to their virtual bookshelf.
 
+## Photos 
+<div id="photos" align="horizontal">  
+<img src="https://github.com/marianul-commits/Shelfy/blob/main/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20-%202024-04-01%20at%2000.25.30.png" height="500"/>
+<img src="https://github.com/marianul-commits/Shelfy/blob/main/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20-%202024-04-01%20at%2000.26.11.png" height="500"/>
+<img src="https://github.com/marianul-commits/Shelfy/blob/main/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20-%202024-04-01%20at%2000.33.05.png" height="500"/>
+<img src="https://github.com/marianul-commits/Shelfy/blob/main/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20-%202024-04-01%20at%2000.34.04.png" height="500"/>
+</div>
+
+
+
+
 ## Dependencies
 
 Shelfy uses the following dependencies:
@@ -31,6 +42,7 @@ Shelfy uses the following dependencies:
 * [IQKeyboardManager](https://github.com/hackiftekhar/IQKeyboardManager)
 * [ChidoriMenu](https://github.com/christianselig/ChidoriMenu) 
 * [SkeletonView](https://github.com/Juanpe/SkeletonView)
+* [Notification Banner](https://github.com/Daltron/NotificationBanner)
   
 Make sure to install these dependencies before running the app.
 
