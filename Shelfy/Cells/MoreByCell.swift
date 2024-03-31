@@ -17,14 +17,15 @@ class MoreByCell: UICollectionViewCell {
 
         setupViews()
     }
+    
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
+        
         setupViews()
     }
 
-    private func setupViews() {
+     func setupViews() {
         
         titleLabel = UILabel()
         imageView = UIImageView()
@@ -41,7 +42,7 @@ class MoreByCell: UICollectionViewCell {
         titleLabel.textAlignment = .center
         titleLabel.font = SetFont.setFontStyle(.regular, 14)
         imageView.contentMode = .scaleAspectFit
-        
+         
         NSLayoutConstraint.activate([
         
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5),

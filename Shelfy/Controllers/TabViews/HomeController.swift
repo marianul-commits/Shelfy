@@ -23,6 +23,16 @@ class HomeController: UIViewController {
     var greetingUser = makeLabel(withText: "")
     var userLevel = makeLabel(withText: "")
     var levelPBLabel = makeLabel(withText: "")
+    let lvlLogic = LevelManager()
+    var pagesReadWhenLeaving: Int = 0
+    
+    //Last Accessed Book Values
+    var lastAccessedTitle: String?
+    var lastAccessedAuthor: String?
+    var lastAccessedPagesRead: Int?
+    var lastAccessedPagesTotal: Int?
+    var lastAccessedID: String?
+    var lastAccessedCover: String?
     
     //Trending Now View
     var selectedIndexPath = IndexPath()
@@ -44,12 +54,13 @@ class HomeController: UIViewController {
     let stackView = UIStackView()
     
     //Continue Tracking View
-
+    
     var continueReadingContainer = UIView()
     var continueHeader = makeLabel(withText: "Continue tracking")
     var continueSubtitle = makeLabel(withText: "Ready to dive back in?")
     var continueProgressBar = UIProgressView()
     var continueProgressLbl = UILabel()
+    let pageDisplay = PageStyleManager.shared
     var continueBookPhoto = UIImageView()
     lazy var continueTotalPgs = 0
     lazy var continueReadPgs = 0
@@ -63,6 +74,8 @@ class HomeController: UIViewController {
         let randomCateg = bookCategories.randomElement()!.components(separatedBy: " ").dropFirst().joined(separator: " ")
         
         fetchLastAccessedBook()
+        
+        
         
         //API Call
         pickRandomBook(fromGenre: randomCateg) { title, coverID, authorName, bookKey in
@@ -103,21 +116,9 @@ class HomeController: UIViewController {
     //MARK: View Did Appear
     
     override func viewDidAppear(_ animated: Bool) {
-                
-        getAllBookPages() //Core Data Call for bookPages & bookTotalPages values
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            
-            let intBooks = self.bookPages.map { Int($0) ?? 0 }
-            let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
-            let pagesRead = intBooks.reduce(0, +)
-            let totalPages = intTotalPages.reduce(0, +)
-            var toNextLevel = K.pagesToNextLevel(pagesRead: pagesRead)!
-            self.levelProgressBar.setProgress(self.calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel), animated: true)
-            var progressLblValue = self.calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel) * 100
-            self.levelPBLabel.text = String(format: "%.0f%%", progressLblValue)
-            
-        } // Setting the values for ProgressBar.progress
+        let intBooks = self.bookPages.map { Int($0) ?? 0 }
+        let pageValue = intBooks.reduce(0, +)
         
         startLoading() // Display Skeleton View
         errorLbl.alpha = 0.0
@@ -131,11 +132,19 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getAllBookPages() //Core Data Call for bookPages & bookTotalPages values
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleNotification(_:)),
+                                               name: .bookChanged,
+                                               object: nil)
+        
         setupView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        //        clearObserver()
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
@@ -156,13 +165,8 @@ class HomeController: UIViewController {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         
         let intBooks = self.bookPages.map { Int($0) ?? 0 }
-        let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
-        
-        
         let pagesRead = intBooks.reduce(0, +)
-        let totalPages = intTotalPages.reduce(0, +)
-                
-        let safeArea = view.safeAreaLayoutGuide
+        lvlLogic.updateProgress(pagesRead: pagesRead)
         
         trendingBookCover.alpha = 0.0
         trendingBookTitle.alpha = 0.0
@@ -212,6 +216,9 @@ class HomeController: UIViewController {
         let seeBook = UITapGestureRecognizer(target: self, action: #selector(bookTapped))
         trendingView.addGestureRecognizer(seeBook)
         
+        let seeLastBook = UITapGestureRecognizer(target: self, action: #selector(lastBookTapped))
+        continueReadingContainer.addGestureRecognizer(seeLastBook)
+        
         trendingView.layer.cornerRadius = 12
         trendingBookCover.layer.cornerRadius = 10
         trendingBookCover.clipsToBounds = true
@@ -219,10 +226,9 @@ class HomeController: UIViewController {
         trendingBookCover.contentMode = .scaleAspectFit
         trendingBookTitle.font = SetFont.setFontStyle(.medium, 14)
         trendingBookAuthor.font = SetFont.setFontStyle(.medium, 14)
-//        header.font = SetFont.setFontStyle(.medium, 16)
         errorLbl.font = SetFont.setFontStyle(.medium, 16)
         trendingNowLbl.font = SetFont.setFontStyle(.medium, 22)
-                
+        
         continueBookPhoto.image = UIImage(resource: .placeholder)
         
         fetchLastAccessedBook() //Core Data call to last accessed book using bookLastAccesed
@@ -240,19 +246,19 @@ class HomeController: UIViewController {
         continueProgressBar.progressViewStyle = .bar
         continueProgressBar.layer.cornerRadius = 2
         continueProgressBar.clipsToBounds = true
-                
+        
         continueProgressLbl.text = "Page XX of YYY"
         
         continueHeader.font = SetFont.setFontStyle(.medium, 16)
         continueSubtitle.font = SetFont.setFontStyle(.regular, 14)
         continueProgressLbl.font = SetFont.setFontStyle(.regular, 14)
-
+        
         
         continueReadingContainer.clipsToBounds = true
         continueReadingContainer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         continueReadingContainer.layer.cornerRadius = 12
         K.setGradientBackground(view: continueReadingContainer, colorTop: UIColor(resource: .brandDarkMint), colorBottom: UIColor(resource: .brandMint))
-
+        
         
         continueBookPhoto.clipsToBounds = true
         continueBookPhoto.layer.cornerRadius = 16
@@ -260,7 +266,6 @@ class HomeController: UIViewController {
         
         view.addSubview(trendingView)
         view.addSubview(collectionView)
-//        trendingView.addSubview(header)
         trendingView.addSubview(trendingBookCover)
         trendingView.addSubview(trendingBCPlaceholder)
         trendingView.addSubview(trendingBookTitle)
@@ -274,16 +279,14 @@ class HomeController: UIViewController {
         continueReadingContainer.addSubview(continueProgressLbl)
         continueReadingContainer.addSubview(continueProgressBar)
         continueReadingContainer.addSubview(continueBookPhoto)
-
+        
         greetingUser.text = K.greetUser(user: user)
         greetingUser.font = SetFont.setFontStyle(.medium, 22)
-        userLevel.text = K.determineLevel(pagesRead: pagesRead)
+        userLevel.text = lvlLogic.currentLevelTitle
         userLevel.font = SetFont.setFontStyle(.medium, 18)
         
-        var toNextLevel = K.pagesToNextLevel(pagesRead: pagesRead)!
-        
-        var progressLblValue = calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel) * 100
-        levelProgressBar.setProgress(calculateProgress(pagesRead: pagesRead, totalPages: toNextLevel), animated: true)
+        let progressLblValue = lvlLogic.currentValue * 100
+        levelProgressBar.progress = lvlLogic.currentValue
         
         levelPBLabel.text = String(format: "%.0f%%", progressLblValue)
         levelProgressBar.tintColor = UIColor(resource: .brandPurple)
@@ -307,7 +310,7 @@ class HomeController: UIViewController {
             userLevel.topAnchor.constraint(equalTo: greetingUser.bottomAnchor, constant: 12),
             userLevel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             userLevel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
+            
             levelProgressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             levelProgressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             levelProgressBar.heightAnchor.constraint(equalToConstant: 2),
@@ -328,10 +331,9 @@ class HomeController: UIViewController {
             trendingBookCover.centerYAnchor.constraint(equalTo: trendingView.centerYAnchor),
             trendingBookCover.widthAnchor.constraint(equalTo: trendingView.widthAnchor, multiplier: 0.32),
             trendingBookCover.heightAnchor.constraint(equalTo: trendingView.heightAnchor, constant: -16),
-
+            
             
             trendingBCPlaceholder.leadingAnchor.constraint(equalTo: trendingBookCover.leadingAnchor),
-            trendingBCPlaceholder.trailingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -8),
             trendingBCPlaceholder.widthAnchor.constraint(equalTo: trendingView.widthAnchor, multiplier: 0.32),
             trendingBCPlaceholder.centerYAnchor.constraint(equalTo: trendingView.centerYAnchor),
             trendingBCPlaceholder.heightAnchor.constraint(equalTo: trendingView.heightAnchor, constant: -16),
@@ -345,8 +347,7 @@ class HomeController: UIViewController {
             trendingBookAuthor.trailingAnchor.constraint(equalTo: trendingView.trailingAnchor, constant: -16),
             
             stackView.widthAnchor.constraint(equalTo: trendingView.widthAnchor, multiplier: 0.55),
-            stackView.topAnchor.constraint(equalTo: trendingView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: trendingView.bottomAnchor),
+            stackView.centerYAnchor.constraint(equalTo: trendingView.centerYAnchor),
             stackView.trailingAnchor.constraint(equalTo: trendingView.trailingAnchor, constant: -16),
             
             trendingBTPlaceholder.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
@@ -356,7 +357,6 @@ class HomeController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             collectionView.bottomAnchor.constraint(equalTo: trendingView.topAnchor,constant: -24),
-            collectionView.heightAnchor.constraint(equalToConstant: 60),
             
             errorLbl.centerXAnchor.constraint(equalTo: trendingView.centerXAnchor),
             errorLbl.leadingAnchor.constraint(equalTo: trendingView.leadingAnchor, constant: 16),
@@ -372,7 +372,7 @@ class HomeController: UIViewController {
             continueBookPhoto.topAnchor.constraint(equalTo: continueReadingContainer.topAnchor, constant: 4),
             continueBookPhoto.trailingAnchor.constraint(equalTo: continueReadingContainer.trailingAnchor, constant: -4),
             continueBookPhoto.bottomAnchor.constraint(equalTo: continueReadingContainer.bottomAnchor, constant: -4),
-            continueBookPhoto.widthAnchor.constraint(equalTo: continueReadingContainer.widthAnchor, multiplier: 0.16),
+            continueBookPhoto.widthAnchor.constraint(equalTo: continueReadingContainer.widthAnchor, multiplier: 0.2),
             continueBookPhoto.heightAnchor.constraint(equalTo: continueReadingContainer.heightAnchor, constant: -8),
             
             continueHeader.topAnchor.constraint(equalTo: continueReadingContainer.topAnchor, constant: 12),
@@ -454,6 +454,7 @@ class HomeController: UIViewController {
         
     }
     
+    //MARK: Fetch Last Accessed Book
     func fetchLastAccessedBook() {
         let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
         
@@ -469,24 +470,28 @@ class HomeController: UIViewController {
             
             for item in result {
                 DispatchQueue.main.async {
-                    // Update UI elements with information from the fetched items
+                    //Retrieve Values from CoreData
                     let coverID = item.bookCover
-                    
+                    let bookID = item.bookKey
+                    let bookTitle = item.bookTitle
+                    let bookAuthor = item.bookAuthor
                     let totalPgsString = item.bookTotalPages
                     let totalPgsInt = Int(totalPgsString ?? "0")
-                    
                     let readPgsString = item.bookPages
                     let readPgsInt = Int(readPgsString ?? "0")
                     
-                    // Assuming these properties are part of your view controller
+                    //Set Values for Continue Reading view & Segue
+                    self.lastAccessedAuthor = bookAuthor
+                    self.lastAccessedTitle = bookTitle
+                    self.lastAccessedID = bookID
+                    self.lastAccessedCover = coverID
+                    self.lastAccessedPagesTotal = totalPgsInt
+                    self.lastAccessedPagesRead = readPgsInt
                     self.continueTotalPgs = totalPgsInt ?? 0
                     self.continueReadPgs = readPgsInt ?? 0
-
                     self.continueProgressBar.progress = self.calculateProgress(pagesRead: self.continueReadPgs, totalPages: self.continueTotalPgs)
-                    
                     downloadCoverImage(coverImageID: "\(coverID!)", targetImageView: self.continueBookPhoto, placeholderImage: UIImage(resource: .placeholder))
-                    self.continueProgressLbl.text = "Page \(self.continueReadPgs) of \(self.continueTotalPgs)"
-                    
+                    self.continueProgressLbl.text = self.pageDisplay.updateProgressLabel(pagesRead: self.continueReadPgs, totalPages: self.continueTotalPgs, progressLbl: self.continueProgressLbl)
                 }
             }
             
@@ -506,19 +511,79 @@ class HomeController: UIViewController {
         
         
         let coverID = self.coverID
-            downloadCoverImage(coverImageID: "\(coverID)", targetImageView: detailVC.bookImg, placeholderImage: UIImage(resource: .placeholder))
-                
-                present(detailVC, animated: true, completion: nil)
+        downloadCoverImage(coverImageID: "\(coverID)", targetImageView: detailVC.bookImg, placeholderImage: UIImage(resource: .placeholder))
+        
+        present(detailVC, animated: true, completion: nil)
+    }
+    
+    func clearObserver() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    //MARK: Pages Read Notification Update
+    @objc func handleNotification(_ notification: Notification) {
+        
+        let pageNewValue = notification.userInfo?["newPagesRead"] as? Int
+        
+        print("I received something!")
+        //        print("pageNewValue: ", pageNewValue!)
+        
+        let intBooks = self.bookPages.map { Int($0) ?? 0 }
+        let pagesRead = intBooks.reduce(0, +)
+        var pagesReadValue = pagesRead
+        
+        print("pagesRead: ", pagesRead)
+        
+        let newValue = pagesRead + pageNewValue!
+        
+        print("newValue: ", newValue)
+        
+        if newValue > pagesRead {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                let intBooks = self.bookPages.map { Int($0) ?? 0 }
+                let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
+                let pagesRead = intBooks.reduce(0, +)
+                self.levelProgressBar.setProgress(self.lvlLogic.updateProgressIfNeeded(pagesRead: newValue), animated: true)
+                let progressLblValue = self.lvlLogic.currentValue * 100
+                self.levelPBLabel.text = String(format: "%.0f%%", progressLblValue)
+                self.userLevel.text = self.lvlLogic.currentLevelTitle
+            } // Setting the values for ProgressBar.progress
+        } else if newValue < pagesRead {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                let intBooks = self.bookPages.map { Int($0) ?? 0 }
+                let intTotalPages = self.bookTotalPages.map { Int($0) ?? 0 }
+                let pagesRead = intBooks.reduce(0, +)
+                self.levelProgressBar.setProgress(self.lvlLogic.updateProgressIfNeeded(pagesRead: newValue), animated: true)
+                let progressLblValue = self.lvlLogic.currentValue * 100
+                self.levelPBLabel.text = String(format: "%.0f%%", progressLblValue)
+                self.userLevel.text = self.lvlLogic.currentLevelTitle
+            } // Setting the values for ProgressBar.progress
         }
+        pagesReadValue = newValue
+        print("pagesReadValue: ", pagesReadValue)
+    }
+    
+    @objc func lastBookTapped() {
+        
+        let detailVC = TrackBookView()
+        
+        detailVC.bookID = lastAccessedID
+        detailVC.bookTitle = lastAccessedTitle
+        detailVC.bookAuthor = lastAccessedAuthor
+        detailVC.bookImg = lastAccessedCover
+        detailVC.pagesRead = lastAccessedPagesRead!
+        
+        let coverID = lastAccessedID!
+        downloadCoverImage(coverImageID: "\(coverID)", targetImageView: detailVC.bImage, placeholderImage: UIImage(resource: .placeholder))
+        
+        detailVC.view.backgroundColor = UIColor(resource: .background)
+        
+        present(detailVC, animated: true, completion: nil)
+    }
     
 }
 
-
-extension HomeController: UICollectionViewDelegate {
-    
-}
-
-extension HomeController: UICollectionViewDataSource{
+extension HomeController: UICollectionViewDataSource, UICollectionViewDelegate{
     // MARK: - UICollectionViewDataSource Methods
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -530,7 +595,7 @@ extension HomeController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let category = bookCategories[indexPath.item].components(separatedBy: " ").dropFirst().joined(separator: " ")
-                               
+        
         selectedIndexPath = indexPath
         
         DispatchQueue.main.async {
@@ -543,54 +608,54 @@ extension HomeController: UICollectionViewDataSource{
             self.collectionView.reloadData()
         }
         
-            //API Call
-            pickRandomBook(fromGenre: category) { title, coverID, authorName, bookKey in
-                if let title = title, let coverID = coverID, let bookKey = bookKey {
-                    self.randomBook = title
-                    self.coverID = coverID
-                    self.bookID = bookKey
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Book
-                        self.stopLoading()
-                        self.trendingBookTitle.text = title
-                        self.trendingBookAuthor.text = "By \(authorName!)"
-                        self.bookAuthor = "\(authorName!)"
-                        self.errorLbl.alpha = 0.0
-                        self.trendingNowLbl.text = "Trending in \(category)"
-                        downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.trendingBookCover, placeholderImage: UIImage(resource: .placeholder))
-                        UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
-                            self.trendingBookCover.alpha = 1.0
-                            self.trendingBookTitle.alpha = 1.0
-                            self.trendingNowLbl.alpha = 1.0
-                            self.trendingBookAuthor.alpha = 1.0
-                        }, completion: nil)
-                        self.stopLoading()
+        //API Call
+        pickRandomBook(fromGenre: category) { title, coverID, authorName, bookKey in
+            if let title = title, let coverID = coverID, let bookKey = bookKey {
+                self.randomBook = title
+                self.coverID = coverID
+                self.bookID = bookKey
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Book
+                    self.stopLoading()
+                    self.trendingBookTitle.text = title
+                    self.trendingBookAuthor.text = "By \(authorName!)"
+                    self.bookAuthor = "\(authorName!)"
+                    self.errorLbl.alpha = 0.0
+                    self.trendingNowLbl.text = "Trending in \(category)"
+                    downloadCoverImage(coverImageID: "\(coverID)", targetImageView: self.trendingBookCover, placeholderImage: UIImage(resource: .placeholder))
+                    UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseIn], animations: {
+                        self.trendingBookCover.alpha = 1.0
+                        self.trendingBookTitle.alpha = 1.0
+                        self.trendingNowLbl.alpha = 1.0
+                        self.trendingBookAuthor.alpha = 1.0
+                    }, completion: nil)
+                    self.stopLoading()
+                }
+            } else {
+                print("Failed to fetch a random book")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Error
+                    self.stopLoading()
+                    UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
+                        self.errorLbl.alpha = 1.0
+                        self.trendingNowLbl.text = "Trending Now"
+                        self.trendingBookAuthor.alpha = 0.0
+                        self.trendingBookTitle.alpha = 0.0
+                        self.trendingBookCover.alpha = 0.0
+                    }, completion: nil)
+                    if self.trendingBookTitle.text == nil && self.trendingBookAuthor.text == nil || ((self.trendingBookAuthor.text?.isEmpty) != nil) {
+                        self.errorLbl.text = K.errorLbl
                     }
-                } else {
-                    print("Failed to fetch a random book")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // Stop Skeleton View & Display Error
-                        self.stopLoading()
-                        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
-                            self.errorLbl.alpha = 1.0
-                            self.trendingNowLbl.text = "Trending Now"
-                            self.trendingBookAuthor.alpha = 0.0
-                            self.trendingBookTitle.alpha = 0.0
-                            self.trendingBookCover.alpha = 0.0
-                        }, completion: nil)
-                        if self.trendingBookTitle.text == nil && self.trendingBookAuthor.text == nil || ((self.trendingBookAuthor.text?.isEmpty) != nil) {
-                            self.errorLbl.text = K.errorLbl
-                        }
-                    }//End DQ
-                }//End else
-            } //End API Call
-        }
+                }//End DQ
+            }//End else
+        } //End API Call
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         cell.backgroundColor = .clear
         
         var borderColor = UIColor.clear.cgColor
-        var borderWidth: CGFloat = 2
-
+        let borderWidth: CGFloat = 2
+        
         if indexPath == selectedIndexPath{
             borderColor = UIColor(resource: .brandPurple).cgColor
         }else{
@@ -604,7 +669,6 @@ extension HomeController: UICollectionViewDataSource{
         label.backgroundColor = UIColor(resource: .background)
         label.layer.borderWidth = borderWidth
         label.layer.borderColor = borderColor
-//        label.layer.borderColor = UIColor.greenSea.cgColor
         label.layer.cornerRadius = 15
         label.text = bookCategories[indexPath.item]
         cell.contentView.addSubview(label)

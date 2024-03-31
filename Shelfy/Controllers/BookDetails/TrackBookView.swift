@@ -30,7 +30,7 @@ class TrackBookView: UIViewController {
     lazy var bTitle = UILabel()
     var shareBtn = UIButton()
     var container = UIView()
-    var pagesRead: Int?
+    lazy var pagesRead: Int = 0
     var totalPages = 0
     var btnStack = makeStackView(withOrientation: .horizontal, withSpacing: 3)
     var isPercentageDisplay = false // Flag to track whether percentage or pages read is displayed
@@ -48,9 +48,15 @@ class TrackBookView: UIViewController {
     
     func setupMyBookView() {
         
+        btnStack.distribution = .fillEqually
+        btnStack.alignment = .center
+        btnStack.spacing = 12
+        
         progressLbl.isSkeletonable = true
         progressLbl.showAnimatedSkeleton()
         progressLbl.linesCornerRadius = 5
+        let progressLogic = PageStyleManager.shared
+        
         
         self.bTitle.text = self.bookTitle!
         self.bAuthor.text = self.bookAuthor
@@ -70,29 +76,30 @@ class TrackBookView: UIViewController {
                     self.progressBar.layer.sublayers?.forEach({ $0.removeAllAnimations() })
                     self.progressBar.progress = 0
                     self.progressLbl.hideSkeleton(transition: .crossDissolve(0.25))
-                    self.progressLbl.text = "\(self.pagesRead!) / \(self.totalPages) pages"
+//                    self.progressLbl.text = "\(self.pagesRead!) / \(self.totalPages) pages"
+                    self.progressLbl.text = progressLogic.updateProgressLabel(pagesRead: self.pagesRead, totalPages: self.totalPages, progressLbl: self.progressLbl)
                     UIView.animate(withDuration: 1.5, delay: 0, options: [.curveEaseInOut], animations: {
-                        let prgrs = self.calculateProgress(pagesRead: self.pagesRead!, totalPages: self.totalPages)
+                        let prgrs = self.calculateProgress(pagesRead: self.pagesRead, totalPages: self.totalPages)
                         self.progressBar.setProgress(prgrs, animated: true)
                     })
                 }
-            } else {
-                // Core Data does not have total pages, perform API call to fetch
-                fetchNumberOfPages(forTitle: bTitle.text!) { numberOfPages in
-                    if let numberOfPages = numberOfPages, numberOfPages != 0 {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            self.progressBar.layer.sublayers?.forEach({ $0.removeAllAnimations() })
-                            self.progressLbl.hideSkeleton(transition: .crossDissolve(0.25))
-                            self.totalPages = numberOfPages
-                            self.progressLbl.text = "\(self.pagesRead!) / \(self.totalPages) pages"
-                            UIView.animate(withDuration: 1.5, delay: 0, options: [.curveEaseInOut], animations: {
-                                let prgrs = self.calculateProgress(pagesRead: self.pagesRead!, totalPages: self.totalPages)
-                                self.progressBar.setProgress(prgrs, animated: true)
-                            })
-
-                            // Update bookTotalPages in Core Data
+            } else { //Insert Number of Pages manually
+                DispatchQueue.main.async {
+                    print("Failed to fetch number of pages or received 0")
+                    // Prompt the user to input the total number of pages
+                    let alertController = UIAlertController(title: "Enter Total Pages", message: "Please enter the total number of pages for the book:", preferredStyle: .alert)
+                    alertController.addTextField { textField in
+                        textField.placeholder = "Total Pages"
+                        textField.keyboardType = .numberPad
+                    }
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        // Retrieve the input from the text field
+                        if let textField = alertController.textFields?.first, let text = textField.text, let total = Int(text), total != 0 {
+                            // Update the total pages with the user input
+                            self.totalPages = total
                             if let bookItem = self.fetchBookItem(forTitle: self.bTitle.text!) {
-                                bookItem.bookTotalPages = "\(numberOfPages)"
+                                bookItem.bookTotalPages = "\(total)"
                                 do {
                                     try self.context.save()
                                 } catch {
@@ -101,55 +108,27 @@ class TrackBookView: UIViewController {
                             } else {
                                 print("Book item not found.")
                             }
-
-                            print("Number of pages: \(numberOfPages)")
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            print("Failed to fetch number of pages or received 0")
-                            // Prompt the user to input the total number of pages
-                            let alertController = UIAlertController(title: "Enter Total Pages", message: "Please enter the total number of pages for the book:", preferredStyle: .alert)
-                            alertController.addTextField { textField in
-                                textField.placeholder = "Total Pages"
-                                textField.keyboardType = .numberPad
-                            }
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                                // Retrieve the input from the text field
-                                if let textField = alertController.textFields?.first, let text = textField.text, let total = Int(text), total != 0 {
-                                    // Update the total pages with the user input
-                                    self.totalPages = total
-                                    if let bookItem = self.fetchBookItem(forTitle: self.bTitle.text!) {
-                                        bookItem.bookTotalPages = "\(total)"
-                                        do {
-                                            try self.context.save()
-                                        } catch {
-                                            print("Error saving bookTotalPages: \(error)")
-                                        }
-                                    } else {
-                                        print("Book item not found.")
-                                    }
-                                }
-                            }
-                            alertController.addAction(cancelAction)
-                            alertController.addAction(okAction)
-                            // Present the alert controller
-                            self.present(alertController, animated: true, completion: nil)
-                        }
-
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            self.progressLbl.hideSkeleton(transition: .crossDissolve(0.25))
-                            self.progressLbl.text = "\(self.pagesRead!) / \(self.totalPages) pages"
-                            UIView.animate(withDuration: 1.5, delay: 0, options: [.curveEaseInOut], animations: {
-                                let prgrs = self.calculateProgress(pagesRead: self.pagesRead!, totalPages: self.totalPages)
-                                self.progressBar.setProgress(prgrs, animated: true)
-                            })
                         }
                     }
+                    alertController.addAction(cancelAction)
+                    alertController.addAction(okAction)
+                    // Present the alert controller
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.progressLbl.hideSkeleton(transition: .crossDissolve(0.25))
+                    self.progressLbl.text = progressLogic.updateProgressLabel(pagesRead: self.pagesRead, totalPages: self.totalPages, progressLbl: self.progressLbl)
+                    UIView.animate(withDuration: 1.5, delay: 0, options: [.curveEaseInOut], animations: {
+                        let prgrs = self.calculateProgress(pagesRead: self.pagesRead, totalPages: self.totalPages)
+                        self.progressBar.setProgress(prgrs, animated: true)
+                    })
                 }
             }
         }
-
+        //            }
+        //        }
+        
         //Book Ratings API Call
         fetchBookRatings(forKey: bookID!) { ratings in
             DispatchQueue.main.async {
@@ -166,19 +145,19 @@ class TrackBookView: UIViewController {
         //Rating Setup
         bookRating.translatesAutoresizingMaskIntoConstraints = false
         bookRating.settings.fillMode = .precise
-        bookRating.settings.emptyBorderColor = UIColor(resource: .brandMint)
-        bookRating.settings.emptyColor = UIColor(resource: .brandMint)
-        bookRating.settings.filledColor = UIColor(resource: .brandDarkMint)
-        bookRating.settings.filledBorderColor = UIColor(resource: .brandDarkMint)
+        bookRating.settings.emptyBorderColor = UIColor(resource: .brandDarkMint)
+        bookRating.settings.emptyColor = UIColor(resource: .brandDarkMint)
+        bookRating.settings.filledColor = UIColor(resource: .brandLogo)
+        bookRating.settings.filledBorderColor = UIColor(resource: .brandLogo)
         bookRating.settings.textColor = UIColor(resource: .textBG)
         bookRating.settings.textFont = SetFont.setFontStyle(.regular, 12)
         bookRating.isUserInteractionEnabled = false
         
         //Progress Bar Setup
-        let progressValue = calculateProgress(pagesRead: pagesRead!, totalPages: totalPages)
-        let progressLblValue = calculateProgress(pagesRead: pagesRead!, totalPages: totalPages) * 100
+        let progressValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages)
+        let progressLblValue = calculateProgress(pagesRead: pagesRead, totalPages: totalPages) * 100
         progressBar.progress = progressValue
-        progressBar.setProgress(calculateProgress(pagesRead: pagesRead!, totalPages: totalPages), animated: true)
+        progressBar.setProgress(calculateProgress(pagesRead: pagesRead, totalPages: totalPages), animated: true)
         
         //Progress Lbl Setup
         progressLbl.text = String(format: "%.0f%%", progressLblValue)
@@ -215,15 +194,18 @@ class TrackBookView: UIViewController {
             config.baseBackgroundColor = UIColor(resource: .brandPurple)
             trackBtn.configuration = config
             trackBtn.addTarget(self, action: #selector(trackPages), for: .touchUpInside)
+            trackBtn.sizeToFit()
         } else {
             trackBtn.layer.cornerRadius = 20
             trackBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
             trackBtn.backgroundColor = UIColor(resource: .brandPurple)
             trackBtn.tintColor = .black
             trackBtn.addTarget(self, action: #selector(trackPages), for: .touchUpInside)
+            trackBtn.sizeToFit()
         }
         
         //Share Button Setup
+        shareBtn.translatesAutoresizingMaskIntoConstraints = false
         shareBtn.setTitle(" Share", for: .normal)
         shareBtn.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
         if #available(iOS 15.0, *) {
@@ -233,12 +215,14 @@ class TrackBookView: UIViewController {
             config.baseBackgroundColor = UIColor(resource: .disabled)
             shareBtn.configuration = config
             shareBtn.addTarget(self, action: #selector(share), for: .touchUpInside)
+            shareBtn.sizeToFit()
         } else {
             shareBtn.layer.cornerRadius = 20
             shareBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
             shareBtn.backgroundColor = UIColor(resource: .disabled)
             shareBtn.tintColor = .black
             shareBtn.addTarget(self, action: #selector(share), for: .touchUpInside)
+            shareBtn.sizeToFit()
         }
         
         //Container Setup
@@ -254,7 +238,6 @@ class TrackBookView: UIViewController {
         view.addSubview(bookRating)
         btnStack.addArrangedSubview(trackBtn)
         btnStack.addArrangedSubview(shareBtn)
-        view.addSubview(trackBtn)
         view.addSubview(bImage)
         view.addSubview(bTitle)
         view.addSubview(bAuthor)
@@ -262,34 +245,30 @@ class TrackBookView: UIViewController {
         container.addSubview(progressBar)
         container.addSubview(progressLbl)
         
-        // Have the image size scale per device screen
-        let imageWidthPercentage: CGFloat = 0.5
-        let imageHeightPercentage: CGFloat = 0.4
-        let imageWidthConstant = UIScreen.main.bounds.width * imageWidthPercentage
-        let imageHeightConstant = UIScreen.main.bounds.height * imageHeightPercentage
+        
+        let titleLbl = shareBtn.titleLabel
+        
         
         NSLayoutConstraint.activate([
             
             bImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            bImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            bImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            bImage.widthAnchor.constraint(equalToConstant: imageWidthConstant),
-            bImage.heightAnchor.constraint(equalToConstant: imageHeightConstant),
+            bImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            bImage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            bImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
             
             bTitle.topAnchor.constraint(equalTo: bImage.bottomAnchor, constant: 12),
-            bTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            bTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            bTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             bAuthor.topAnchor.constraint(equalTo: bTitle.bottomAnchor, constant: 8),
-            bAuthor.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            bAuthor.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            bAuthor.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             bookRating.topAnchor.constraint(equalTo: bAuthor.bottomAnchor, constant: 8),
             bookRating.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             container.topAnchor.constraint(equalTo: btnStack.bottomAnchor, constant: 36),
-            container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            container.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
+            container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
             container.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1),
             
             progressLbl.bottomAnchor.constraint(equalTo: progressBar.topAnchor, constant: -12),
@@ -300,14 +279,14 @@ class TrackBookView: UIViewController {
             progressBar.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -24),
             
             btnStack.topAnchor.constraint(equalTo: bookRating.bottomAnchor, constant: 24),
-            btnStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            btnStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            btnStack.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
+            btnStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             trackBtn.leadingAnchor.constraint(equalTo: btnStack.leadingAnchor),
-            trackBtn.widthAnchor.constraint(equalTo: btnStack.widthAnchor, multiplier: 0.45),
+            //            trackBtn.trailingAnchor.constraint(equalTo: shareBtn.leadingAnchor, constant: -20),
             
-            shareBtn.widthAnchor.constraint(equalTo: btnStack.widthAnchor, multiplier: 0.45),
-            shareBtn.centerYAnchor.constraint(equalTo: trackBtn.centerYAnchor),
+            shareBtn.trailingAnchor.constraint(equalTo: btnStack.trailingAnchor),
+            
             
         ])
         
@@ -327,6 +306,9 @@ class TrackBookView: UIViewController {
         // Add actions
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            
+            // Present the alert controller
+            
             // Retrieve text from the text field
             if let textField = alertController.textFields?.first, let text = textField.text, let pagesToAdd = Int(text) {
                 // Calculate pages read
@@ -334,8 +316,18 @@ class TrackBookView: UIViewController {
                 if self.pagesRead == 0 {
                     newPagesRead = max(pagesToAdd, 0) // Ensure pagesRead doesn't go below 0
                 } else {
-                    newPagesRead = max(self.pagesRead! + pagesToAdd, 0) // Ensure pagesRead doesn't go below 0
+                    newPagesRead = max(self.pagesRead + pagesToAdd, 0) // Ensure pagesRead doesn't go below 0
                 }
+                
+                var dict = ["newPagesRead": Int(textField.text ?? "0")!]
+                
+                NotificationCenter.default.post(
+                    name: Notification.Name.bookChanged,
+                    object: nil,
+                    userInfo: dict)
+                
+                print("I sent something!")
+                
                 
                 // Check if pages read exceed total pages
                 if newPagesRead > self.totalPages {
@@ -346,11 +338,11 @@ class TrackBookView: UIViewController {
                 } else {
                     // Update pages read and progress bar if valid
                     self.pagesRead = newPagesRead
-                    let progressValue = self.calculateProgress(pagesRead: self.pagesRead!, totalPages: self.totalPages)
+                    let progressValue = self.calculateProgress(pagesRead: self.pagesRead, totalPages: self.totalPages)
                     self.progressBar.progress = progressValue
-                    self.progressLbl.text = "\(self.pagesRead!) / \(self.totalPages) pages"
+                    self.progressLbl.text = "\(self.pagesRead) / \(self.totalPages) pages"
                     if let bookItem = self.fetchBookItem(forTitle: self.bTitle.text!) {
-                        bookItem.bookPages = "\(self.pagesRead!)"
+                        bookItem.bookPages = "\(self.pagesRead)"
                         do {
                             try self.context.save()
                         } catch {
@@ -363,7 +355,7 @@ class TrackBookView: UIViewController {
         alertController.addAction(cancelAction)
         alertController.addAction(okAction)
         
-        // Present the alert controller
+
         present(alertController, animated: true, completion: nil)
     }
     
@@ -389,8 +381,8 @@ class TrackBookView: UIViewController {
             // Assuming you want to work with the first fetched BookItem
             if let firstBookItem = bookItems.first {
                 // Access the bookPages attribute and assign it to pagesRead
-                pagesRead = Int(firstBookItem.bookPages!)
-                self.progressBar.progress = calculateProgress(pagesRead: pagesRead!, totalPages: self.totalPages)
+                pagesRead = Int(firstBookItem.bookPages!)!
+                self.progressBar.progress = calculateProgress(pagesRead: pagesRead, totalPages: self.totalPages)
             } else {
                 // Handle the case where no BookItem is found
                 print("No BookItem found")
@@ -438,7 +430,7 @@ class TrackBookView: UIViewController {
     }
     
     func updateProgressLabel() {
-        if let pagesRead = pagesRead {
+        if pagesRead == pagesRead {
             if isPercentageDisplay {
                 let percentage = Int(Double(pagesRead) / Double(totalPages) * 100)
                 progressLbl.text = "\(percentage)%"

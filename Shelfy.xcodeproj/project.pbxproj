@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		560C7D772BB0863300B5DB5C /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560C7D762BB0863300B5DB5C /* CacheManager.swift */; };
 		563A8F622BADDA0600DA6FA5 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563A8F612BADDA0600DA6FA5 /* TabBarViewController.swift */; };
+		56523ED52BB8E4D700F815E6 /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56523ED42BB8E4D700F815E6 /* LevelManager.swift */; };
 		5652A1862A7F27AC008F009C /* MoreByCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1852A7F27AC008F009C /* MoreByCell.swift */; };
 		5652A1882A7F318D008F009C /* CustomFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A1872A7F318D008F009C /* CustomFlowLayout.swift */; };
 		5652A18C2A8002A5008F009C /* Factories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5652A18B2A8002A5008F009C /* Factories.swift */; };
@@ -17,6 +18,7 @@
 		56613CE32A50E4FA0063C141 /* ChidoriPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */; };
 		56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */; };
 		56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */; };
+		5666E2812BB98C3D008A7D17 /* PageStyleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666E2802BB98C3D008A7D17 /* PageStyleManager.swift */; };
 		56694EBF2BA512FD009F537E /* TrackBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56694EBE2BA512FD009F537E /* TrackBookView.swift */; };
 		5671E74A2B06ADCA007BC52F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5671E7492B06ADCA007BC52F /* NetworkManager.swift */; };
 		5680CA492A6DD37D00C13DD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5680CA482A6DD37D00C13DD6 /* Extensions.swift */; };
@@ -57,6 +59,7 @@
 		1635F92D7B1D0B09C0393B0E /* Pods-Shelfy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shelfy.debug.xcconfig"; path = "Target Support Files/Pods-Shelfy/Pods-Shelfy.debug.xcconfig"; sourceTree = "<group>"; };
 		560C7D762BB0863300B5DB5C /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		563A8F612BADDA0600DA6FA5 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		56523ED42BB8E4D700F815E6 /* LevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 		5652A1852A7F27AC008F009C /* MoreByCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreByCell.swift; sourceTree = "<group>"; };
 		5652A1872A7F318D008F009C /* CustomFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFlowLayout.swift; sourceTree = "<group>"; };
 		5652A18B2A8002A5008F009C /* Factories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factories.swift; sourceTree = "<group>"; };
@@ -65,6 +68,7 @@
 		56613CDF2A50E4FA0063C141 /* ChidoriPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriPresentationController.swift; sourceTree = "<group>"; };
 		56613CE02A50E4FA0063C141 /* ChidoriAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriAnimationController.swift; sourceTree = "<group>"; };
 		56613CE12A50E4FA0063C141 /* ChidoriMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChidoriMenu.swift; sourceTree = "<group>"; };
+		5666E2802BB98C3D008A7D17 /* PageStyleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageStyleManager.swift; sourceTree = "<group>"; };
 		56694EBE2BA512FD009F537E /* TrackBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackBookView.swift; sourceTree = "<group>"; };
 		5671E7492B06ADCA007BC52F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5680CA482A6DD37D00C13DD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 				560C7D762BB0863300B5DB5C /* CacheManager.swift */,
 				5671E7492B06ADCA007BC52F /* NetworkManager.swift */,
 				56DB4B262BB4B263009A7F30 /* Book.swift */,
+				56523ED42BB8E4D700F815E6 /* LevelManager.swift */,
+				5666E2802BB98C3D008A7D17 /* PageStyleManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -215,6 +221,10 @@
 			isa = PBXGroup;
 			children = (
 				56ADACB52B8FDDE4005AF590 /* BookList.xcdatamodeld */,
+				56F9A8272A61268F0071FA5F /* GoogleService-Info.plist */,
+				56B711AB2A2CA41D0030DC6E /* Info.plist */,
+				56B711A62A2CA41D0030DC6E /* Assets.xcassets */,
+				56E1F2202A6B315B001541AE /* Colours.xcassets */,
 				56B7119C2A2CA41C0030DC6E /* Shelfy */,
 				56B7119B2A2CA41C0030DC6E /* Products */,
 				4CEE54AA49B24BCA2EB39B6F /* Pods */,
@@ -277,10 +287,6 @@
 		56F0BF8E2A4F8BA4003B89E3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				56B711A62A2CA41D0030DC6E /* Assets.xcassets */,
-				56E1F2202A6B315B001541AE /* Colours.xcassets */,
-				56F9A8272A61268F0071FA5F /* GoogleService-Info.plist */,
-				56B711AB2A2CA41D0030DC6E /* Info.plist */,
 				56B7119F2A2CA41C0030DC6E /* SceneDelegate.swift */,
 				56B7119D2A2CA41C0030DC6E /* AppDelegate.swift */,
 			);
@@ -432,6 +438,7 @@
 				56B711A22A2CA41C0030DC6E /* HomeController.swift in Sources */,
 				56694EBF2BA512FD009F537E /* TrackBookView.swift in Sources */,
 				56F7C47D2A5DE5E60021F5AF /* RegisterView.swift in Sources */,
+				56523ED52BB8E4D700F815E6 /* LevelManager.swift in Sources */,
 				56613CE52A50E4FA0063C141 /* ChidoriMenu.swift in Sources */,
 				56613CE42A50E4FA0063C141 /* ChidoriAnimationController.swift in Sources */,
 				56C08E302B8E60F800C9C92E /* HoldingCell.swift in Sources */,
@@ -451,6 +458,7 @@
 				56B711B92A2D538A0030DC6E /* Constants.swift in Sources */,
 				5671E74A2B06ADCA007BC52F /* NetworkManager.swift in Sources */,
 				56B711B62A2D51010030DC6E /* MoreController.swift in Sources */,
+				5666E2812BB98C3D008A7D17 /* PageStyleManager.swift in Sources */,
 				5680CA492A6DD37D00C13DD6 /* Extensions.swift in Sources */,
 				56B711A02A2CA41C0030DC6E /* SceneDelegate.swift in Sources */,
 				56F7C47B2A5DDBA60021F5AF /* LoginView.swift in Sources */,
@@ -599,7 +607,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3TFZ52QYHN;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Shelfy/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Shelfy;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -633,7 +641,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3TFZ52QYHN;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Shelfy/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Shelfy;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -154,7 +154,6 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         //Categories
         fetchCategories()
         
-        
         //MARK:  Collection View
         moreCollection.dataSource = self
         moreCollection.delegate = self
@@ -188,7 +187,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         //MARK: Book Title
         
         bookTitle.text = bTitle
-        bookTitle.font = SetFont.setFontStyle(.regular, 16)
+        bookTitle.font = SetFont.setFontStyle(.medium, 16)
         bookTitle.textColor = UIColor(resource: .textBG)
         bookTitle.numberOfLines = 1
         bookTitle.lineBreakMode = .byTruncatingTail
@@ -213,10 +212,10 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         
         rating.translatesAutoresizingMaskIntoConstraints = false
         rating.settings.fillMode = .precise
-        rating.settings.emptyBorderColor = UIColor(resource: .brandMint)
-        rating.settings.emptyColor = UIColor(resource: .brandMint)
-        rating.settings.filledColor = UIColor(resource: .brandDarkMint)
-        rating.settings.filledBorderColor = UIColor(resource: .brandDarkMint)
+        rating.settings.emptyBorderColor = UIColor(resource: .brandDarkMint)
+        rating.settings.emptyColor = UIColor(resource: .brandDarkMint)
+        rating.settings.filledColor = UIColor(resource: .brandLogo)
+        rating.settings.filledBorderColor = UIColor(resource: .brandLogo)
         rating.settings.textColor = UIColor(resource: .textBG)
         rating.settings.textFont = SetFont.setFontStyle(.regular, 12)
         rating.isUserInteractionEnabled = false
@@ -376,21 +375,8 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
         topView.bringSubviewToFront(bookStats)
         topView.bringSubviewToFront(addButton)
         
-        
-        // Have the image size scale per device screen
-        let imageWidthPercentage: CGFloat = 0.5
-        let imageHeightPercentage: CGFloat = 0.4
-        
-        let screenSize = UIScreen.main.bounds
-        let safeArea = view.safeAreaLayoutGuide
-        
-        let imageWidthConstant = UIScreen.main.bounds.width * imageWidthPercentage
-        let imageHeightConstant = UIScreen.main.bounds.height * imageHeightPercentage
-        
         let maxWidth = UIScreen.main.bounds.width - 45
-        
-        let widthAnch = bookTitle.widthAnchor.constraint(equalToConstant: bookTitle.intrinsicContentSize.width)
-        
+                
         NSLayoutConstraint.activate([
             
             //MARK: Top View Constraints
@@ -398,8 +384,8 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             //Book Image
             bookImg.topAnchor.constraint(equalTo: topView.safeAreaLayoutGuide.topAnchor, constant: 12),
             bookImg.centerXAnchor.constraint(equalTo: topView.centerXAnchor),
-            bookImg.widthAnchor.constraint(equalToConstant: imageWidthConstant),
-            bookImg.heightAnchor.constraint(equalToConstant: imageHeightConstant),
+            bookImg.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            bookImg.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
             
             //Add button
             addButton.topAnchor.constraint(greaterThanOrEqualTo: bookImg.topAnchor, constant: 12),
@@ -409,13 +395,13 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             container.bottomAnchor.constraint(equalTo: bookImg.bottomAnchor),
             container.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             container.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            container.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.1),
+            container.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.1),
             //Title
             bookTitle.topAnchor.constraint(equalTo: container.topAnchor, constant: 8),
             bookTitle.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             bookTitle.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth),
             //Author
-            bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 5),
+            bookAuthor.topAnchor.constraint(equalTo: bookTitle.bottomAnchor, constant: 3),
             bookAuthor.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             bookAuthor.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth),
             bookAuthor.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -8),
@@ -474,7 +460,7 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             
             //MARK: Page Control Constraints
             
-            pageControl.bottomAnchor.constraint(equalTo: bottomView.safeAreaLayoutGuide.bottomAnchor, constant: 4),
+            pageControl.bottomAnchor.constraint(equalTo:bottomView.safeAreaLayoutGuide.bottomAnchor, constant: 4),
             pageControl.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor),
             
         ])
@@ -568,63 +554,82 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
     }
     
     func addToShelfy(category: BookCategory) {
-            guard let title = bTitle else {
-                print("Error: Book title is nil")
-                return
-            }
-            
-            // Check for duplicates in the selected category
-            let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "parentCategory == %@ AND bookTitle == %@", category, title)
-            
-            do {
-                let duplicateBooks = try managedObjectContext.fetch(fetchRequest)
-                if !duplicateBooks.isEmpty {
-                    // Duplicate book found, handle accordingly (e.g., show an alert)
-                    let errorBanner = FloatingNotificationBanner(
-                        title: "Oops!",
-                        subtitle: "Looks like this book is already on your shelf.",
-                        style: .warning)
-                    
-                    errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
-                    print("Duplicate book found in category \(category.name ?? "Unknown")")
-                    return
-                }
-            } catch {
-                print("Error fetching duplicate books: \(error)")
-                return
-            }
-            
-            let successBanner = FloatingNotificationBanner(
-                title: "Success",
-                subtitle: "Book added to \(category.name!)",
-                style: .success)
-            
-            successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
-            
-            do {
-                let newBook = BookItem(context: managedObjectContext)
-                newBook.bookUUID = UUID() // Generating and assigning UUID object
-                newBook.bookTitle = title
-                newBook.bookDescription = bDescr
-                newBook.bookAuthor = bAuthor
-                newBook.bookCover = "\(bImage!)"
-                newBook.bookKey = bookID
-                newBook.parentCategory = category
-                newBook.bookLastAccessed = Date() // Setting the lastAccessedDate to the current date and time
-                
-                try managedObjectContext.save()
-            } catch {
-                print("error saving \(error)")
+        guard let title = bTitle else {
+            print("Error: Book title is nil")
+            return
+        }
+        
+        // Check for duplicates in the selected category
+        let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "parentCategory == %@ AND bookTitle == %@", category, title)
+        
+        do {
+            let duplicateBooks = try managedObjectContext.fetch(fetchRequest)
+            if !duplicateBooks.isEmpty {
+                // Duplicate book found, handle accordingly (e.g., show an alert)
                 let errorBanner = FloatingNotificationBanner(
-                    title: "Error",
-                    subtitle: "Could not add book to category, \(error)",
-                    style: .success)
+                    title: "Oops!",
+                    subtitle: "Looks like this book is already on your shelf.",
+                    style: .warning)
                 
                 errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+                print("Duplicate book found in category \(category.name ?? "Unknown")")
+                return
+            }
+        } catch {
+            print("Error fetching duplicate books: \(error)")
+            return
+        }
+        
+        //Check Number of Pages
+        fetchNumberOfPages(forTitle: bTitle!) { numberOfPages in
+            if let numberOfPages = numberOfPages, numberOfPages != 0 {
+                // Update bookTotalPages in Core Data
+                if let bookItem = self.fetchBookItem(forTitle: self.bTitle!) {
+                    bookItem.bookTotalPages = "\(numberOfPages)"
+                    do {
+                        try self.managedObjectContext.save()
+                    } catch {
+                        print("Error saving bookTotalPages: \(error)")
+                    }
+                } else {
+                    print("Book item not found.")
+                }
                 
+                print("Number of pages: \(numberOfPages)")
             }
         }
+        
+        let successBanner = FloatingNotificationBanner(
+            title: "Success",
+            subtitle: "Book added to \(category.name!)",
+            style: .success)
+        
+        successBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+        
+        do {
+            let newBook = BookItem(context: managedObjectContext)
+            newBook.bookUUID = UUID() // Generating and assigning UUID object
+            newBook.bookTitle = title
+            newBook.bookDescription = bDescr
+            newBook.bookAuthor = bAuthor
+            newBook.bookCover = "\(bImage!)"
+            newBook.bookKey = bookID
+            newBook.parentCategory = category
+            newBook.bookLastAccessed = Date() // Setting the lastAccessedDate to the current date and time
+            
+            try managedObjectContext.save()
+        } catch {
+            print("error saving \(error)")
+            let errorBanner = FloatingNotificationBanner(
+                title: "Error",
+                subtitle: "Could not add book to category, \(error)",
+                style: .success)
+            
+            errorBanner.show(bannerPosition: .bottom, edgeInsets: UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 5), cornerRadius: 12)
+            
+        }
+    }
     
     func read(action: UIAction) {
         // Dismiss the currently presented view controller if any
@@ -720,6 +725,19 @@ class BookView: UIViewController, UIScrollViewDelegate, ChidoriDelegate {
             try managedObjectContext.save()
         } catch {
             print("error saving context \(error)")
+        }
+    }
+    
+    func fetchBookItem(forTitle title: String) -> BookItem? {
+        let fetchRequest: NSFetchRequest<BookItem> = BookItem.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "bookTitle == %@", title)
+        
+        do {
+            let fetchedItems = try managedObjectContext.fetch(fetchRequest)
+            return fetchedItems.first
+        } catch {
+            print("Error fetching book item: \(error)")
+            return nil
         }
     }
     

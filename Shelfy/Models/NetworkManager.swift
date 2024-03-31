@@ -31,7 +31,7 @@ func fetchPagination(page: Int, completion: @escaping ([OLBook]?) -> Void) {
 func getRecommendations(author: String, completion: @escaping ([OLBook]?) -> Void) {
     let baseUrl = "https://openlibrary.org/search.json?limit=10"
     let query = "author=\(author)"
-    let urlString = "\(baseUrl)?\(query)"
+    let urlString = "\(baseUrl)&\(query)"
     
     guard let url = URL(string: urlString) else {
         completion(nil)

@@ -10,36 +10,40 @@ import Firebase
 
 class MoreController: UIViewController {
     
-    let optionLbl = UILabel()
-    let darkMode = UISwitch()
-    let pageDisplay = UISwitch()
+    let optionHeader = UILabel()
+    let themeSwitch = UISwitch()
+    let themeLabel = UILabel()
+    let pageStyle = UISwitch()
+    let pageStyleLabel = UILabel()
     let signOutBtn = UIButton()
-    let darkModeLbl = UILabel()
-    let pageDisplayLbl = UILabel()
     let userLoginStatus = UserDefaults.standard.bool(forKey: "isLoggedIn")
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        themeSwitch.isOn = UserDefaults.standard.bool(forKey: "themeSwitch")
+        pageStyle.isOn = UserDefaults.standard.bool(forKey: "pageSwitch")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        optionLbl.translatesAutoresizingMaskIntoConstraints = false
-        darkMode.translatesAutoresizingMaskIntoConstraints = false
+        optionHeader.translatesAutoresizingMaskIntoConstraints = false
+        themeSwitch.translatesAutoresizingMaskIntoConstraints = false
         signOutBtn.translatesAutoresizingMaskIntoConstraints = false
-        pageDisplay.translatesAutoresizingMaskIntoConstraints = false
-        darkModeLbl.translatesAutoresizingMaskIntoConstraints = false
-        pageDisplayLbl.translatesAutoresizingMaskIntoConstraints = false
+        pageStyle.translatesAutoresizingMaskIntoConstraints = false
+        themeLabel.translatesAutoresizingMaskIntoConstraints = false
+        pageStyleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        optionLbl.font = SetFont.setFontStyle(.medium, 22)
-        optionLbl.textColor = UIColor(resource: .textBG)
-        optionLbl.text = "Options"
+        optionHeader.font = SetFont.setFontStyle(.medium, 22)
+        optionHeader.textColor = UIColor(resource: .textBG)
+        optionHeader.text = "Options"
         
-        pageDisplayLbl.text = "Pages Display Mode "
+        pageStyleLabel.text = "Pages Display Mode "
+        pageStyle.addTarget(self, action: #selector(togglePageDisplay), for: .valueChanged)
         
-        darkModeLbl.text = "Dark Mode"
-        
-        darkMode.isOn = false
-        darkMode.addTarget(self, action: #selector(darkModeToggle), for: .valueChanged)
-        
-        pageDisplay.isOn = false
+        themeLabel.text = "Dark Mode"
+        themeSwitch.addTarget(self, action: #selector(themeToggle), for: .valueChanged)
         
         
         if userLoginStatus {
@@ -74,27 +78,27 @@ class MoreController: UIViewController {
             signOutBtn.addTarget(self, action: #selector(logIn), for: .touchUpInside)
         }
         
-        view.addSubview(optionLbl)
-        view.addSubview(darkMode)
-        view.addSubview(pageDisplay)
+        view.addSubview(optionHeader)
+        view.addSubview(themeSwitch)
+        view.addSubview(pageStyle)
         view.addSubview(signOutBtn)
-        view.addSubview(pageDisplayLbl)
-        view.addSubview(darkModeLbl)
+        view.addSubview(pageStyleLabel)
+        view.addSubview(themeLabel)
         
         NSLayoutConstraint.activate([
             
-            optionLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            optionLbl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            optionHeader.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            optionHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             
-            darkModeLbl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            darkMode.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            darkMode.topAnchor.constraint(equalTo: optionLbl.bottomAnchor, constant: 40),
-            darkMode.centerYAnchor.constraint(equalTo: darkModeLbl.centerYAnchor),
+            themeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            themeSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            themeSwitch.topAnchor.constraint(equalTo: optionHeader.bottomAnchor, constant: 40),
+            themeSwitch.centerYAnchor.constraint(equalTo: themeLabel.centerYAnchor),
             
-            pageDisplayLbl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            pageDisplay.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            pageDisplay.topAnchor.constraint(equalTo: darkMode.bottomAnchor, constant: 16),
-            pageDisplay.centerYAnchor.constraint(equalTo: pageDisplayLbl.centerYAnchor),
+            pageStyleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            pageStyle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            pageStyle.topAnchor.constraint(equalTo: themeSwitch.bottomAnchor, constant: 16),
+            pageStyle.centerYAnchor.constraint(equalTo: pageStyleLabel.centerYAnchor),
             
             signOutBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
             signOutBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -118,37 +122,40 @@ class MoreController: UIViewController {
             print("Error signing out: %@", signOutError)
         }
     }
-    
+        
     @objc func logIn(sender: UIButton) {
         let loginVC = LoginView()
         loginVC.modalPresentationStyle = .fullScreen
         present(loginVC, animated: true, completion: nil)
     }
     
-    @objc func darkModeToggle(sender: UISwitch) {
+    @objc func themeToggle(sender: UISwitch) {
         
-        if darkMode.isOn {
-            darkModeLbl.text = "Light Mode"
+        if themeSwitch.isOn {
+            themeLabel.text = "Light Mode"
             UIApplication.shared.windows.forEach { window in
                 window.overrideUserInterfaceStyle = .dark
             }
         } else {
-            darkModeLbl.text = "Dark Mode"
+            themeLabel.text = "Dark Mode"
             UIApplication.shared.windows.forEach { window in
                 window.overrideUserInterfaceStyle = .light
-            }        }
-        
+            }
+        }
+        UserDefaults.standard.set(themeSwitch.isOn, forKey: "themeSwitch")
+        UserDefaults.standard.synchronize()
     }
     
     @objc func togglePageDisplay(sender: UISwitch) {
-        
-        if pageDisplay.isOn {
-            
+        let progressLogic = PageStyleManager.shared
+
+        if pageStyle.isOn {
+            progressLogic.isPercentageDisplay = true
         } else {
-            
+            progressLogic.isPercentageDisplay = false
         }
-        
-        
+        UserDefaults.standard.setValue(pageStyle.isOn, forKey: "pageSwitch")
+        UserDefaults.standard.synchronize()
     }
     
     

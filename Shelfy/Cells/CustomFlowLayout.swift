@@ -39,39 +39,6 @@ class CustomFlowLayout: UICollectionViewFlowLayout {
     }
 }
 
-
-//class CategoriesHorizontalFlow: UICollectionViewFlowLayout {
-//    override init() {
-//        super.init()
-//        scrollDirection = .horizontal
-//        minimumLineSpacing = 3
-//        minimumInteritemSpacing = 3
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        scrollDirection = .horizontal
-//        minimumLineSpacing = 3
-//        minimumInteritemSpacing = 3
-//    }
-//
-//    override func prepare() {
-//        super.prepare()
-//        guard let collectionView = collectionView else { return }
-//
-//        // Calculate the total available width for the cells
-//        let totalSpacingWidth = minimumInteritemSpacing * CGFloat(2 - 1) // 2 cells with 1 spacing in between
-//        let collectionViewWidth = Float(60)
-//
-//        // Calculate the width for each cell
-//        let customCellWidth: CGFloat = CGFloat(collectionViewWidth)
-//
-//        // Set the item size to your custom cell size
-//        let customCellHeight: CGFloat = 40
-//        itemSize = CGSize(width: customCellWidth, height: customCellHeight)
-//    }
-//}
-
 class CategoriesHorizontalFlow: UICollectionViewFlowLayout {
     
     // Array containing text data for cells

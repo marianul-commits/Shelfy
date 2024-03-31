@@ -59,19 +59,19 @@ class HoldingCell: UIViewController {
      toggleButton.addTarget(self, action: #selector(toggleDisplay(_:)), for: .touchUpInside)
  }
  
- func updateProgressLabel() {
-     if let pagesRead = pagesRead {
-         if isPercentageDisplay {
-             let percentage = Int(Double(pagesRead) / Double(totalPages) * 100)
-             progressLbl.text = "\(percentage)%"
-         } else {
-             progressLbl.text = "\(pagesRead) / \(totalPages) pages"
-         }
-     } else {
-         // Handle the case where pagesRead is nil
-         progressLbl.text = "N/A"
-     }
- }
+  func updateProgressLabel() {
+      if let pagesRead = pagesRead {
+          if isPercentageDisplay {
+              let percentage = Int(Double(pagesRead) / Double(totalPages) * 100)
+              progressLbl.text = "\(percentage)%"
+          } else {
+              progressLbl.text = "\(pagesRead) / \(totalPages) pages"
+          }
+      } else {
+          // Handle the case where pagesRead is nil
+          progressLbl.text = "N/A"
+      }
+  }
  
  // Button action to toggle between pages read and percentage
  @objc func toggleDisplay(_ sender: UIButton) {

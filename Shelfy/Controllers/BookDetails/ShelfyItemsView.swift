@@ -218,7 +218,7 @@ extension ShelfyItemsView: UITableViewDelegate, UITableViewDataSource {
         detailVC.bookTitle = selectedBook.bookTitle
         detailVC.bookAuthor = selectedBook.bookAuthor
         detailVC.bookImg = selectedBook.bookCover
-        detailVC.pagesRead = Int(selectedBook.bookPages ?? "0")
+        detailVC.pagesRead = Int(selectedBook.bookPages ?? "0")!
         detailVC.bookID = selectedBook.bookKey
         detailVC.view.backgroundColor = UIColor(resource: .background)
         detailVC.modalPresentationStyle = .popover
