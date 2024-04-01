@@ -6,8 +6,6 @@ target 'Shelfy' do
 
   # Pods for Shelfy
 
-pod 'SwipeCellKit'
-pod 'SwiftMessages'
 pod 'IQKeyboardManagerSwift'
 pod 'SkeletonView' 
 pod 'NotificationBannerSwift'
